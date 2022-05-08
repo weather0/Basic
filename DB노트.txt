@@ -1,0 +1,31 @@
+q'
+SELECT DISTINCT --중복제거(복수열가능)
+DESCRIBE (정보표시)
+
+WHERE 열 IN (값1,값2..); --IN은 찾을 값 정확히 일치해야함. % 안됨
+WHERE 열 LIKE '_a%'; -- LIKE는 와일드카드 _ % 가능
+WHERE 열 LIKE 'SA\_%' ESCAPE '\'; --와일드카드 예외처리
+WHERE 열 BETWEEN a AND b
+IS NULL
+
+ORDER BY 열1 DESC, 열2... --열1은 내림차순, 열2는 오름차순
+
+WHERE 열 = '&부서번호'; --팝업창 뜨고 변수입력가능
+
+SELECT &열이름
+ORDER BY &열이름;
+
+&&열이름 → DEFINE 열 --확인 → UNDEFINE 열
+
+────────────────────────
+UPPER('문자')
+LOWER(열)
+INITCAP('') --첫자대문자
+
+CONCAT('a','b') → ab
+
+
+
+시험범위
+sql_1.1~11단원
+sql_2.2단원
