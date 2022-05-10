@@ -32,6 +32,7 @@ public class App {
 			case 3:
 				System.out.print("검색내용>");
 				String bookjava =scn.nextLine();
+				dao.bookjava(bookjava).toString();
 				break;
 			case 4:
 				dao.bookrent().toString();

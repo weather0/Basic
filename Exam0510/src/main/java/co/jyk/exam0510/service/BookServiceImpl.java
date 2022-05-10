@@ -63,13 +63,13 @@ public class BookServiceImpl implements BookService {
 	
 	//자바 책 찾기
 	@Override
-	public List<BookInfo> bookjava() {
+	public List<BookInfo> bookjava(String vo) {
 		List<BookInfo> booklist = new ArrayList<BookInfo>();
 		BookInfo vo2;
-		String sql = "SELECT * FROM BOOKS WHERE CONTENT LIKE '%?%'";
+		String sql = "SELECT * FROM BOOKS WHERE CONTENT LIKE ?";
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, "");
+			psmt.setString(1, "%"+vo+"%"); //주의!!!! 위에 쿼리문에 %이걸 다는 게 아니라 여기에서 문자열 조합
 			rs = psmt.executeQuery();
 			while (rs.next()) {
 				vo2 = new BookInfo();
