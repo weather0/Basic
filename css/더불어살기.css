@@ -1,0 +1,80 @@
+body {
+  width: 960px;
+  margin: 0 auto;
+}
+
+header {
+  background-color: blue;
+  text-align: right;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+}
+
+nav ul {
+  margin: 0px;
+}
+
+nav li {
+  display: inline-block;
+  font-weight: bold;
+  margin: 30px;
+}
+h1 {
+  margin-left:20px;
+  float: left;
+  color: aliceblue;
+  /* border: 1px solid; */
+}
+
+
+section {
+  width: 750px;
+  border: 1px solid black;
+  /* float: left; */
+}
+
+
+
+article {
+  border: 1px solid black;
+  width: 700px;
+  height: 300px;
+  padding: 10px;
+  margin: 10px;
+}
+
+article p {
+  text-align: justify;
+  line-height: 1.5;
+}
+
+.hate{
+  width:580px;
+}
+
+
+aside {
+  width: 200px;
+  float: right;
+  text-align: right;
+  padding-top: 10px;
+  border: 1px solid black;
+}
+
+aside img {
+  width: 200px;
+  height: 650px;
+
+}
+
+footer {
+  background-color: blue;
+  padding: 15px;
+  clear: both;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}

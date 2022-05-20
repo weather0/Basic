@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품주문서</title>
+</head>
+<style>
+  body {
+    width: 600px;
+    margin: 0 auto;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+
+  ul li {
+    margin-bottom: 5px;
+  }
+
+  fieldset {
+    width: 600px;
+    margin-bottom: 10px;
+  }
+
+  fieldset legend {
+    color: blue;
+    font-weight: bold;
+  }
+
+  fieldset.개인정보 label {
+    width: 100px;
+    float: left;
+  }
+
+  fieldset.배송정보 label {
+    width: 100px;
+    float: left;
+  }
+
+  fieldset.주문정보 input.num {
+    width: 50px;
+  }
+
+  .centered {
+    text-align: center;
+  }
+</style>
+
+<body>
+  <form action="abc.jsp" method="post">
+    <h1>상품 주문서</h1>
+    <fieldset class="개인정보">
+      <legend>개인 정보</legend>
+      <ul>
+        <li>
+          <label for="이름">이름</label>
+          <input id="이름" type="text" placeholder="여백없이 입력">
+        </li>
+        <li>
+          <label for="연락처">연락처</label>
+          <input id="연락처" type="tel" placeholder="연락가능한 번호">
+        </li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="배송정보">
+      <legend>배송지 정보</legend>
+      <ul>
+        <li>
+          <label for="주소">주소</label>
+          <input id="주소" type="text" class="주소" size="40px">
+        </li>
+        <li>
+          <label for="전화번호">전화번호</label>
+          <input id="전화번호" type="tel" class="전화번호">
+        </li>
+        <li>
+          <label for="메모">메모</label>
+          <textarea id="메모" type="text" class="메모" cols="30px" rows="5"></textarea>
+        </li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="주문정보">
+      <legend>주문 정보</legend>
+      <ul>
+        <li>
+          <label><input type="checkbox">
+            과테말라 안티구아(100g)</label>
+          <label><input type="number" class="num" value="0">개</label>
+        </li>
+
+        <li>
+          <label><input type="checkbox">
+            인도네시아 만델링(100g)</label>
+          <label><input type="number" class="num" value="0">개</label>
+        </li>
+
+        <li>
+          <label><input type="checkbox">
+            탐라는도다(블렌딩)(100g)</label>
+          <label><input type="number" class="num" value="0">개</label>
+        </li>
+      </ul>
+    </fieldset>
+
+    <div class="centered">
+      <input type="submit" value="주문하기">
+      <input type="reset" value="다시 작성">
+    </div>
+
+  </form>
+
+</body>
+
+</html>

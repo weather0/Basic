@@ -1,0 +1,38 @@
+#container {
+  width: 650px;
+  margin: 0 auto;
+  text-align: center;
+}
+#check{
+  border:1px solid #aaa;
+}
+
+h1 {
+  background-color: black;
+  color: white;
+  font-size: 1em;
+  padding: 5px;
+  margin-top: 0;
+  text-align: left;
+}
+
+img {
+  width: 650px;
+}
+
+h2 {
+  color: red;
+}
+
+p {
+  font-size: 1.2;
+  font-weight: bold;
+  line-height: 2;
+}
+
+.textblue {
+  color: blue;
+}
+.smalltext{
+  font-size: 0.8em;
+}
