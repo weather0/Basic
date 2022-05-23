@@ -21,6 +21,11 @@
       color: white;
       font-weight: bold;
       font-size: 18px;
+      padding-bottom: 5px;
+    }
+    
+    nav a:hover{
+      border-bottom: 2px solid;
     }
     
     h1{
@@ -34,6 +39,28 @@
       /* border: 1px solid black; */
       float: left;
     }
+
+
+    article:nth-child(1) h3::after{
+    /* .doghouse h3::after{ */
+      content: "NEW!!";
+      font-size: small;
+      color: red;
+      /* margin: 5px; */
+      background: lightgoldenrodyellow;
+      position: relative;
+      top: -5px;
+      right: -5px;
+    }
+
+    article:nth-child(1) p::first-letter{
+    /* .doghouse p::first-letter{ */
+      color: red;
+      font-weight: bold;
+    }
+
+
+
     
     article {
       width: 350px;

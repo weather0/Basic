@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미디어쿼리</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    img {
+      width: 300px;
+      height: 250px;
+    }
+
+    body {
+      background: skyblue;
+    }
+
+    #container {
+      width: 320px;
+      margin: 0 auto;
+    }
+
+    .card {
+      position: relative;
+      width: 310px;
+      height: 520px;
+      margin: 10px;
+      background: white;
+    }
+
+    .word {
+      position: absolute;
+      width: 200px;
+      left: 50px;
+      bottom: 100px;
+      text-align: center;
+    }
+
+    @media screen and (min-width:768px) and (max-width:1719px) {
+      #container {
+        width: 570px;
+      }
+
+      .card {
+        /* position: relative; 위에서 한 번 정해줘서 안해도 됨*/
+        width: 550px;
+        height: 250px;
+        margin: 20px 10px;
+        background: white;
+      }
+
+      .word {
+        position: absolute;
+        left: 320px;
+        top: 80px;
+        width: 200px;
+        text-align: center;
+      }
+    }
+
+    @media screen and (min-width:1719px) {
+      #container {
+        width: 1800px;
+      }
+
+      .card {
+        width: 550px;
+        height: 250px;
+        background: white;
+        float: left;
+      }
+
+      .word {
+        position: absolute;
+        left: 320px;
+        top: 80px;
+        width: 200px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div class="card">
+      <img src="img/h1.jpg" alt="h1">
+      <div class="word">
+        <h2>일 분 전만큼 먼 시간은 없다.</h2>
+        <h3>-Jim Bishop</h3>
+      </div>
+    </div>
+    <div class="card">
+      <img src="img/h2.jpg" alt="h2">
+      <div class="word">
+        <h2>웃음은 마음의 조깅이다.</h2>
+        <h3>-Norman Cousins</h3>
+      </div>
+    </div>
+    <div class="card">
+      <img src="img/h3.jpg" alt="h3">
+      <div class="word">
+        <h2>낡은 옷은 그냥 입고 새 책을 사라.</h2>
+        <h3>-Austin Phelps</h3>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>
