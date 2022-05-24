@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,62 +26,71 @@
       text-align: center;
       padding: 3px;
       margin-top: 3px;
+      margin-bottom: 10px;
       background: white;
     }
-    
+
     nav {
       background: black;
       height: 60px;
+      /* text-align: left; */
     }
-    
-    nav ul li {
-      margin: 10px 30px 10px 0;
+
+    nav li {
+      /* display: inline-block; */
+      margin: 10px 30px 10px 0px;
       float: left;
     }
-    
+
     .r_link {
       float: right;
     }
-    
+
     nav a {
       text-decoration: none;
       color: white;
       font-weight: bold;
     }
-    
-    
+
+    nav a:hover{
+      background: pink;
+      color: black;
+    }
+
+
     /* section */
-    section{
+    section {
       width: 70%;
       height: 40%;
       background: white;
       padding: 20px;
-      margin-top: 10px;
+      /* margin-top: 10px; */
       float: left;
     }
 
-    section table{
+    section table {
       border: 1px solid black;
       border-collapse: collapse;
       width: 95%;
     }
-    
-    th,td{
-      border: 1px solid black;
-      padding: 3px;
+
+    th,
+    td {
+      border: 1px solid gray;
+      padding: 5px;
     }
 
-    th{
+    th {
       text-align: left;
       width: 25%;
     }
 
-    input{
+    input {
       width: 98%;
       padding: 3px;
     }
 
-    textarea{
+    textarea {
       width: 98%;
       padding: 3px;
       /* border-width: 2px; */
@@ -88,51 +98,50 @@
 
 
 
-    .r_button{
-      float:right;
+    .r_button {
+      float: right;
     }
-    tr:nth-last-child(1) input{
-      width:auto;
+
+    tr:nth-last-child(1) input {
+      width: auto;
     }
 
 
 
     /* aside */
-    aside{
+    aside {
       width: 25%;
       height: 57%;
       background: lightgray;
-      margin-top: 10px;
+      /* margin-top: 10px; */
       margin-left: 10px;
       float: right;
     }
 
-    .card{
+    .card {
       background: white;
       padding: 10px;
       margin-bottom: 10px;
     }
 
-    .img{
+    .img {
       width: 85%;
       background: black;
       padding: 15px;
       color: white;
     }
-    
+
     /* footer */
-    footer{
+    footer {
       background: black;
       padding: 5px;
       color: white;
       text-align: center;
-      clear: both;  
-      }
-    
-
-    
+      clear: both;
+    }
   </style>
 </head>
+
 <body>
   <header>
     <h1>header section</h1>
@@ -146,39 +155,42 @@
       </ul>
     </nav>
   </header>
-    
+
   <section>
     <h3>게시판 글쓰기폼</h3>
     <hr>
     <form action="abc.jsp" method="post">
-    <table>
-      <caption>글쓰기</caption>
-      <tr>
-        <th><label for="title">글제목: </label></th>
-        <td><input type="text" id="title" placeholder="제목을 입력하세요"></td>
-      </tr>
-      <tr>
-        <th><label for="content">글내용: </label></th>
-        <td><textarea type="text" id="content" placeholder="내용을 입력하세요" cols="5" rows="5"></textarea></td>
-      </tr>
-      <tr>
-        <th><label for="atch">첨부파일: </label></th>
-        <td><input type="file" id="atch"></td>
-      </tr>
-      <tr>
-        <th><label for="pw">비밀번호: </label></th>
-        <td><input type="password" id="pw" placeholder="비밀번호를 입력하세요."></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <input type="submit" value="등록">
-          <input class="r_button" type="button" value="글목록으로">
-          <input class="r_button" type="reset" value="리셋">
-        </td>
-      </tr>
+      <table>
+        <caption>글쓰기</caption>
+        <tr>
+          <th><label for="title">글제목: </label></th>
+          <td><input type="text" id="title" placeholder="제목을 입력하세요"></td>
+        </tr>
+        <tr>
+          <th><label for="content">글내용: </label></th>
+          <td><textarea type="text" id="content" placeholder="내용을 입력하세요" cols="5" rows="5"></textarea></td>
+          <!-- input내 size나 textarea내 cols,rows는 상자크기를 말하는게 아니다!! 
+            글자수를 말하는 거임(허용글자수에 맞게 상자크기가 최적화되어 보일 뿐). 
+            상자크기는 css로 조정해야 함 -->
+        </tr>
+        <tr>
+          <th><label for="atch">첨부파일: </label></th>
+          <td><input type="file" id="atch"></td>
+        </tr>
+        <tr>
+          <th><label for="pw">비밀번호: </label></th>
+          <td><input type="password" id="pw" placeholder="비밀번호를 입력하세요."></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="submit" value="등록">
+            <input class="r_button" type="button" value="글목록으로">
+            <input class="r_button" type="reset" value="리셋">
+          </td>
+        </tr>
 
-    </table>
-  </form>
+      </table>
+    </form>
 
   </section>
 
@@ -208,4 +220,5 @@
   </footer>
 
 </body>
+
 </html>

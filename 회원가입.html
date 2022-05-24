@@ -14,7 +14,6 @@
 
     ul {
       list-style-type: none;
-      padding: 10px;
     }
 
 
@@ -25,77 +24,132 @@
 
     nav {
       background: black;
-      height: 60px;
+      /* height: 60px; 높이를 주지말고 */
+      overflow: hidden;
+      /* 자식의 크기에 맞춰서 표시하기*/
     }
 
-    nav ul li {
-      margin: 10px 30px 10px 0;
+    nav ul {
+      padding: 0;
+      margin: 0;
+    }
+
+    nav a {
+      padding: 0px 20px;
+      line-height: 50px;
+      /* 실질적으로 글자박스(a)의 높이로 nav의 크기를 결정*/
       float: left;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      background: pink;
+      color: black;
     }
 
     .r_login {
       float: right;
     }
 
-    nav a {
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-    }
+
     
 
 
-    aside{
+     /* aside */
+    aside {
       width: 200px;
       height: 600px;
       text-align: center;
-      border: 1px solid black;
       background: lightgray;
+      /* border: 1px solid black; */
 
     }
+
     /* l_side */
     .l_side {
       float: left;
     }
+
     /* r_side */
     .r_side {
       float: right;
     }
-    
+
+
+
+
+
     /* section */
     section {
       text-align: center;
       width: 594px;
       height: 600px;
       float: left;
-      border: 1px solid black;
+      /* border: 1px solid black; */
     }
 
-    form{
+    fieldset {
+      border: none;
+    }
+
+    legend {
+      font-size: large;
+      font-weight: bold;
+    }
+
+    form {
       margin: 0 auto;
       width: 500px;
       background: gray;
+      padding: 10px;
     }
-    
-    form ul li {
+
+    form li {
       margin-bottom: 5px;
       background: lightgray;
       border-radius: 5px;
+      text-align: center;
+      padding: 5px;
     }
+
+    /* input을 ul li나 테이블에 넣는 이유!
+     →"블록레벨"로 만들기 위해서 */
+
+    label {
+      width: 120px;
+      float: left;
+    }
+
+    input {
+      width: 250px;
+      padding: 5px;
+    }
+
+    button {
+      width: 120px;
+      padding: 10px;
+      border: 0;
+      border-radius: 10px;
+      font-size: large;
+      font-weight: bold;
+    }
+
 
     
-    label{
-      width: 60px;
-    }
-
 
     /* footer */
     footer {
       clear: both;
-      border: 1px solid black;
-      background: lightgray;
+      padding: 2px;
+      background: black;
+      color: white;
       text-align: center;
+      /* border: 1px solid black; */
     }
+
+    
   </style>
 </head>
 
@@ -119,11 +173,9 @@
 
   <aside class="l_side">
     <h2>좌측 사이드</h2>
-    <ul>
-      <li>좌측영역 정의 내립니다</li>
-      <li>좌측영역 정의 내립니다</li>
-      <li>좌측영역 정의 내립니다</li>
-    </ul>
+    <p>좌측영역 정의 내립니다</p>
+    <p>좌측영역 정의 내립니다</p>
+    <p>좌측영역 정의 내립니다</p>
   </aside>
 
 
@@ -170,8 +222,8 @@
       </fieldset>
 
       <div class="c_tail">
-        <input type="submit" value="회원 가입">
-        <input type="reset" value="정보 수정">
+        <button type="submit">회원 가입</button>
+        <button type="reset">정보 수정</button>
       </div>
 
 
@@ -183,19 +235,16 @@
 
   <aside class="r_side">
     <h2>우측 사이드</h2>
-    <ul>
-      <li>우측영역 정의 내립니다</li>
-      <li>우측영역 정의 내립니다</li>
-      <li>우측영역 정의 내립니다</li>
-    </ul>
-
+    <p>좌측영역 정의 내립니다</p>
+    <p>좌측영역 정의 내립니다</p>
+    <p>좌측영역 정의 내립니다</p>
   </aside>
 
 
 
 
   <footer>
-    <h1>푸터영역 입니다</h1>
+    <h2>푸터영역 입니다</h2>
   </footer>
 
 </body>
