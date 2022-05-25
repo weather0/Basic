@@ -20,7 +20,7 @@ const park = {
 
 const members = [hong, hwang, park];
 
-// 배열확장(배열수만큼반복) for of, 오브젝트확장(필드수만큼반복) for in
+// 배열확장(배열수 만~큼 반복) for of, 오브젝트확장(필드수 만~큼 반복) for in
 for (let member of members) {
   // hong, hwang, park
   for (let field in member) {
@@ -30,7 +30,7 @@ for (let member of members) {
 }
 
 
-// document영역: 스크립트 내 별도 영역
+// document영역: 스크립트 내 별도 영역(콘솔창X 웹페이지에 결과 표시)
 document.write('<h3>Hello</h3>');
 document.write('<ul>');
 document.write('<li>사과</li>');
