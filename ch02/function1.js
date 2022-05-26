@@ -1,6 +1,6 @@
 // yd220525/ch02/function1.js
 
-// 오브젝트 필드 정의 다른방법 참고 → yd220525/ch03/object1.js
+// 오브젝트 필드 정의 다른방법 참고 → yd220525/ch03/object1.js, yd220526/ch03/object6.js
 const hong = {
   memberId: '001',
   memberNm: '홍길동',
