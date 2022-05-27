@@ -44,3 +44,29 @@ arr1.forEach(function (el) {
   sum2 += el; // sum2 = sum2 + el;
 });
 console.log(sum2);
+
+
+let arr2 = [1, 2, [3, 4], [5, 6, 7, [10, 11, { name: "hong", age: 20 }]]];
+
+arr2[2][0]; // 3
+console.log(arr2[3][3][2].name); // hong
+
+
+arr2 = [1, [2, 3], 4, [5, 6, 7]];
+let arr_concat = arr2.reduce((stack, el) => {
+  // console.log(stack,el);
+  return stack.concat(el);
+}, []);
+console.log(arr_concat);
+
+
+let arr3 = [1, [2, 3], 4, [5, 6, [7, 8, 9]]];
+// 2차원 이상의 배열요소
+// join() => 배열을 문자열로 변환
+// split(구분자) => 구분자로 새로운 배열을 생성
+arr_concat = arr3.reduce((stack, el) => {
+  return stack.concat(el);
+}, []);
+console.log(arr_concat);
+console.log(arr_concat.join().split(','));
+
