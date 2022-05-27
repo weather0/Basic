@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yd220527/ch07/dom2.html</title>
+</head>
+
+<body>
+  <form name="frm" action="dom1.html">
+    <!-- preventDefault()로 기본액션 차단가능-->
+    first_name: <input type="text" name="fname" value="길동"><br>
+    last_name: <input type="text" name="lname" value="홍"><br>
+    phone: <input type="text" name="phone" value="010-1111-2222"><br>
+    age: <input type="number" name="age" value="22"><br>
+    <input type="submit" value="저장">
+    <input type="button" value="선택삭제">
+  </form>
+  <hr>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>선택</th>
+        <th>first_name</th>
+        <th>last_name</th>
+        <th>phone</th>
+        <th>age</th>
+        <th>삭제</th>
+      </tr>
+    </thead>
+    <tbody id="list">
+      <!-- <tr>
+        <td><input type="checkbox" name=""></td>
+        <td>길동</td>
+        <td>홍</td>
+        <td>010-1111-2222</td>
+        <td>22</td>
+        <td><button>삭제</button></td>
+      </tr> -->
+    </tbody>
+  </table>
+
+
+  <script>
+    // 리스트
+    let memberList = [
+      {
+        first_name: '임경',
+        last_name: '정',
+        phone: '010-2222-2222',
+        age: 20
+      }, {
+        first_name: '근형',
+        last_name: '박',
+        phone: '010-3333-3333',
+        age: 21
+      }, {
+        first_name: '진형',
+        last_name: '김',
+        phone: '010-4444-4444',
+        age: 22
+      }
+    ];
+
+    // 강의순서(공부순서 [1]→[2]→[3])
+    // ─────────[3]페이지 로딩될 때 위 리스트 기본으로 출력───────────────────
+    memberList.forEach(member => {
+      let inValues = [];
+      for (let field in member) {
+        inValues.push(member[field]);
+      }
+      // 밑에랑 중복되는 부분 함수로 전역위치에 별도로 만들어보자 makerow(inValues);
+
+      tr = document.createElement('tr');
+
+      inValues.forEach((val, ind) => {
+        // 체크박스 생성
+        if (ind == 0) {
+          td = document.createElement('td')
+          chk = document.createElement('input')
+          chk.setAttribute('type', 'checkbox')
+          td.append(chk);
+          tr.append(td);
+        }
+
+        // fn, ln, pn, ag 값 넣기
+        td = document.createElement('td');
+        td.innerHTML = val;
+        tr.append(td);
+
+        // 삭제버튼 생성
+        if (ind == inValues.length - 1) { // 'age'차례까지 오면,
+          td = document.createElement('td')
+          btn = document.createElement('button')
+          btn.innerHTML = '삭제'
+          td.append(btn);
+          tr.append(td);
+          btn.addEventListener('click', (e) => e.target.parentElement.parentElement.remove());
+        }
+      });
+      document.getElementById('list').append(tr);
+    })
+
+
+
+    // ─────────[2]선택삭제────────────────────────────────────────────────
+    // form안에 타입이 button인 애를 가져와서 이벤트를 실행
+    document.querySelector('form>input[type="button"]').addEventListener('click', function () {
+      function delCheck() {
+        let chkList = document.querySelectorAll('#list input[type="checkbox"]');
+        chkList.forEach(chk => {
+          if (chk.checked) { // js에서는 조건 안쓰면 ==true이 기본값임
+            chk.parentElement.parentElement.remove();
+          }
+        });
+      }
+      delCheck();
+    });
+
+
+
+    // ─────────[1]표에 넣기────────────────────────────────────────────────
+    console.log(document.forms.frm.fname.value); // 핵심꿀기능! document.forms
+    document.forms.frm.onsubmit = function () { // onsubmit: 실제 submit이 발생하면 func실행하라
+      // 폼의 기본 action을 차단 (event.prevent~ 대신 function(매개값){매개값.prevent~}으로 써도 가능)
+      event.preventDefault();
+      console.log(this);
+      let fn = this.fname.value;
+      let ln = this.lname.value;
+      let pn = this.phone.value;
+      let ag = this.age.value;
+      let inValues = [fn, ln, pn, ag];
+      let tr, td, chk, btn;
+      tr = document.createElement('tr');
+
+      inValues.forEach((val, ind) => {
+        // 체크박스 생성
+        if (ind == 0) {
+          td = document.createElement('td')
+          chk = document.createElement('input')
+          chk.setAttribute('type', 'checkbox')
+          td.append(chk);
+          tr.append(td);
+        }
+
+        // fn, ln, pn, ag 값 넣기
+        td = document.createElement('td');
+        td.innerHTML = val;
+        tr.append(td);
+
+        // 삭제버튼 생성
+        if (ind == inValues.length - 1) { // 'age'차례까지 오면,
+          td = document.createElement('td')
+          btn = document.createElement('button')
+          btn.innerHTML = '삭제'
+          td.append(btn);
+          tr.append(td);
+
+          // 삭제 클릭 시 기능 만들기
+          // // 일반함수방식
+          // btn.addEventListener('click', function () {
+          //   // this(버튼).부모(td).조부모(tr).지워라 = 위에서 tr만들었기 때문에 걍 바로 tr.remove()해도 됨
+          //   this.parentElement.parentElement.remove();
+          // });
+          // 화살표함수방식
+          btn.addEventListener('click', (e) => e.target.parentElement.parentElement.remove());
+          // 화살표함수에서는 this가 window기 때문에 target 써야함
+        }
+      });
+      document.getElementById('list').append(tr);
+    }
+
+  </script>
+
+</body>
+
+</html>
