@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yd220530/ch06/ajax.html</title>
+
+  <script>
+
+    let xhtp = new XMLHttpRequest();
+    xhtp.open('GET', 'mock_data.json'); // 서버페이지 요청
+    xhtp.send();
+    // console.log(result);
+    xhtp.onload = function () {
+      let result = JSON.parse(xhtp.responseText);
+      let ul = document.createElement('ul');
+      result.forEach(function (el) {
+        let li = document.createElement('li');
+        li.innerText = el.first_name + ', ' + el.email;
+        ul.append(li);
+      });
+      document.body.append(ul);
+    }
+
+
+  </script>
+
+
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,3 @@
+ajax.txt
+hello, world
+반값습니다
