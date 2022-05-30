@@ -15,14 +15,17 @@
     last_name: <input type="text" name="lname" value="홍"><br>
     phone: <input type="text" name="phone" value="010-1111-2222"><br>
     age: <input type="number" name="age" value="22"><br>
+    <input type="hidden" name="member_id" value="">
     <input type="submit" value="저장">
     <input type="button" value="선택삭제">
+    <input type="button" value="변경" id="changeBtn">
   </form>
   <hr>
   <table border="1">
     <thead>
       <tr>
         <th>선택</th>
+        <th>m_id</th>
         <th>first_name</th>
         <th>last_name</th>
         <th>phone</th>
@@ -47,16 +50,19 @@
     // 리스트
     let memberList = [
       {
+        member_id: 1,
         first_name: '임경',
         last_name: '정',
         phone: '010-2222-2222',
         age: 20
       }, {
+        member_id: 2,
         first_name: '근형',
         last_name: '박',
         phone: '010-3333-3333',
         age: 21
       }, {
+        member_id: 3,
         first_name: '진형',
         last_name: '김',
         phone: '010-4444-4444',
@@ -64,44 +70,19 @@
       }
     ];
 
-    // 강의순서(공부순서 [1]→[2]→[3])
+    // 강의순서([1]→→[4])
     // ─────────[3]페이지 로딩될 때 위 리스트 기본으로 출력───────────────────
     memberList.forEach(member => {
-      let inValues = [];
+      let inValues = [];  // [id, fn, ln, phone, age]
       for (let field in member) {
         inValues.push(member[field]);
       }
-      // 밑에랑 중복되는 부분 함수로 전역위치에 별도로 만들어보자 makerow(inValues);
+      makeRow(inValues);
+    });
+    // 밑에랑 중복되는 부분 함수로 전역위치에 별도로 만들어보자 makerow(inValues);
 
-      tr = document.createElement('tr');
 
-      inValues.forEach((val, ind) => {
-        // 체크박스 생성
-        if (ind == 0) {
-          td = document.createElement('td')
-          chk = document.createElement('input')
-          chk.setAttribute('type', 'checkbox')
-          td.append(chk);
-          tr.append(td);
-        }
 
-        // fn, ln, pn, ag 값 넣기
-        td = document.createElement('td');
-        td.innerHTML = val;
-        tr.append(td);
-
-        // 삭제버튼 생성
-        if (ind == inValues.length - 1) { // 'age'차례까지 오면,
-          td = document.createElement('td')
-          btn = document.createElement('button')
-          btn.innerHTML = '삭제'
-          td.append(btn);
-          tr.append(td);
-          btn.addEventListener('click', (e) => e.target.parentElement.parentElement.remove());
-        }
-      });
-      document.getElementById('list').append(tr);
-    })
 
 
 
@@ -121,19 +102,63 @@
 
 
 
+    // ─────────[4]변경────────────────────────────────────────────────
+    document.querySelector('#changeBtn').addEventListener('click',function(){
+      // 폼의 값으로 table.tbody 요소를 찾아서 변경
+      let key = document.forms.frm.member_id.value; // id => 1, 2, 3
+      // console.log(key);
+      let tr = document.getElementById('member_'+key);
+      // console.log(tr);
+      // tr.children[2].innerText = document.forms.frm.first_name.value;
+      tr.children[4].innerText = document.forms.frm.phone.value;
+      tr.children[5].innerText = document.forms.frm.age.value;
+
+
+    })
+
+
+
     // ─────────[1]표에 넣기────────────────────────────────────────────────
     console.log(document.forms.frm.fname.value); // 핵심꿀기능! document.forms
+    // 윗줄대신 이렇게 써도 됨 document.querySelector('form[name="frm"]>input[type="fname"]').value
     document.forms.frm.onsubmit = function () { // onsubmit: 실제 submit이 발생하면 func실행하라
       // 폼의 기본 action을 차단 (event.prevent~ 대신 function(매개값){매개값.prevent~}으로 써도 가능)
       event.preventDefault();
       console.log(this);
+      let id = this.member_id.value;
       let fn = this.fname.value;
       let ln = this.lname.value;
       let pn = this.phone.value;
       let ag = this.age.value;
-      let inValues = [fn, ln, pn, ag];
-      let tr, td, chk, btn;
+      let inValues = [id, fn, ln, pn, ag];
+      makeRow(inValues);
+    }
+
+
+
+    function makeRow(inValues=[]) {
+      let id, tr, td, chk, btn;
       tr = document.createElement('tr');
+
+
+      // {220530추가~
+      tr.setAttribute('id', 'member_' + inValues[0]);
+
+      tr.addEventListener('click', function () {
+        //td,td,td,td =>
+        // tr.children
+        // id, fname, lname, phone, age
+        document.forms.frm.member_id.value = tr.children[1].innerHTML;
+        document.forms.frm.fname.value = tr.children[2].innerHTML;
+        document.forms.frm.lname.value = tr.children[3].innerHTML;
+        document.forms.frm.phone.value = tr.children[4].innerHTML;
+        document.forms.frm.age.value = tr.children[5].innerHTML;
+      }, false);
+
+      // ~220530}
+
+
+
 
       inValues.forEach((val, ind) => {
         // 체크박스 생성
@@ -158,6 +183,7 @@
           td.append(btn);
           tr.append(td);
 
+
           // 삭제 클릭 시 기능 만들기
           // // 일반함수방식
           // btn.addEventListener('click', function () {
@@ -165,12 +191,21 @@
           //   this.parentElement.parentElement.remove();
           // });
           // 화살표함수방식
-          btn.addEventListener('click', (e) => e.target.parentElement.parentElement.remove());
+          // btn.addEventListener('click', (e) => e.target.parentElement.parentElement.remove());
           // 화살표함수에서는 this가 window기 때문에 target 써야함
+
+          //220530 추가
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // 이벤트 전파 차단
+            e.target.parentElement.parentElement.remove();
+          }, false); // false(기본값): bubbling / true: capturing
+
+
         }
       });
       document.getElementById('list').append(tr);
     }
+
 
   </script>
 
