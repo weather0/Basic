@@ -46,6 +46,7 @@
   		let job = myform.job.value;
   		let hdate = myform.hdate.value;
   		let cmd = myform.cmd.value;
+  		let empId = myform.empId.value;
   		
   		let param = `cmd=${cmd}&fname=${fname}&lname=${lname}&email=${email}&job=${job}&hdate=${hdate}`;
   		let xhtp = new XMLHttpRequest();
@@ -54,6 +55,10 @@
   		xhtp.send(param);
   		xhtp.onload = function(){
   			console.log(xhtp.responseText);
+  			let data = JSON.parse(xhtp.responseText);
+  			let oldTr = document.getElementById('key_' + data.employeeId);
+  			let newTr = makeTr(data);
+  			oldTr.parentNode.replaceChild(newTr,oldTr);
   		}
   	});
   
@@ -67,7 +72,7 @@
   		let hdate = myform.hdate.value;
   		let cmd = myform.cmd.value;
   		
-  		let param = `cmd=${cmd}&fname=${fname}&lname=${lname}&email=${email}&job=${job}&hdate=${hdate}`;
+  		let param = `cmd=${cmd}&fname=${fname}&lname=${lname}&email=${email}&job=${job}&hdate=${hdate}&empId=${empId}`;
   		let xhtp = new XMLHttpRequest();
   		xhtp.open('POST', '../ajax.do');
   		xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); // ?key=val&key1=val1..
@@ -100,6 +105,7 @@
   	let fields = ['employeeId','firstName','lastName','email','hireDate','jobId'];
     function makeTr(emp) {
       let tr = document.createElement('tr');
+      tr.setAttribute('id', 'key_' + emp.employeeId);
       tr.addEventListener('click', trClick); // callback함수
       fields.forEach(field => {
         let td = document.createElement('td');
