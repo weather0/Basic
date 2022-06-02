@@ -1,0 +1,3 @@
+arg.event._def.title
+arg.event._instance.range.start
+arg.event._instance.range.end

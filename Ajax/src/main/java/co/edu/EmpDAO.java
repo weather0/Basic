@@ -2,9 +2,107 @@ package co.edu;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EmpDAO extends DAO {
+
+	// 220602추가~
+
+	// 스케줄 리스트
+	public List<Schedule> scheduleList() {
+		connect();
+		List<Schedule> list = new ArrayList<Schedule>();
+		String sql = "select * from schedules";
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				Schedule sch = new Schedule();
+				sch.setTitle(rs.getString("title"));
+				sch.setStart(rs.getString("start_date"));
+				sch.setEnd(rs.getString("end_date"));
+				list.add(sch);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+		return list;
+	}
+
+//
+//	
+//	
+	// 스케줄 등록
+	public void insertSchedule(Schedule sched) {
+		connect();
+		String sql = "insert into schedules(title, start_date, end_date) values(?,?,?)";
+
+		System.out.println(sched.getTitle() + sched.getStart());
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, sched.getTitle());
+			psmt.setString(2, sched.getStart());
+			psmt.setString(3, sched.getEnd());
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 입력됨");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+	}
+
+//
+//	
+//	
+
+	// 스케줄 삭제
+	public void deleteSchedule(Schedule sched) {
+		connect();
+//		System.out.println(sched.getTitle());
+		String sql = "delete from schedules where title=?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, sched.getTitle());
+			psmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+	}
+
+//
+//	
+//	
+	// 부서별인원(차트): 부서명 = 인원
+	public Map<String, Integer> getMemberByDept() {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		connect();
+		String sql = "select d.department_name, count(1) as cnt " + "from employees e, departments d "
+				+ "where e.department_id = d.department_id " + "group by d.department_name";
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) { // key=value
+				map.put(rs.getString("department_name"), rs.getInt("cnt"));
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	// ~.
 
 	// 리스트
 	public List<Employee> empList() {
@@ -74,17 +172,21 @@ public class EmpDAO extends DAO {
 		return emp;
 
 	}
-
+//	
+//	
+//	
+//	
 	// 수정
 	public Employee updateEmp(Employee emp) {
 		connect();
-		String sql = "UPDATE EMP_TEMP SET FIRST_NAME=?, LAST_NAME=?, EMAIL=?, HIRE_DATE=? WHERER EMPLOYEE_ID=?";
+		String sql = "UPDATE EMP_TEMP SET FIRST_NAME=?, LAST_NAME=?, EMAIL=?, HIRE_DATE=? WHERE EMPLOYEE_ID=?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, emp.getFirstName());
 			psmt.setString(2, emp.getLastName());
 			psmt.setString(3, emp.getEmail());
 			psmt.setString(4, emp.getHireDate());
+			psmt.setInt(5, emp.getEmployeeId());
 			int r = psmt.executeUpdate();
 			System.out.println(r + "건 수정됨");
 			if (r > 0) { // 정상 실행시
@@ -100,6 +202,25 @@ public class EmpDAO extends DAO {
 	}
 
 	// 삭제
+	public Employee deleteEmp(Employee emp) {
+		connect();
+		String sql = "DELETE FROM EMP_TEMP WHERE EMPLOYEE_ID=?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, emp.getEmployeeId());
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 삭제됨");
+			if (r > 0) { // 정상 실행시
+				return emp;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return null; // 비정상 실행시
+	}
 
 	// 한 건 조회
 

@@ -120,6 +120,20 @@ public class AjaxServlet extends HttpServlet {
 				
 			}
 
+			// 삭제
+		} else if (cmd.equals("delete")) {
+			
+			emp.setEmployeeId(Integer.parseInt(empId));
+			EmpDAO dao = new EmpDAO();
+			if(dao.deleteEmp(emp) == null) {
+				// {"retCode":"error"}
+				System.out.println("error");
+			} else {
+				// {"retCode":"success"}
+				System.out.println("success");
+				
+			}
+
 		}
 
 		Gson gson = new GsonBuilder().create();
