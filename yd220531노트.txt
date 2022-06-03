@@ -1,10 +1,15 @@
 apache-tomcat-9.0.63 압축풀고
 Preferences-Server-Runtime Evironments에서 폴더 추가해주면 됨(Type은 v9.0버전)
-Dynamic Web Project 생성(Generate web.xml체크)
+Dynamic Web Project 생성(Generate web.xml체크) 
+  src\main\webapp\WEB-INF\web.xml-> jsp프로젝트라면 <welcome-file>index.jsp</welcome-file>을 최상위로
 webapp우클릭new - HTML file 파일 생성 (index.html)
 Run as - Run on Server (톰캣9.0선택)
   8080충돌 오류나면->Windows-Show View-Servers 창에서 Tomcat v9.0 더블클릭 
   - 우측 HTTP/1.1 포트넘버 80으로 바꿔줌 (Tomcat세팅.jpg참고)
+  - Tomcat세팅.jpg좌측 Server Locations에서 Server path: C:\Dev\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Ajax\index.html
+이 실제 실행되는 파일임
+만약 404에러 난다면 해당 폴더 뒤져볼 것.
+
 
 src/main/java 우클릭 패키지생성
 패키지에서 new - Servlet 생성과정 중 하단 URL mappings: 에 Add 하고 /ajax.do 타이핑하고 Finish
@@ -16,6 +21,12 @@ C:\Dev\workspace\Ajax\src\main\webapp\WEB-INF\lib\에 복사
 
 maven사이트에서 gson-2.9.0을
 C:\Dev\workspace\Ajax\src\main\webapp\WEB-INF\lib\에 복사
+
+
+파일업로드
+cos-22.05.zip의 cos.jar파일을
+C:\Dev\workspace\Ajax\src\main\webapp\WEB-INF\lib\에 복사
+
 
 DAO 클래스
 "jdbc:oracle:thin:@localhost:1521:xe";
