@@ -147,79 +147,52 @@
   <script>
     let ul = document.getElementById('myUL');
 
-    fetch('TodoServlet?job=json')
-      .then(result => result.json())
+    // 페이지 로딩 시 DB항목 표시
+    fetch('TodoServlet') // fetch(여기서 방식 따로 특정 안하면 기본값이 GET임)
+      .then(result => result.json()) // 서블릿에서 Gson으로 toJson해서 넘겨줬는데 여기서 또 파싱하는 이유? 교수님 질문ㄱㄱ
       .then(json => { console.log(json); showList(json); })
       .catch(err => console.log(err))
 
     function showList(json) {
-      // 항목 표시
+      // 항목 그리기
       for (let i = 0; i < json.length; i++) {
         let li = document.createElement('li');
-        li.innerText = json[i].content;
+        let hd = document.createElement('input');
+        hd.type = "hidden"; //같음: hd.setAttribute('type', 'hidden');
+        hd.name = "todoId"; //같음: hd.setAttribute('name', 'todoId');
+        hd.value = json[i].todoId;
+
         if (json[i].checked == 1) {
-          li.setAttribute('class', 'checked');
+          li.className = "checked"; // 같음: li.setAttribute('class', 'checked');
         }
+        li.innerText = json[i].content;
+        li.append(hd);
         ul.append(li);
-
-        // x꼽표 표시
-        var span = document.createElement("SPAN");
-        var txt = document.createTextNode("\u00D7");
-        span.className = "close";
-        span.appendChild(txt);
-        li.appendChild(span);
-        console.log('i>> ', i, close.length)
       }
-
-      // x꼽표 기능
-      for (let i = 0; i < close.length; i++) {
-        close[i].onclick = function () {
-          var div = this.parentElement;
-          div.style.display = "none";
-        }
-      }
-
+      // 꼽표(x) 그리기
+      let myNodelist = document.getElementsByTagName("LI"); // 배열
+      createX(myNodelist);
+      // createX함수를 매개값 없이 그냥 함수 안에서 모든 li요소들을 호출한다면,
+      // Add기능 사용시 단건 li를 만들때 createX를 또 수행하게 되면서,
+      // 결과적으로 Add 할 때마다 꼽표가 누적되게 된다!!(F12로 요소 확인 결과) 
+      // 물론 웹 화면상에는 하나로 보이겠지만, 
+      // 실제로는 화살로 화살을 쪼개는 안산 선수 로빈후드 신궁기술마냥
+      // 미친 꼽표가 겹겹이 중첩되어있는 것이다.
     }
 
 
 
 
-
-    // Create a "close" button and append it to each list item
-    var myNodelist = document.getElementsByTagName("LI");
-    var i;
-    for (i = 0; i < myNodelist.length; i++) {
-      var span = document.createElement("SPAN");
-      var txt = document.createTextNode("\u00D7");
-      span.className = "close";
-      span.appendChild(txt);
-      myNodelist[i].appendChild(span);
-    }
-
-    // Click on a close button to hide the current list item
-    var close = document.getElementsByClassName("close");
-    var i;
-    for (i = 0; i < close.length; i++) {
-      close[i].onclick = function () {
-        var div = this.parentElement;
-        div.style.display = "none";
-      }
-    }
-
-    // Add a "checked" symbol when clicking on a list item
-    var list = document.querySelector('ul');
-    list.addEventListener('click', function (ev) {
-      if (ev.target.tagName === 'LI') {
-        ev.target.classList.toggle('checked');
-      }
-    }, false);
 
     // Create a new list item when clicking on the "Add" button
     function newElement() {
       var li = document.createElement("li");
       var inputValue = document.getElementById("myInput").value;
       var t = document.createTextNode(inputValue);
-      li.appendChild(t);
+      let hd = document.createElement('input');
+      hd.setAttribute('type', 'hidden');
+      hd.setAttribute('name', 'todoId');
+
       if (inputValue === '') {
         alert("You must write something!");
       } else {
@@ -227,37 +200,109 @@
         fetch('TodoServlet', {
           method: 'post',
           headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-          body: 'content=' + inputValue
+          body: 'cmd=insert&content=' + inputValue
+          // 여기까지는 아직 todoId값이 없다. 일단 입력값만 서블릿으로 넘기고 DB에 insert시점에서 순번을 부여받고 돌아오자.
         })
-          // .then(result => result.json())
+          .then(result => result.json()) // 서블릿으로부터 json형식으로 넘어오는 것이 없다면 이 줄 굳이 필요 없음
           .then(result => {
-            console.log(result)
+            // console.log(result)
             if (result != null) {
-              document.getElementById("myUL").appendChild(li);
-              var span = document.createElement("SPAN");
-              var txt = document.createTextNode("\u00D7");
-              span.className = "close";
-              span.appendChild(txt);
-              li.appendChild(span);
+              // 항목 그리기
+              hd.value = result.todoId;
+              // html→(fetch)→서블릿→DAO에서 생성한 시퀀스정보(todoId)를 싣고 다시 돌아왔다.
+              // 녀석을 히든값에 할당해주자.
 
-              for (i = 0; i < close.length; i++) {
-                close[i].onclick = function () {
-                  var div = this.parentElement;
-                  div.style.display = "none";
-                }
-              }
+              // 이제 웹화면에 뿌려주자
+              li.append(t);
+              li.append(hd)
+              ul.append(li);
+
+              // 꼽표(x) 그리기
+              let myNodelist = [li]; // 단건이지만 매개변수가 배열타입이므로 맞춰주자.
+              createX(myNodelist);
+
+
             } else {
               console.log('입력 안 됨');
             }
           })
           .catch(err => console.log(err))
       }
-      document.getElementById("myInput").value = "";
+      document.getElementById("myInput").value = ""; // add완료 뒤 입력창 clear
+
+    }
 
 
+
+
+
+    // Add a "checked" symbol when clicking on a list item
+    ul.addEventListener('click', function (ev) {
+      // 우선 check 상태부터 li 태그에 반영한다 (toggle(): 껐다켰다)
+      if (ev.target.tagName === 'LI') { // ev.target = <li>
+        ev.target.classList.toggle('checked');
+      }
+
+      if (ev.target.className == 'checked') {
+        fetch('TodoServlet', {
+          method: 'post',
+          headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+          body: 'cmd=modify&checked=1&todoId=' + ev.target.children[0].value
+          // <li>의 첫째[0]자식요소 = <input type="hidden" name="todoId">
+        })
+          .catch(err => console.log(err));
+      } else {
+        fetch('TodoServlet', {
+          method: 'post',
+          headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+          body: 'cmd=modify&checked=0&todoId=' + ev.target.children[0].value
+          // <li>의 첫째[0]자식요소 = <input type="hidden" name="todoId">
+        })
+          .catch(err => console.log(err));
+      }
+
+    }, false);
+
+
+
+
+
+
+    // Create a "close" button and append it to each list item
+    function createX(myNodelist) {
+      // 꼽표(x) 생성
+      for (myNode of myNodelist) { // forEach는 특정 val과 idx에 대해 디테일하게 조작할때, for (각요소 of 배열)은 그냥 모든 배열요소에 대해 동일하게 일괄적으로 뭔가 적용할 때     
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        myNode.append(span);
+      }
+
+      // 꼽표(x) 기능 부여: 삭제
+      var close = document.getElementsByClassName("close");
+      for (i = 0; i < close.length; i++) {
+        close[i].onclick = function (e) {
+          e.stopPropagation(); // 이걸 안해주면 한일체크하기 등의 다른함수에 영향을 줘서 그쪽에서 콘솔 오류를 내뿜는다
+          var div = this.parentElement; // <span name="close">의 부모요소 = <li>
+          fetch('TodoServlet', {
+            method: 'post',
+            headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+            body: 'cmd=delete&todoId=' + div.children[0].value
+            // <li>의 첫째[0]자식요소 = <input type="hidden" name="todoId">
+          })
+            .catch(err => console.log(err))
+
+          // 웹화면에서도 지워줌
+          div.style.display = "none";
+
+        }
+      }
 
 
     }
+
+
   </script>
 
 </body>
