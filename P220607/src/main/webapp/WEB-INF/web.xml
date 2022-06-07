@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+	
+	<!-- 1)어노테이션방식 또는 2)web.xml 추가 방식 -->
+<!-- 	<servlet> -->
+<!-- 		<servlet-name>First</servlet-name> -->
+<!-- 		<servlet-class>co.micol.prj.First</servlet-class> 이 클래스가 실행됨 -->
+<!-- 	</servlet> -->
+	
+	<!-- 매핑하는 이유: 위처럼 풀네임 url에 적으면 보안 취약하니깐 -->
+<!-- 	<servlet-mapping> -->
+<!-- 		<servlet-name>First</servlet-name> -->
+<!-- 		<url-pattern>/First</url-pattern> 주소창에 이걸 적으면 -->
+<!-- 	</servlet-mapping> -->
+
+
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
