@@ -12,7 +12,7 @@
 			<h1>로 그 인</h1>
 		</div>
 		<div>
-			<form id="frm" action="login.do" method="post"></form>
+			<form id="frm" action="login.do" method="post">
 			<div>
 				<table border="1">
 					<tr>
@@ -23,7 +23,7 @@
 					</tr>
 					<tr>
 						<th width="100">패스워드</th>
-						<td><input type="text" id="password" name="password"
+						<td><input type="password" id="password" name="password"
 							required="required" placeholder="비번 입력"></td>
 
 					</tr>
@@ -34,6 +34,7 @@
 				<input type="submit" value="로그인">&nbsp;&nbsp; 
 				<input type="reset" value="취소">
 			</div>
+			</form>
 		</div>
 
 	</div>

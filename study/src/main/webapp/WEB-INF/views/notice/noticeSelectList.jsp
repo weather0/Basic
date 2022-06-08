@@ -58,8 +58,8 @@
       <script type="text/javascript">
         function noticeSelect(id) {
           // location.href = "noticeSelect.do?id=" + id; // GET방식
-          frm.id.value = id; // POST방식: hidden을 이용
-          frm.submit();
+          frm.id.value = id; // POST방식: hidden을 이용. id를 넣고
+          frm.submit(); // 폼자체를 submit함(정보은닉)
 
         }
       </script>

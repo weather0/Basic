@@ -8,7 +8,7 @@
 
 	<select id="studentSelect" resultType="co.micol.study.student.vo.StudentVO">
 		select * from student
-		where studentid = #{studentid}
+		where studentid = #{studentId}
 		<if test="password != null">
 			and password = #{password}
 		</if>
