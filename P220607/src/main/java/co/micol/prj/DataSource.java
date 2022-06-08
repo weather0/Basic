@@ -13,7 +13,7 @@ public class DataSource { // 싱글톤 클래스로 만듦
 	
 	public static SqlSessionFactory getInstance() {
 		try {
-			String resource = "/mybatis-config.xml";
+			String resource = "mybatis-config.xml";
 			InputStream inputStream = Resources.getResourceAsStream(resource);
 			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		} catch (IOException e) {

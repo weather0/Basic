@@ -62,6 +62,13 @@
 	</dependencies>
 
 	<build>
+		<!-- 리스소디렉토리 설정-->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+
 		<finalName>P220607</finalName>
 		<pluginManagement>
 			<!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
