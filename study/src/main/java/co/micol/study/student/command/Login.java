@@ -24,6 +24,7 @@ public class Login implements Command {
 			session.setAttribute("id", vo.getStudentId()); // 아이디
 			session.setAttribute("name", vo.getName()); // 이름
 			session.setAttribute("author", vo.getAuthor()); // 권한
+			session.setAttribute("yedam", vo); // request로 안보내고 세션으로 보내도 됨(선택사항임)
 			request.setAttribute("message", vo.getName()+"님 환영합니다");
 		} else {
 			request.setAttribute("message", "아이디 또는 패스워드가 일치하지 않습니다");

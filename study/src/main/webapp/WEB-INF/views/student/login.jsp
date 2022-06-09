@@ -8,7 +8,9 @@
 </head>
 <body>
 <div align="center">
-	<div><h1>${message }</h1></div>
+	<div><h1>${message }</h1></div> <!-- request로 넘어 옴 -->
+	<div>${id } : ${name }</div> <!-- session 정보 -->
+	<div>이엘yedam.studentId -> ${yedam.studentId}</div> <!-- session 정보 -->
 </div>
 
 </body>
