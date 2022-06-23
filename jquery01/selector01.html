@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <h1 id="title">제목</h1>
+  <script>
+    // jQuery
+    let tag = jQuery('#title');
+    tag.css("color", "red");
+    console.log(tag)
+
+    // JS
+    let jsTag = document.getElementById('title')
+    jsTag.style.color = 'blue'
+
+
+
+  </script>
+</body>
+
+</html>

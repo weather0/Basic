@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .red {
+      color: red;
+    }
+
+    .blue {
+      color: blue;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Cities</h1>
+    <ul>
+      <li id="one" class="red">Seoul</li>
+      <li id="two" class="red">London</li>
+      <li id="three" class="red">Newyork</li>
+      <li id="four">Tokyo</li>
+    </ul>
+    <script>
+      // 1. id로 요소 검색
+      let idTag = document.getElementById('one');
+      idTag.className = 'blue';
+      idTag = document.getElementById('two');
+      idTag.className = 'blue';
+      idTag = document.getElementById('three');
+      idTag.className = 'blue';
+      console.log(idTag)
+      // 2. 태그로 검색
+      let tags = document.getElementsByTagName('li')
+      console.log(tags)
+      console.log(tags[0])
+      tags.forEach(element => { // 왜 안 됨?
+        // element.className = 'red';
+      })
+      console.log(tag)
+      // 3. className으로 검색
+      // 4. cssSelector로 검색
+    </script>
+  </div>
+
+</body>
+
+</html>
