@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <script>
+    $(function () {
+      let obj = [
+        { 'area': '서울' },
+        { 'area': '부산' },
+        { 'area': '전주' }
+      ]
+
+      // each() -> 순환
+      let ulTag = $('<ul>')
+      $(obj).each(function (idx, obj) {
+        console.log(idx + ':', obj);
+        let liTag = $('<li>').text(obj.area);
+        ulTag.append(liTag);
+
+      });
+      $('#ex01').append(ulTag);
+
+      console.log('======= 다르게 적는 방식 =======')
+      $.each(obj, function (idx, obj) {
+        console.log(idx + ' : ', obj)
+      })
+      console.log('=============================')
+      $('#menu1 li').each(function (idx, obj) {
+        console.log(idx + ' : ', obj.textContent);
+        console.log(idx + ' : ', $(obj).text());
+      })
+      console.log('=============================')
+      $.each($('#menu2 li'), function (idx, obj) {
+        console.log(idx + ' : ', obj.textContent);
+        console.log(idx + ' : ', $(obj).text());
+      })
+
+      console.log('=============================')
+      $('#ex01 li').each(function (idx) {
+        console.log(idx + ' : ', $(this).text());
+      })
+
+
+
+
+    })
+  </script>
+  <div id="ex01">
+    <h1>배열 메서드</h1>
+    <ul id="menu1">
+      <li>내용1-1</li>
+      <li>내용1-2</li>
+      <li>내용1-3</li>
+    </ul>
+    <ul id="menu2">
+      <li>내용2-1</li>
+      <li>내용2-2</li>
+      <li>내용2-3</li>
+    </ul>
+  </div>
+  <script>
+    $(function () {
+      let arr1 = [
+        { 'area': '서울', 'dept': '영업', 'name': '무대리' },
+        { 'area': '부산', 'dept': '영업', 'name': '홍과장' },
+        { 'area': '대전', 'dept': '생산', 'name': '박사장' },
+        { 'area': '서울', 'dept': '생산', 'name': '김부장' }
+      ]
+
+      // $.map()
+      let arr2 = $.map(arr1, function (obj, idx) {
+        if (obj.area == '서울') {
+          return obj;
+        }
+      })
+      $(arr2).each(function (idx, obj) {
+        console.log(idx + ' : ', obj)
+      })
+
+      console.log('=============================')
+
+      // $.grep() -> 오름차순 정렬
+      let arr3 = $.grep(arr1, function (obj, idx) {
+        if (obj.dept == '영업') {
+          return true;
+        } else {
+          return false;
+        }
+      })
+
+      $(arr3).each(function (idx, obj) {
+        console.log(idx + ' : ', obj)
+      })
+
+
+      // 실습
+      let seoul = $.map(arr1, function (obj, idx) {
+        if (obj.area == '서울') {
+          return obj;
+        }
+      })
+
+      let sales = $.map(arr1, function (obj, idx) {
+        if (obj.dept == '영업') {
+          return obj;
+        }
+      })
+
+      let prod = $.map(arr1, function (obj, idx) {
+        if (obj.dept == '생산') {
+          return obj;
+        }
+      })
+
+      let list = function (arr) {
+        let ul = $('<ul>')
+        $(arr).each(function (idx, obj) {
+          ul.append($('<li>').text('지역: ' + obj.area + ', 부서:' + obj.dept + ', 이름:' + obj.name))
+        })
+        $('#ex02').append(ul)
+      }
+
+      let title = function (title) {
+        $('#ex02').append($('<hr>'), $('<p>').text(title).css('text-align', 'center'))
+      }
+      title('지역:서울')
+      list(seoul);
+      title('부서:영업')
+      list(sales);
+      title('부서:생산')
+      list(prod);
+
+
+
+    })
+  </script>
+  <div id="ex02">
+    <!-- 근무지역: 서울 -->
+    <!-- 부서: 영업 -->
+    <!-- 부서: 생산 -->
+  </div>
+
+
+  <script>
+    $(function () {
+      let arr1 = [
+        '서울', '대전', '부산', '전주'
+      ]
+      let arr2 = [
+        '한국', '미국', '일본', '중국'
+      ]
+      let obj = { 'name': '정부장', 'area': '서울' }
+
+      $(arr1).each(function (idx, city) {
+        $('#ex03 div:contains("도시")').append($('<p>').text(city + '\u00a0').css('display', 'inline-block'))
+      })
+      $(arr2).each(function (idx, nation) {
+        $('#ex03 div:contains("국가")').append($('<p>').text(nation + '\u00a0').css('display', 'inline-block'))
+      })
+
+      // inArray() -> 배열 안에 데이터가 있다면 인덱스, 없다면 -1
+      if ($.inArray('부산', arr1) != -1) {
+        console.log('해당 데이터가 존재합니다')
+      }
+      // isArray() -> 매개변수가 배열인지 여부를 확인
+      console.log('arr2의 배열여부:', $.isArray(arr2))
+      console.log('obj의 배열여부:', $.isArray(obj))
+
+
+      // merge() -> 두 개의 배열을 하나의 배열로 변환
+      $($.merge(arr2, arr1)).each(function (idx, obj) {
+        console.log(idx + ':', obj)
+      })
+    })
+  </script>
+  <div id="ex03">
+    <div>
+      <h3>대한민국 도시</h3>
+    </div>
+    <div>
+      <h3>국가</h3>
+    </div>
+  </div>
+  <script>
+    $(function () {
+      // index() -> 검색조건에 해당하는 요소의 인덱스 값
+      let index = $('#ex04 li').index($('#list3'))
+      let tag = $('#ex04 li').eq(index)
+      console.log(tag.text())
+
+    })
+  </script>
+  <div id="ex04">
+    <ul>
+      <li>내용1</li>
+      <li>내용2</li>
+      <li id="list3">내용3</li>
+      <li>내용4</li>
+    </ul>
+  </div>
+
+</body>
+
+</html>

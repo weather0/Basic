@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .aqua {
+      background-color: aqua;
+    }
+
+    .red {
+      background-color: red;
+    }
+
+    .green {
+      background-color: green;
+    }
+
+    .yellow {
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    $(function () {
+      // html() -> 태그의 모든 하위요소를 가져와서 문자열로 반환
+      console.log($('#sec_1').html());
+      $('#sec_1 p').html('<a href=\"#\">Text1</a>')
+
+      // text() -> 태그의 텍스트를 반환
+      console.log($('#sec_1').text())
+      $('#sec_2').text('변경')
+
+    })
+
+    // addClass()
+    $('#p1').addClass('aqua')
+
+    // removeClass()
+
+    // toggleClass()
+
+    // hasClass()
+
+
+
+  </script>
+  <div id="ex01">
+    <h1>
+      <strong>객체 조작 및 생성</strong>
+    </h1>
+    <section id="sec_1">
+      <h2>
+        <em>html()</em>
+      </h2>
+      <p>내용1</p>
+    </section>
+    <section id="sec_2">
+      <h2>
+        <em>text()</em>
+      </h2>
+      <p>내용2</p>
+    </section>
+  </div>
+
+  <hr>
+
+  <div id="ex02">
+    <p id="p1">내용1</p>
+    <p id="p2" class="red">내용2</p>
+    <p id="p3">내용3</p>
+    <p id="p4" class="green">내용4</p>
+    <p id="p5" class="yellow">내용5</p>
+    <p id="p6"></p>
+
+  </div>
+
+  <hr>
+
+  <script>
+    $(function () {
+      // attr() -> html의 attribute를 조작
+      // let var1 = $("#sec01 img").attr("src");
+      // console.log(var1);
+      // $("#sec01 img").attr('width', 200)
+      // $("#sec01 img").attr({ 'alt': '카드', 'height': 100 })
+      // $("#sec01 img").removeAttr('src')
+
+
+      // prop() -> DOM의 property를 조작
+      let var1 = $('#sec01 img').prop('src');
+      console.log(var1);
+      // $('#sec01 img').prop('width', 100)
+
+      // attr과 prop의 차이
+      console.log("attr: ", $("#get_comment").attr('href'))
+      console.log("prop: ", $("#get_comment").prop('href'))
+    })
+  </script>
+  <div id="ex03">
+    <h1>
+      <strong>객체 조작 및 생성</strong>
+    </h1>
+    <section id="sec01">
+      <h2>
+        <img src="강아지.jpg" alt="dog">
+      </h2>
+
+    </section>
+    <a id="get_comment" href="#comments">코멘트</a>
+
+  </div>
+
+  <hr>
+
+  <script>
+    $(function () {
+      $("#chk2").prop("checked", false)
+      let checkVal = $("#chk1").prop('checked')
+      console.log(checkVal)
+
+      let selectVal = $('#select_1').prop('selectedIndex')
+      console.log(selectVal)
+
+    })
+  </script>
+  <div id="ex04">
+    <form action="#" id="form_1">
+      <div>
+        <label for="chk1">체크1</label>
+        <input type="checkbox" name="chk1" id="chk1">
+        <label for="chk2">체크2</label>
+        <input type="checkbox" name="chk2" id="chk2">
+        <label for="chk3">체크3</label>
+        <input type="checkbox" name="chk3" id="chk3">
+      </div>
+      <div>
+        <select name="select_1" id="select_1">
+          <option value="opt1">옵션1</option>
+          <option value="opt2">옵션2</option>
+          <option value="opt3" selected>옵션3</option>
+        </select>
+      </div>
+    </form>
+  </div>
+
+
+</body>
+
+</html>
