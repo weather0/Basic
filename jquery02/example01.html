@@ -12,12 +12,13 @@
 <body>
   <script>
     $(function () {
-      $('.wrap_1 p:first').replaceWith('내용1');
-      $('.wrap_1 a').attr('href', 'https://www.naver.com')
-      $('.wrap_1 input').val('Korea');
-      $('.wrap_2 p:contains("내용5")').before($('<p>').text('Before(추가2)'))
+      $('.wrap_1 p:first').replaceWith('내용1'); // .text('내용1');
+      $('.wrap_1 p.active').removeClass('active').addClass('on');
+      $('.wrap_1 a').attr('href', 'https://www.naver.com') // p:eq(2) a
+      $('.wrap_1 input').val('Korea'); // p:eq(3) input
+      $('.wrap_2 p:contains("내용5")').before($('<p>').text('Before(추가2)')) // .before('<p>Before(추가2)</p>')
       $('.wrap_2 p:contains("내용5")').after($('<p>').text('After(추가1)'))
-      $('.wrap_3 p').wrapInner('<strong />')
+      $('.wrap_3 p').wrapInner('<strong />') // .unwrap().wrapInner('<strong />')
     })
   </script>
   <div class="wrap_1">
