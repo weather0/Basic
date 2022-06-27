@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+  label {
+    display: inline-block;
+    width: 70px;
+  }
+
+  #selectBtn {
+    width: 70px;
+    float: left;
+    margin-right: 10px
+  }
+</style>
+
+<body>
+  <script>
+    $(function () {
+      $('#selectBtn').click(selectEmployee);
+      $('#updateBtn').click(updateEmployee);
+      $('#deleteBtn').click(deleteEmployee);
+
+      function selectEmployee() {
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empFind',
+          type: 'get',
+          data: { employee_id: $('#empId').val() },
+          dataType: 'json', // 이거 대신 결과에서 JSON.parse로 처리해도 됨
+          success: function (data) {
+            // let result = JSON.parse(data);
+            for (let field in data) {
+              $('#' + field).val(data[field]);
+            }
+
+          },
+          error: function (reject) {
+            console.log(reject)
+          }
+        })
+      }
+
+      function updateEmployee() {
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empUpdate',
+          type: 'post',
+          data: $('#info').serialize(),
+          dataType: 'json',
+          success: function (data) {
+            if (data != null) {
+              alert('수정 완료')
+            }
+          },
+          error: function (reject) {
+            console.log(reject)
+          }
+        })
+      }
+
+      function deleteEmployee() {
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empDelete',
+          type: 'POST',
+          data: { employee_id: $('#employee_id').val() },
+          dataType: 'json',
+          success: function (data) {
+            if (data != null) {
+              alert('삭제 완료')
+            }
+          },
+          error: function (reject) {
+            console.log(reject)
+          }
+        })
+      }
+
+    })
+  </script>
+
+  <div>
+    <label for="empId">사원번호</label>
+    <input id="empId" name="employee_id" type="number">
+    <br>
+    <button id="selectBtn" type="button">조회</button>
+  </div>
+  <form id="info" onsubmit="return false">
+    <div>
+      <button id="updateBtn" type="button">수정</button>
+      <button id="deleteBtn" type="button">삭제</button>
+    </div>
+    <div>
+      <label for="employee_id">사원번호</label>
+      <input id="employee_id" name="employee_id" type="number" readonly>
+    </div>
+    <div>
+      <label for="first_name">이름</label>
+      <input id="first_name" name="first_name" type="text">
+    </div>
+    <div>
+      <label for="last_name">성</label>
+      <input id="last_name" name="last_name" type="text">
+    </div>
+    <div>
+      <label for="email">이메일</label>
+      <input id="email" name="email" type="email">
+    </div>
+    <div>
+      <label for="phone_number">연락처</label>
+      <input id="phone_number" name="phone_number" type="text">
+    </div>
+  </form>
+</body>
+
+</html>

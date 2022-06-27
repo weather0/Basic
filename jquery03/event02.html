@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <script>
+    $(document).ready(function () {
+      // click 이벤트
+      $('.btn1').click(function (e) {
+        // 기존 이벤트 동작을 막는 방법 1
+        e.preventDefault(); // href이벤트가 중지됨
+
+        $('.txt1').css('background-color', 'green')
+      })
+
+      // on('click' 이벤트
+      $('.btn2').on('click', function () {
+        $('.txt2').css({ 'border': '1px solid black', 'background-color': 'pink' });
+        // 기존 이벤트 동작을 막는 방법 2
+        return false; // href이벤트가 중지됨
+      })
+
+      // 더블클릭 이벤트
+      $('.btn3').on('dblclick', function () {
+        $('.txt3').css('background-color', 'skyblue')
+      })
+
+      // off(이벤트종류, 선택자, 핸들러)
+      $('.btn3').off('dblclick');
+
+      // 이벤트를 강제로 발생
+      $('.btn1').trigger('click');
+      $('.btn2').click(); // 쌩호출=강제
+    })
+  </script>
+  <p>
+    <a href="https://www.naver.com" class="btn1">버튼1</a>
+  </p>
+  <p class="txt1">내용1</p>
+  <p>
+    <a href="https://www.google.com" class="btn2">버튼2</a>
+  </p>
+  <p class="txt2">내용2</p>
+  <p>
+    <button class="btn3">버튼3</button>
+  </p>
+  <p class="txt3">내용3</p>
+</body>
+
+</html>

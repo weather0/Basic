@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+  label {
+    display: inline-block;
+    width: 70px;
+  }
+
+  table {
+    display: inline-block;
+  }
+</style>
+
+<body>
+  <script>
+    $(function () {
+      // 최초 로드시 수정,삭제버튼 감추기
+      $('#updateBtn').css('display', 'none'); // .hide()와 같음
+      $('#deleteBtn').css('display', 'none');
+
+
+
+
+      // 사원표 출력 (전체조회)
+      $('#selectList').on('click', function (e) {
+        // e.preventDefault;
+        $('#submit').css('display', 'none');
+        $('#updateBtn').css('display', 'inline-block'); // .show()와 같음
+        $('#deleteBtn').css('display', 'inline-block');
+
+        // 기존 테이블 존재시 삭제
+        $('table').remove();
+
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empSelect',
+          dataType: 'json',
+          success: function (data) {
+            console.log(data)
+
+            let table = $('<table border="1px">');
+            let tr = $('<tr>');
+
+            // 테이블 헤더
+            let header = data[0];
+            for (let field in header) {
+              $(tr).append($('<th>').text(field))
+            }
+
+            $(table).append(tr)
+
+            // 테이블 각 행
+            $(data).each(function (idx, obj) {
+              tr = $('<tr>');
+              for (let field in data[idx]) {
+                tr.append($('<td>').text(obj[field]))
+                $(table).append(tr);
+              }
+            });
+
+            // div에 테이블 추가
+            $('#list').append(table);
+
+
+
+            // 목록에서 단건 선택
+            $('table:eq(0) tr').on('click', function (e) {
+              // e.preventDefault;
+              $('#id').val($(this).find(':nth-child(11)').text());
+              $('#last_name').val($(this).find(':nth-child(9)').text());
+              $('#first_name').val($(this).find(':nth-child(10)').text());
+              $('#email').val($(this).find(':nth-child(8)').text());
+              $('#job_id').val($(this).find(':nth-child(5)').text());
+              $('#department_id').val($(this).find(':nth-child(1)').text());
+            })
+
+
+          },
+          error: function (reject) {
+            console.log(reject);
+          }
+        })
+      })
+
+
+
+
+      // 단건 조회
+      $('#selectOne').on('click', function () {
+        // 기존 테이블 존재시 삭제
+        $('table').remove();
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empFind',
+          type: 'get',
+          data: { employee_id: $('#id').val() },
+          dataType: 'json', // 이거 대신 결과에서 JSON.parse로 처리해도 됨
+          success: function (data) {
+            // let result = JSON.parse(data);
+            $('#submit').css('display', 'none');
+            $('#updateBtn').css('display', 'inline-block');
+            $('#deleteBtn').css('display', 'inline-block');
+            console.log(data);
+
+            // 폼에 표시
+            for (let field in data) {
+              $('#' + field).val(data[field]);
+            }
+
+
+            // 단건 테이블 생성 -----------------
+            let table = $('<table border="1px">');
+            let tr = $('<tr>');
+
+            // 테이블 헤더
+            let header = data;
+            for (let field in header) {
+              $(tr).append($('<th>').text(field))
+            }
+
+            $(table).append(tr)
+
+            // 테이블 각 행
+            tr = $('<tr>');
+            for (let field in data) {
+              tr.append($('<td>').text(data[field]))
+              $(table).append(tr);
+            };
+
+            // div에 테이블 추가
+            $('#list').append(table);
+            // --------------------------------
+
+
+          },
+          error: function (reject) {
+            console.log(reject)
+            alert('해당 임직원 없음')
+          }
+        })
+      })
+
+
+
+
+      // 직책표, 부서표 출력
+      $('#job_id, #department_id').on('click', function (e) {
+        // e.preventDefault;
+
+        // 기존 테이블 존재시 삭제
+        $('table').remove();
+
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empDeptJob',
+          dataType: 'json',
+          success: function (data) {
+            console.log(data)
+
+            // 직책표 start -------------
+            let table = $('<table border="1px">');
+            // table.addClass('t0')
+            let tr = $('<tr>');
+
+            // 테이블 헤더
+            let header = data.jobs[0];
+            for (let field in header) {
+              if (field == 'job_title' || field == 'job_id') {
+                $(tr).append($('<th>').text(field))
+              }
+            }
+
+            $(table).append(tr)
+
+            // 테이블 각 행
+            $(data.jobs).each(function (idx, obj) {
+              tr = $('<tr>');
+              for (let field in data.jobs[idx]) {
+                if (field == 'job_title' || field == 'job_id') {
+                  tr.append($('<td>').text(obj[field]))
+                }
+                $(table).append(tr);
+              }
+            });
+            // -------------- 직책표 end
+
+
+            // 부서표 start -------------
+            let table1 = $('<table border="1px">');
+            // table1.addClass('t1')
+            let tr1 = $('<tr>');
+            // 테이블 헤더
+            let header1 = data.depts[0];
+            for (let field in header1) {
+              if (field == 'department_name' || field == 'department_id') {
+                $(tr1).append($('<th>').text(field))
+              }
+            }
+            $(table1).append(tr1)
+
+            // 테이블 각 행
+            $(data.depts).each(function (idx, obj) {
+              tr1 = $('<tr>');
+              for (let field in data.depts[idx])
+                if (field == 'department_name' || field == 'department_id') {
+                  tr1.append($('<td>').text(obj[field]))
+                }
+              $(table1).append(tr1);
+            });
+            // -------------- 부서표 end
+
+
+            // div에 테이블 추가
+            $('#list').append(table);
+            $('#list').append(table1);
+
+
+            // 직책 선택
+            $('table:eq(0) tr').on('click', function (e) {
+              // e.preventDefault;
+              $('#job_id').val($(this).find(':nth-child(2)').text());
+            })
+
+            // 부서 선택
+            $('table:eq(1) tr').on('click', function (e) {
+              // e.preventDefault;
+              $('#department_id').val($(this).find(':nth-child(2)').text());
+            })
+
+          },
+          error: function (reject) {
+            console.log(reject);
+          }
+        })
+      })
+
+
+
+
+      // 폼 지우기
+      $('#clearform').on('click', function () {
+        $('input').val('')
+      })
+
+
+      // 등록
+      $('#submit').on('click', function () {
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empInsert',
+          type: 'post',
+          // serialize(): field1=val1&field2=val2&...
+          data: $('#info').serialize(),
+          success: function (data) {
+            console.log(data);
+            alert('입력완료')
+          },
+          error: function (reject) {
+            console.log(reject)
+            alert('입력실패')
+          }
+        })
+      })
+
+
+      // 수정
+      $('#updateBtn').on('click', function () {
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empUpdate',
+          type: 'post',
+          data: $('#info').serialize(),
+          dataType: 'json',
+          success: function (data) {
+            if (data != null) {
+              alert('수정 완료')
+            }
+          },
+          error: function (reject) {
+            console.log(reject)
+          }
+        })
+      })
+
+
+      // 삭제
+      $('#deleteBtn').on('click', function () {
+        $.ajax({
+          url: 'http://192.168.0.29/myserver/empDelete',
+          type: 'POST',
+          data: { employee_id: $('#employee_id').val() },
+          dataType: 'json',
+          success: function (data) {
+            if (data != null) {
+              alert('삭제 완료')
+            }
+          },
+          error: function (reject) {
+            console.log(reject)
+          }
+        })
+      })
+
+
+    })
+  </script>
+
+  <div>
+    <!-- 입력/수정/삭제 -->
+    <form id="info" onsubmit="return false">
+      <label for="id">사원번호</label>
+      <input id="id" name="employee_id" type="number">
+      <!-- type='submit'만 엔터 먹음(type='button'은 엔터 X) -->
+      <button id="selectOne" type="submit">조회</button>
+      <br>
+      <label for="last_name">성</label>
+      <input id="last_name" name="last_name" type="text">
+      <br>
+      <label for="first_name">이름</label>
+      <input id="first_name" name="first_name" type="text">
+      <br>
+      <label for="email">이메일</label>
+      <input id="email" name="email" type="email">
+      <br>
+      <label for="job_id">직책</label>
+      <input id="job_id" name="job_id" type="text">
+      <br>
+      <label for="department_id">부서번호</label>
+      <input id="department_id" name="department_id" type="text">
+      <br>
+      <button id="selectList" type="button">전체조회</button>
+      <button id="clearform" type="button">지우기</button>
+      <button id="submit" type="button">등록</button>
+      <button id="updateBtn" type="button">수정</button>
+      <button id="deleteBtn" type="button">삭제</button>
+    </form>
+  </div>
+  <div id="list">
+    <!-- 전체조회/1인조회 -->
+  </div>
+</body>
+
+</html>
