@@ -20,18 +20,18 @@
           result: 0
         },
         methods: {
-          sum: function (num1, num2) {
-            this.result = num1 + num2
+          sum: function () {
+            this.result = this.num1 + this.num2
             // return this.result
           },
           diff: function () {
-            num1 - num2
+            this.result = this.num1 - this.num2
           },
           prod: function () {
-            num1 * num2
+            this.result = this.num1 * this.num2
           },
           divide: function () {
-            num1 / num2
+            this.result = this.num1 / this.num2
           }
         }
       })
@@ -41,13 +41,11 @@
     <h1>간단한 계산기</h1>
     <input type="number" v-model.number="num1">
     <input type="number" v-model.number="num2">
-    <p>{{num1}}</p>
-    <p>{{num2}}</p>
     <br>
-    <button v-on:click="sum(num1,num2)">덧셈</button>
+    <button v-on:click="sum">덧셈</button>
     <button v-on:click="diff">뺄셈</button>
     <button v-on:click="prod">곱셈</button>
-    <button v-on:click="divied">나눗셈</button>
+    <button v-on:click="divide">나눗셈</button>
     <p>결과: {{result}}</p>
   </div>
 
