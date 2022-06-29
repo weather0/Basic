@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#app',
+        data: {
+          myVisible: false,
+          type: 'A',
+          isShow: true
+        },
+        methods: {
+          choice: function () {
+            this.isShow = false;
+          }
+        }
+      })
+    })
+  </script>
+  <div id="app">
+    <label><input type="checkbox" v-model="myVisible">표시</label>
+    <!-- display:none이나 hide()와는 다름. 태그가 있는걸 단순히 감추는 게 아니라, 태그 자체의 존재 유무를 조작 -->
+    <p v-if="myVisible" id="test">체크박스ON</p>
+    <!-- v-else는 반드시 v-if와 인접해있어야만 유효함(중간에 뭐 끼면 무효) -->
+    <p v-else>체크박스OFF</p>
+    <br><br>
+    <p v-if="type=='A'">A</p>
+    <p v-else-if="type=='B'">B</p>
+    <p v-else-if="type=='C'">C</p>
+    <p v-else>기타: {{type}}</p>
+    <input v-model="type">
+    <br><br>
+    <button v-show="isShow" @click="choice">선택</button>
+  </div>
+</body>
+
+</html>

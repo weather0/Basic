@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <script>
+    let dataList = ['설악산', '한라산', '북한산', '백두산', '지리산']
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#app',
+        data: {
+          myArray: dataList,
+          objArray: [
+            { name: '슈크림빵', price: 1000 },
+            { name: '단팥빵', price: 2000 },
+            { name: '소보로빵', price: 1500 }
+          ]
+        }
+      })
+    })
+  </script>
+  <div id="app">
+    <ul>
+      <h3>배열을 이용한 for 디렉티브</h3>
+      <li v-for="item in myArray">{{item}}</li>
+    </ul>
+    <ul>
+      <h3>객체로 값을 구성한 배열을 이용한 for 디렉티브</h3>
+      <li v-for="item in objArray">{{item.name}} | {{item.price}}</li>
+    </ul>
+    <ul>
+      <h3>단순히 태그를 반복하는 경우(반복횟수지정)</h3>
+      <li v-for="n in 5"></li>
+    </ul>
+  </div>
+</body>
+
+</html>
