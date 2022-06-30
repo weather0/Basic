@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <script>
+    let number_list = [2, 3, 4, 5, 6, 7, 8, 9]
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#app',
+        data: {
+          arr: number_list,
+          show: false
+        },
+        methods: {
+          // 변경
+          update: function (idx) {
+            // this.arr[idx]++ // 이건 왜 웹페이지에서 반영이 안 됨??(배열 자체는 콘솔 찍어보면 splic방식과 똑같이 업데이트됨)
+            // -> 이유: vue.js의 왓쳐(watcher)라고 하는 녀석 때문. 왓쳐가 위 방법은 인식을 못하고 밑에만 인정해 줌
+            // vue의 가상DOM시스템(비동기식)상 바로바로 반영하려면 밑에처럼 splice메서드를 사용해야 함
+            this.arr.splice(idx, 1, this.arr[idx] + 1)
+            console.log(this.arr)
+          },
+          // 삭제
+          deleteNum: function (idx) {
+            this.arr.splice(idx, 1)
+            console.log(this.arr)
+          },
+          // 추가
+          addNum: function () {
+            this.arr.push(1);
+          },
+          // 정렬
+          sortData: function () {
+            // 중복 데이터 제거
+            this.arr = this.arr.filter((item, idx, array) => array.indexOf(item) === idx)
+            // 정렬
+            this.arr.sort((a, b) => (a < b ? -1 : 1))
+          },
+          // 구구단출력
+          print: function () {
+            this.show = true
+          }
+
+        }
+
+
+
+
+      })
+    })
+  </script>
+  <div id="app">
+    <h2>숫자 배열 조작과 구구단 출력</h3>
+      <ul>
+        <li v-for="(item, idx) in arr">{{item}}
+          <button @click="update(idx)">변경</button>
+          <button @click="deleteNum(idx)">삭제</button>
+        </li>
+        <br>
+        <button @click="addNum">추가</button>
+        <button @click="sortData">정렬</button>
+        <button @click="print">구구단출력</button>
+      </ul>
+      <ul v-if="show">
+        <li v-for="item in arr">
+          <p v-for="n in 9">{{item}}X{{n}}={{item*n}}</p>
+        </li>
+      </ul>
+  </div>
+</body>
+
+</html>
