@@ -30,28 +30,11 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-      fetch("products.json")
-        .then(response => response.json()) // json -> 오브젝트
-        .then(result => {
-          console.log(result)
-          console.log(result.products)
-        })
-        .catch(err => console.log(err))
-
-
       new Vue({
         el: '#app',
         data: {
           sitename: 'Vue.js 애완용품샵',
-          product: {
-            id: 1001,
-            title: '고양이사료, 25파운드',
-            description: '당신의 고양이를 위한 <em>거부할 수 없는</em>, 유기농 25파운드 사료입니다',
-            price: 2000,
-            image: 'assets/images/product-fullsize.png',
-            stock: 10, // 재고
-            rating: 3
-          },
+          products: [],
           cart: [],
           showProduct: true,
           order: {
@@ -79,14 +62,11 @@
         computed: {
           cartItemCount: function () {
             return this.cart.length
-          },
-          canAddToCart: function () {
-            return this.cartItemCount < this.product.stock; // 리턴에 비교연산자만 달랑 쓰면 자동으로 알아서 불린값 조절됨
           }
         },
         methods: {
-          addToCart: function () {
-            this.cart.push(this.product.id)
+          addToCart: function (product) {
+            this.cart.push(product.id)
           },
           showCheckout: function () {
             // 토글처럼 껐켰 가능하도록
@@ -95,8 +75,20 @@
           submitForm: function () {
             alert('제출 완료')
           },
-          checkRating: function (n) {
-            return (this.product.rating - n) >= 0; // 리턴에 비교연산자는 불린값
+          checkRating: function (n, product) {
+            return (product.rating - n) >= 0; // 리턴에 비교연산자는 불린값
+          },
+          canAddToCart: function (product) {
+            return this.cartCount(product.id) < product.stock; // 리턴에 비교연산자만 달랑 쓰면 자동으로 알아서 불린값 조절됨
+          },
+          cartCount: function (productId) {
+            let count = 0;
+            for (let i = 0; i < this.cart.length; i++) {
+              if (this.cart[i] == productId) {
+                count++;
+              }
+            }
+            return count;
           }
         },
         // 필터는 data를 직접 연결 안 함(this.xxx 안 씀)
@@ -119,6 +111,21 @@
             }
           }
 
+        },
+
+        // 외부 파일 끌어올 때
+        // 요청식(fetch, ajax등)의 위치가 매우 매우 중요함
+        // 맨 밑에 created 안에 넣어야 함
+        // vue.js인스턴스 생명주기 참고 (https://kr.vuejs.org/v2/guide/instance.html#라이프사이클-다이어그램)
+        created: function () {
+          fetch("products.json")
+            .then(response => response.json()) // json -> 오브젝트
+            .then(result => {
+              console.log(result)
+              console.log(result.products)
+              this.products = result.products
+            })
+            .catch(err => console.log(err))
         }
 
 
@@ -142,35 +149,38 @@
     </header>
 
     <main>
-      <div class="row product" v-if="showProduct">
+      <div v-if="showProduct">
+        <div class="row product" v-for="product in products">
 
-        <div class="col-md-4">
-          <!-- 상품 이미지 -->
-          <figure>
-            <img :src="product.image" alt="사료">
-          </figure>
-        </div>
+          <div class="col-md-4">
+            <!-- 상품 이미지 -->
+            <figure>
+              <img :src="product.image" alt="사료" width="200px">
+            </figure>
+          </div>
 
-        <div class="col-md-4 col-expand">
-          <!-- 상품 설명 -->
-          <h1>{{product.title}}</h1>
-          <p v-html="product.description"></p> <!-- html태그 끼임 주의! -->
-          <p class="price">{{product.price | formatPrice}}</p>
-        </div>
+          <div class="col-md-4 col-expand">
+            <!-- 상품 설명 -->
+            <h1>{{product.title}}</h1>
+            <p v-html="product.description"></p> <!-- html태그 끼임 주의! -->
+            <p class="price">{{product.price | formatPrice}}</p>
+          </div>
 
-        <!-- v-bind:disabled(회색비활성처리) 또는 v-show(아예 css상 요소 자체를 감춤)로 표시ON/OFF -->
-        <!-- v-if로 태그 자체 존재 유무를 결정 -->
-        <button class="btn btn-primary btn-lg" @click="addToCart" :disabled="!canAddToCart">장바구니 담기</button>
-        <span class="inventory-message" v-if="product.stock == cartItemCount">품절!</span>
-        <span class="inventory-message" v-else-if="(product.stock - cartItemCount) > 5">
-          {{product.stock - cartItemCount}}남았습니다!</span>
-        <span class="inventory-message" v-else>지금 구매 하세요!</span>
-        <div class="rating">
-          <!-- 'rating-active'스타일 정의는 지금 이 부트스트랩css에 있음 -->
-          <span v-for="n in 5" :class="{'rating-active':checkRating(n)}">☆</span>
-        </div>
+          <!-- v-bind:disabled(회색비활성처리) 또는 v-show(아예 css상 요소 자체를 감춤)로 표시ON/OFF -->
+          <!-- v-if로 태그 자체 존재 유무를 결정 -->
+          <button class="btn btn-primary btn-lg" @click="addToCart(product)" :disabled="!canAddToCart(product)">장바구니
+            담기</button>
+          <span class="inventory-message" v-if="product.stock == cartCount(product.id)">품절!</span>
+          <span class="inventory-message" v-else-if="(product.stock - cartCount(product.id)) > 5">
+            {{product.stock - cartCount(product.id)}}남았습니다!</span>
+          <span class="inventory-message" v-else>지금 구매 하세요!</span>
+          <div class="rating">
+            <!-- 'rating-active'스타일 정의는 지금 이 부트스트랩css에 있음 -->
+            <span v-for="n in 5" :class="{'rating-active':checkRating(n, product)}">☆</span>
+          </div>
 
-      </div>
+        </div> <!-- end of v-for -->
+      </div> <!-- end of v-if -->
 
 
 
