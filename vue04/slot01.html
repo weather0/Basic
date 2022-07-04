@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let component = {
+        template: `<div>
+                      <slot name="header"></slot>
+                      <br>
+                      <h1>컴포넌트데이터입니다</h1>
+                      {{text}}
+                      <br>
+                      <slot name="footer"></slot>
+                    </div>`,
+        props: ['text']
+      }
+
+      new Vue({
+        el: '#app',
+        data: {
+          message: ''
+        },
+        components: {
+          'my-component': component
+        }
+      })
+
+
+
+    })
+  </script>
+  <div id="app">
+    <input type="text" v-model="message">
+    <my-component :text="'부모 컴포넌트에서 데이터를 넘겨줌'">
+      <!-- slot에 의해 유효함 -->
+      <p slot="header"><em>헤더입니다</em></p>
+      <h3 slot="footer">푸터입니다</h3>
+    </my-component>
+  </div>
+
+  <br><br>
+  <hr>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let formComponent = {
+        template: `<div>
+                    <form>
+                      <slot></slot>
+
+                      <label for="title">{{title}}</label>
+                      <slot name="titleSlot"></slot>
+                      <input type="text" id="title"><br>
+
+                      <label for="author">{{author}}</label>
+                      <slot name="authorSlot"></slot>
+                      <input type="text" id="author"><br>
+                    </form>
+                  </div>`,
+        props: ['title', 'author']
+      }
+
+      new Vue({
+        el: '#app2',
+        data: {
+          titleLabel: '제목 : ',
+          authorLabel: '저자 : ',
+          pageLength: '',
+          header: '책 저자 폼'
+        },
+        components: {
+          'form-component': formComponent
+        }
+      })
+    })
+  </script>
+  <div id="app2">
+    <!-- <form-component :author="authorLabel" :title="titleLabel">
+      <h1>{{header}}</h1>
+    </form-component> -->
+    <form-component>
+      <h1>{{header}}</h1>
+      <label for="title" slot="titleSlot">{{titleLabel}}</label>
+      <label for="autor" slot="authorSlot">{{authorLabel}}</label>
+    </form-component>
+  </div>
+
+  <br><br>
+  <hr>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let bookComponent = {
+        template: `<div>
+                    <slot name="header"></slot>
+                    <slot name="book" v-for="book in books" :text="book"></slot>
+                  </div>`,
+        props: ['books']
+      }
+
+      new Vue({
+        el: '#app3',
+        data: {
+          header: '책 제목',
+          books: [
+            { author: 'John Smith', title: 'Best of Times' },
+            { author: 'Jane Doe', title: 'Go West Young Man' },
+            { author: 'Avery Katz', title: 'The Life And Times of Avery' }
+          ]
+        },
+        components: {
+          'book-component': bookComponent
+        }
+      })
+
+    })
+  </script>
+  <div id="app3">
+    <book-component :books="books">
+      <h1 slot="header">{{header}}</h1>
+      <!-- template은 div와 유사하게 태그를 묶는 역할 -->
+      <template slot="book" slot-scope="props">
+        <h2>
+          <!-- <p>{{props}}</p>
+          <p>{{props.text}}</p> -->
+          <i>{{props.text.title}}</i>
+          <small>by : {{props.text.author}}</small>
+        </h2>
+      </template>
+    </book-component>
+  </div>
+
+
+
+</body>
+
+</html>
