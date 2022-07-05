@@ -5,6 +5,7 @@ import editProduct from './components/editProduct.js'
 
 export default new VueRouter({
   // history모드: 브라우저 히스토리에 접근(뒤로가기 등)
+  // hash모드(기본): url에 '#'/path → 서버 연동시 문제 발생할 수 있음
   mode: 'history',
   routes: [
     {
