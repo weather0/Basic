@@ -26,8 +26,6 @@ export default {
       object: []
     }
   },
-
-  // created역할: 객체 내에서 실행할 각종 코드 실행(콘솔로그 확인 등)
   created: function () {
     this.object = this.$parent.getParentData();
   },

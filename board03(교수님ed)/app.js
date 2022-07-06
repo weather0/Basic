@@ -1,7 +1,6 @@
-import myHeader from './components/header.js'
+import myHeader from './components/myHeader.js'
 import router from './router/router.js'
 import originalData from './data/index.js'
-// console.log(indexData.Content)
 
 new Vue({
   el: '#app',
@@ -17,7 +16,8 @@ new Vue({
   data: {
     userData: [],
     contentData: [],
-    commentData: []
+    commentData: [],
+    loginUser: {}
   },
   computed: {
     postData: function () {
@@ -36,6 +36,27 @@ new Vue({
     this.userData = originalData.User;
     this.contentData = originalData.Content;
     this.commentData = originalData.Comment;
+    // 테스트용 로그인
+    this.loginUser = this.userData[0];
+  },
+  methods: {
+    getData: function () {
+      return {
+        userData: this.userData,
+        contentData: this.contentData,
+        commentData: this.commentData,
+        postData: this.postData
+      }
+    },
+    getLoginInfo: function () {
+      return this.loginUser;
+    },
+    setContentData: function (contentData) {
+      this.contentData = contentData;
+    },
+    setCommentData: function (commentData) {
+      this.commentData = commentData;
+    }
   }
 
 

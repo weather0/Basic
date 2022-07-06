@@ -32,6 +32,14 @@ export default {
       object: []
     }
   },
+
+  // vue의 프로퍼티 유형 3개: data(=원본값), computed(=수정값), watch(=일련의동작)
+  // computed: data속성을 필요에 따라 산출해서 또 다른 프로퍼티 -> 읽기 전용
+  // watch: 프로퍼티 변화를 감지해서 진행해야 하는 프로세스 정의
+
+  // created: 뷰객체 라이프사이클 중 어느 시점 실행할 각종 프로세스 정의(콘솔로그 확인 등)
+  // created는 시점이다! Vue객체 생성 시점! 데이터유무나 변화와는 상관 없음!!
+  // 위의 프로퍼티유형들과 created 혼동 주의!!(전혀 다른 개념)
   created: function () {
     // $parent: 상위
     this.object = this.$parent.getParentData();
