@@ -11,7 +11,7 @@ new Vue({
         <input id="id" name="employee_id" type="number" v-model.number="empId">
 
         <!-- type='submit'만 엔터 먹음(type='button'은 엔터 X) -->
-        <router-link tag="button" :to="{name:'empOne', params:{empId:empId}}">조회2</router-link>
+        <router-link tag="button" id="empOne" :to="{name:'empOne', params:{empId:empId}}">조회2</router-link>
 
         <br>
         <label for="last_name">성</label>
@@ -35,7 +35,7 @@ new Vue({
         <button id="clearform" type="button">지우기</button>
         <button id="submit" type="button">등록</button>
         <button id="updateBtn" type="button">수정</button>
-        <button id="deleteBtn" type="button">삭제</button>
+        <button id="deleteBtn" type="button" @click="deleteEmp(empId)">삭제</button>
       </form>
 
       <router-view></router-view>
@@ -44,8 +44,11 @@ new Vue({
     empId: ''
   },
   method: {
-    getData: function () {
-      return this.empId
+    deleteEmp: function (inputId) {
+      console.log(inputId)
+      fetch('http://192.168.0.29/myserver/empDelete?employee_id=' + inputId)
+        .then(alert('삭제 완료'))
+        .catch(err => console.log(err))
     }
   }
 })
