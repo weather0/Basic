@@ -1,0 +1,31 @@
+##리스너
+-구성파일의 경로와 이름 
+  $ORACLE_HOME/network/admin/listener.ora
+  - 리스너이름
+  - 리스너 수신 주소(DB서버의 주소, 프로토콜, 포트)
+  - 리스너 서비스 DB(ORACLE_HOME경로, DB이름)
+
+-파일 생성 도구
+  - Net Manager(netmgr)
+  - Net Configuration Assistant(netca)
+
+-리스너를 관리 도구
+  - Listener Control Utility(lsnrctl)
+  - start(시작), stop(종료), status(상태), services(접속현황)
+
+-기본리스너(구성파일 필요없음)
+  - 이름 : LISTENER
+  - 네트워크 주소 : TCP/IP, 1521 Port
+
+##클라이언트 
+-EZConnect 방식
+  -구성 파일 필요 없음
+  -CONNECT id/pw@host정보:port/db이름
+  -고급 네트워크 기능 비활성화(암호화)
+-TNSNAMES(Local Naming)방식
+  -클라이언트의 로컬에 tnsnames.ora 파일 필요
+  -$ORACLE_HOME/network/admin
+   (서비스명, DB수신주소정보, DB정보)
+  -Net Manager, Net Configuration Assistant로 파일 생성
+  -CONNECT id/pw@서비스명
+

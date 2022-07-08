@@ -1,0 +1,380 @@
+// 220707 수업
+
+a오라클 아키텍처
+- DB 시작과 종료/설정 변경
+- 네트워크(DB-사용자 연결)
+- 저장공간 관리
+- 보안설정, 보안감사
+- 유지관리
+- 백업/복구
+
+
+SGA + PGA -> area = 메모리
+
+[실습] 터미널: 
+$sqlplus
+/as sysdba
+
+// 한번에 접속하기
+$sqlplus / as sysdba
+$sqlplus hr/hr
+
+// ORACLE not available: 서버 꺼진 상태
+
+// 오라클 실행
+SYS> startup
+
+// 오라클 강제 실행(재부팅)
+SYS> startup force
+
+// 오라클 실행 단계별 진행
+SYS> startup nomount;
+SYS> alter database mount;
+SYS> alter database open;
+
+// 오라클 실행상태에서 접속만
+conn hr/hr;
+
+// 오라클 강종
+SYS> shutdown abort
+
+// 블록 확인
+SYS> show parameter block
+
+
+//---------------------------------------------
+// 220708 수업
+
+// 오라클 설치경로 바로 이동
+$cd $ORACLE_HOME
+$cd dbs
+
+// 공유폴더 이동
+$cd /mnt/ws1_labs/
+또는
+$ws1
+
+// 공유폴더 파일 스크립트 바로 실행
+SYS> @lab02_01
+
+//
+SYS> alter system set job_queue_processes=700 scope=memory;
+SYS> show parameter job
+SYS> startup force
+
+SYS> alter system set job_queue_processes=700 scope=spfile;
+SYS> show parameter job
+SYS> startup force
+
+// 
+SYS> show parameter dump
+  background_dump_dest: 진단데이터 경로 확인
+$cd /u01/app/oracle/diag/rdbms/orcl/orcl/trace
+  // 오라클 로그파일 실행
+  $vi alert_orcl.log
+$rm *
+
+SYS> startup force
+  $vi alert_orcl.log 
+  // 다시열어보면 Shutting down instance (abort)를 확인할 수 있다(startup force시 abort한다는 증거)
+
+SYS> shutdown immediate
+SYS> startup
+  $vi alert_orcl.log 
+  // 다시열어보면 Shutting down instance (immediate) 확인 가능
+
+//
+[oracle@localhost ws1_labs]$ lsnrctl
+LSNRCTL> staus
+LSNRCTL> start  // 리스너 상태 확인
+// 윈도우 오라클은 리스너를 services.msc로 제공함
+
+[oracle@localhost ws1_labs]$ netmgr
+// Listeners 추가: 스샷참고 및 Save Network Cofiguration
+
+// 터미널전환
+$ cd $ORACLE_HOME/network/admin (또는 그냥 바로 $ net)
+[oracle@localhost admin]$ ls 
+// listener.ora 파일이 생성되어 있음
+
+// 터미널전환
+[oracle@localhost ws1_labs]$ lsnrctl
+LSNRCTL> start L1
+// 서버구성 끝
+
+// 터미널전환
+// 1521 접속확인
+[oracle@localhost admin]$ sqlplus hr/hr@localhost:1521/orcl
+// 1522 접속확인
+HR> conn hr/hr@localhost:1522/orcl
+
+// 터미널전환
+LSNRCTL> stop L1
+// 터미널전환
+HR> select * from departments; // 해보면 일단은 되지만(리스너가 접속시켜주고 stop해도 영향X),
+HR> conn hr/hr@localhost:1522/orcl // no listener로 접속 안 됨
+
+// 터미널전환
+[oracle@localhost ws1_labs]$ netmgr
+// Service Naming 추가: 스샷참고 및 Save Network Cofiguration
+
+// 터미널전환
+[oracle@localhost admin]$ ls 
+// tnsnames.ora 파일이 생성되어 있음
+[oracle@localhost admin]$ cat tnsnames.ora // 방금 만든 mydb 확인 가능
+// 접속 확인
+[oracle@localhost admin]$ sqlplus hr/hr@mydb
+
+
+
+// 오라클홈
+탐색기: C:\oraclexe\app\oracle\product\11.2.0\server
+
+// tns파일 열기
+C:\oraclexe\app\oracle\product\11.2.0\server\network\ADMIN\tnsnames.ora
+// 맨 아래에 추가 (YD2-00은 교수님 서버)
+test =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = YD2-00)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = XE)
+    )
+  )
+
+// 윈도우sql디벨로퍼에서 교수님 서버로 접속하기(화면 캡처 2022-07-08 113636.jpg)
+
+// 앞으로 수업시작 전 3가지 미리 띄워놓기!!!!
+  // 1. 
+  $ ws1
+  lsnrctl start
+  // 2.
+  sqlplus / as sysdba
+  startup
+  exit
+  // 3.
+  emctl start dbconsole
+
+
+// 
+
+
+// 서버1개 실행
+SYS> alter system set shared_servers=1;
+// 확인
+SYS> show parameter shared
+
+// 디스패처 2개 실행
+SYS> alter system set dispatchers='(protocol=tcp)(dispatchers=2)'; 
+// 확인
+SYS> show parameter dispatcher
+
+// 디스패처 서비스 상태 확인
+LSNRCTL> services
+// 핸들러에 "D000", "D001" 이렇게 두 개의 디스패쳐가 생성되어 있고,
+// 다른 터미널에서 접속해보면
+$ sqlplus hr/hr@mydb
+// 핸들러 "D000" 또는 "D001"의 established의 숫자가 올라간다!
+
+
+
+새창에서
+// Service Naming 추가: 이름은 dubulk, 나머진 다 똑같고 마지막 dedicated 선택 Save Network Cofiguration
+
+// dubulk로 접속하고
+$ sqlplus hr/hr@dubulk
+
+// 다시 서비스확인해보면
+LSNRCTL> services
+// 핸들러 "DEDICATED"의 established의 숫자가 올라간다!
+
+//
+
+// 테이블스페이스 확인 (system, sysaux, undo, temp, users 등..)
+[oracle@localhost ws1_labs]$ sqlplus / as sysdba
+SYS> select tablespace_name, contents, status FROM dba_tablespac;
+
+// 개꿀팁 !!!!!! sqlplus 접속상태에서 외부 커맨드 실행방법: 느낌표(!)접두
+SYS> !pwd
+/mnt/ws1_labs
+
+// 방금실행한 쿼리 확인
+SYS> l
+
+// 쿼리결과를 현재위치에 파일로 저장(윈도우공유폴더C:\db_test\ws1_labs에 q_tbs.sql 저장됨)
+SYS> save q_tbs
+
+// 이미 있다고 나오면 replace로 덮어쓰기
+SYS> save q_tbs replace
+
+// 또 쿼리
+SYS> select tablespace_name, file_name, bytes/1024/1024 as file_size
+  2  from dba_data_files;
+// 저장
+SYS> save q_dbf replace
+
+// 
+[oracle@localhost ws1_labs]$ lsnrctl status
+[oracle@localhost ws1_labs]$ emctl start dbconsole
+// 출력화면 하단쪽에 링크 복사(~em까지만)해서 리눅스내 브라우저(파폭)로 접속
+// 오라클 Enterprise Manager (약칭 EM)
+https://localhost:1158/em
+
+User Name: sys
+Password: oracle
+Connect As: SYSDBA
+
+// 파라미터 확인
+Server탭 - Database Configuration - Initialization Parameters
+// 테이블스페이스 확인
+Server탭 - Storage - Tablespaces
+USERS 클릭 - 우상단 Actions드롭다운 Show Tablespaces contents
+
+// 테이블스페이스 생성해보기
+SYS> create tablespace insa
+  2  datafile '/u01/app/oracle/oradata/orcl/insa01.dbf' size 10m;
+Tablespace created.
+
+// 터미널전환
+[oracle@localhost Desktop]$ cd /u01/app/oracle/oradata/orcl
+[oracle@localhost orcl]$ ls
+// insa01.dbf가 생성되었음을 확인
+
+// 다른부분도 insa가 생성되었음을 확인해보자
+SYS> @q_tbs
+SYS> @q_dbf
+파폭EM - Server탭 - Storage - Tablespaces
+
+// 테이블 복사생성(테이블스페이스 비교위해 두 개를 생성해보자)
+SYS> conn hr/hr
+Connected.
+HR> create table empl
+  2  as select * from employees;
+Table created.
+HR> create table emp2
+  2  tablespace insa
+  3  as select * from employees;
+Table created.
+
+
+// 방금만든 테이블의 테이블스페이스를 확인해보자
+HR> conn / as sysdba
+Connected.
+SYS> @q_tab
+
+// 테이블스페이스가 다름을 알 수 있다
+USERS		EMPL
+INSA		EMP2
+
+// 테이블 또 복사생성
+HR> create table emp3
+  2  tablespace insa
+  3  as select * from employees;
+
+// 또 복사생성(빠른방법1)
+HR> ed
+// vi편집기로 진입하면 emp뒷숫자만 변경해서 저장하고 나오면 다음과 같이 커맨드가 자동완성됨
+Wrote file afiedt.buf
+  1  create table emp4
+  2  tablespace insa
+  3* as select * from employees
+// 여기서 무지성 /를 입력하면 직전커맨드 반복이다!!! 
+HR> /
+
+// 빠른방법2: 무지성1입력(=1번줄 선택)
+HR> 1
+  1* create table emp4
+// 다음과 같이 입력하면 특정 문자열만 수정할 수 있다!
+HR> c/emp4/emp5
+  1* create table emp5
+// 또 / 로 커맨드 반복
+HR> /
+
+
+// 테이블에 데이터 넣기(복사생성)
+HR> insert into emp3 
+  2  select * from emp3;
+20 rows created.
+
+// 무한대로 넣어보자
+HR> /
+40 rows created.
+HR> /
+....
+HR> /
+20480 rows created.
+
+HR> commit;
+
+HR> drop table emp4;
+Table dropped.
+
+// 파폭EM 테이블스페이스 Show Tablespaces contents의 Extent Map 확인해보자
+// Extent Map에서 검은색(Unmapped)은 삭제한(drop)테이블을 의미
+// 테이블스페이스 사용패턴에 따라 exent크기(네모칸)를 점점 크게크게 줬음을 알 수 있다
+
+
+// insa02생성(=동일한 테이블스페이스에 헤더만 추가)
+SYS> alter tablespace insa
+  2  add datafile '/u01/app/oracle/oradata/orcl/insa02.dbf' size 20m;
+SYS> @q_dbf
+
+  // 요약하여 확인해보자
+  SYS> select tablespace_name, sum(bytes)/1024/1024 as file_size
+    2  from dba_data_files
+    3  group by tablespace_name;
+  SYS> save sum_dbf // 파일로 저장
+
+// 기존 파일 용량 변경
+SYS> alter database datafile '/u01/app/oracle/oradata/orcl/insa01.dbf' resize 20m;
+SYS> @q_dbf
+SYS> @sum_dbf
+
+// 테이블스페이스 OFFLINE
+SYS> ALTER TABLESPACE insa OFFLINE;
+SYS> @q_tbs
+  // 오프라인해서 emp2는 테이블 확인이 안 됨
+  SYS> conn hr/hr
+  HR> select count(*) from emp2;
+  ERROR at line 1:
+  ORA-00376: file 5 cannot be read at this time
+  ORA-01110: data file 5: '/u01/app/oracle/oradata/orcl/insa01.dbf'
+
+// 테이블스페이스 읽기전용화
+SYS> ALTER TABLESPACE insa READ ONLY;
+  // emp2는 이제 셀렉트는 되는데 update는 안 됨
+
+// 테이블스페이스 ONLINE(=읽기전용 풀기)
+SYS> ALTER TABLESPACE insa READ WRITE;
+SYS> @q_tbs
+
+
+// 테이블스페이스 삭제(함부로 하지말자. 영구삭제다)
+SYS> drop tablespace insa
+  2  including contents and datafiles;
+Tablespace dropped.
+SYS> @q_tab
+  // 터미널전환
+  [oracle@localhost orcl]$ ls // insa01.dbf가 삭제되었음(위에 datafiles 옵션 때문) 
+
+
+// 파폭EM-서버탭-우중간Security의Users-우측Create: demo사용자 만들기(스샷참고)
+  // 결과확인
+  [oracle@localhost orcl]$ sqlplus demo/demo
+  DEMO> select * from session_privs;
+  DEMO> select * from hr.jobs; // 뜸
+  DEMO> select * from hr.regions; // 뜸
+  DEMO> select * from hr.departments; // 안 뜸
+
+// 파폭EM-서버탭-우중간Security의Roles-우측Create: 롤만들기(스샷참고)
+// 파폭EM-서버탭-우중간Security의Users-DEMO선택-우측edit: 롤부여(스샷참고)
+  // 결과확인
+  DEMO> select * from session_privs;
+  DEMO> select * from hr.departments; // 뜸
+
+// DEMO계정에 UNLIMITED TABLESPACE권한도 주고, Quotas탭을 확인해보자(스샷참고)
+
+
+
+
+
