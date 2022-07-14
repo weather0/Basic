@@ -126,7 +126,7 @@ END;
 SELECT * FROM temp_list;
 
 
-/* 공식1: CURSOR 커서 IS 셀렉트문; 레코드 커서%rowtype -> 
+/* 공식1(정석): CURSOR 커서 IS 셀렉트문; 레코드 커서%rowtype -> 
 OPEN 커서; -> LOOP FETCH 커서 into 레코드; EXIT WHEN 커서%notfound; -> CLOSE 커서; */
 /* 공식2(개꿀!): CURSOR 커서 IS 셀렉트문; ->
 FOR 레코드 IN 커서 LOOP --끝. 개꿀. 오픈, 페치, 클로즈, 심지어 레코드 변수선언조차 필요X */
@@ -183,12 +183,15 @@ DECLARE
     emp_record emp_cursor%rowtype;
 BEGIN
     OPEN emp_cursor;
+    
     LOOP
         FETCH emp_cursor INTO emp_record;
         EXIT WHEN emp_cursor%notfound;
         --위 처럼 걍 괄호 빼고 레코드 변수 하나 통으로 넣어도 됨
         INSERT INTO test02 VALUES (emp_record.employee_id, emp_record.last_name, emp_record.hire_date);
     END LOOP;
+    
+    CLOSE emp_cursor;
 END;
 /
 SELECT * FROM test02;
@@ -480,31 +483,46 @@ SELECT * FROM employees2;
 
 
 
---예외처리 문제3-1
+--예외처리 문제3-1, 3-2
 DECLARE
     CURSOR v_cursor IS
         SELECT * FROM employees2
         WHERE department_id = &부서번호;    
+    v_record v_cursor%rowtype;
     e_over EXCEPTION;
+    e_nodata EXCEPTION;
 BEGIN
-    FOR v_record IN v_cursor LOOP
+    OPEN v_cursor;
     
-    IF EXTRACT(YEAR FROM v_record.hire_date) < 2000 THEN
+    LOOP
+        FETCH v_cursor INTO v_record;
+        EXIT WHEN v_cursor%notfound;
+        
+        --예외 발생시 업데이트 중단(3-1퀴즈문제 출제의도 자체가 전부업댓이 아니었음. 그냥 중단)
+        IF EXTRACT(YEAR FROM v_record.hire_date) >= 2000 THEN
+            dbms_output.put_line(v_record.email || '는 2000년 이후 입사');
+            RAISE e_over;
+        END IF;
+
         UPDATE employees2 
-        SET salary = salary*1.1
-        WHERE department_id = v_record.department_id;
-    ELSIF EXTRACT(YEAR FROM v_record.hire_date) >= 2000 THEN
-        RAISE e_over;
-    END IF;
+        SET salary = salary*100
+        WHERE employee_id = v_record.employee_id;
     
     END LOOP;
+    
+    IF v_cursor%rowcount = 0 THEN
+        raise e_nodata;
+    END IF;
+
+    CLOSE v_cursor;
+    
 EXCEPTION
     WHEN e_over THEN
-        dbms_output.put_line('2000년 이후 입사한 사원입니다.');
-    WHEN no_data_found THEN
+        dbms_output.put_line('2000년 이후 입사한 사원은 갱신되지 않습니다');
+    WHEN e_nodata THEN
         dbms_output.put_line('데이터가 존재하지 않습니다');
 END;
 /
-SELECT * FROM employees2;
+SELECT * FROM employees2 where department_id = 50 order by hire_date desc;
 
 
