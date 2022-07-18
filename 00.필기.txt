@@ -46,7 +46,7 @@ SYS> show parameter block
 // 220708 수업
 
 // 오라클 설치경로 바로 이동
-$cd $ORACLE_HOME
+$cd $ORACLE_HOME // 그냥 home 만 쳐도 가도록 교수님이 세팅해놓음
 $cd dbs
 
 // 공유폴더 이동
@@ -154,6 +154,10 @@ test =
   exit
   // 3.
   emctl start dbconsole
+  파폭EM https://localhost:1158/em
+  User Name: sys
+  Password: oracle
+  Connect As: SYSDBA
 
 
 // 
@@ -217,7 +221,7 @@ SYS> save q_dbf replace
 [oracle@localhost ws1_labs]$ lsnrctl status
 [oracle@localhost ws1_labs]$ emctl start dbconsole
 // 출력화면 하단쪽에 링크 복사(~em까지만)해서 리눅스내 브라우저(파폭)로 접속
-// 오라클 Enterprise Manager (약칭 EM)
+// 오라클 Enterprise Manager (약칭 파폭EM)
 https://localhost:1158/em
 
 User Name: sys
@@ -373,6 +377,176 @@ SYS> @q_tab
   DEMO> select * from hr.departments; // 뜸
 
 // DEMO계정에 UNLIMITED TABLESPACE권한도 주고, Quotas탭을 확인해보자(스샷참고)
+
+
+
+
+// ---------------------------------------------------------
+// 220718
+
+// 파폭EM
+서버-프로필-create-PROF5생성(스샷참고)
+서버-유저-DEMO edit-프로필 PROF5로 변경
+// 터미널
+SYS> alter system set resource_limit=true;
+SYS> show parameter resource
+SYS> conn demo/demo
+  창 여러개로 중복접속하려고 하면 3개째에서 막힘.
+  비번 계속 틀리면 lock걸림(EM-서버-유저-DEMO에서 LOCKED확인 가능)
+  // 락풀기
+  SYS> alter user demo account unlock;
+
+// 암호변경시도
+SYS> alter user demo identified by demo
+  한번 더 시도하면
+  ORA-28007: the password cannot be reused
+
+SYS> alter user demo identified by 1234;
+
+// 2교시
+$home
+[oracle@localhost db_1]$ cd rdbms/admin
+[oracle@localhost admin]$ ls *pool*
+  // 터미널전환
+  SYS> desc dbms_shared_pool // 패키지확인(desc 패키지명)
+
+[oracle@localhost admin]$ ls utl*
+// 파일 카피 utlpwdmg.sql
+[oracle@localhost admin]$ cp utlpwdmg.sql /home/oracle/.
+[oracle@localhost admin]$ cd
+// 편집
+[oracle@localhost ~]$ vi utlpwdmg.sql
+  중간 쯤에
+      old password by at least 3 characters;
+      ....
+  END;
+  /
+  밑에 다 지우고 저장(지울때 10줄 한번에 지우기: 10dd / 저장하고 나가기: ZZ)
+
+[oracle@localhost ~]$ sys
+SYS> @utlpwdmg.sql
+  Function created.
+
+// 파폭EM
+PROF5 edit-Password에서
+Complexity function에 verify_function_11G 적고 저장
+
+
+// 그냥 프로필 삭제는 안 됨
+SYS> drop profile prof5;
+  ORA-02382: profile PROF5 has users assigned, cannot drop without CASCADE
+    // 프로필 할당된 거 삭제(demo계정에 할당되었던 prof5가 default로 바뀜)
+    SYS> drop profile prof5 cascade;
+      Profile dropped.
+
+
+
+// 3교시
+
+// 터미널 2개 열고 쿼리문을 각각 실행하면(ed로 수정 활용)
+// 터미널1
+HR> update employees
+  2  set salary = salary*1.1
+  3  where employee_id = 101;
+// 터미널2
+  102번 사원 업댓
+// 터미널1
+HR> ed
+  // vi편집으로 101을 102로 수정하고 나와서 실행
+HR> / 
+  // 커서가 굳은 듯 lock(대기상태)이 걸리게 된다(파폭EM에서도 확인 가능 blocking session)
+
+
+SYS> @lab06_01.sql
+  // 출력결과에서 event가 2개 실행중일 텐데, 
+  // 하나는 SQL*Net message from client이고, 다른 하나는 enq: TX - row lock contention일 것이다. 
+  // 이 때 전자의 SID(32)와 SEREIAL#(884)를 확인하고 kill 한다
+SYS> alter system kill session '32,884';
+  // 그럼 아까 lock걸린 쿼리문이 락이 풀리면서 쿼리가 실행된다
+  // 다시 SYS> @lab06_01.sql을 해보면 둘다 SQL*Net message from client상태로 바껴있음
+
+// 락테이블(놓침)
+
+
+// 4교시: Undo
+SYS> !pwd
+/mnt/ws1_labs
+SYS> @q_tbs
+SYS> show parameter undo
+//파폭EM-서버-Tablespaces의 UNDOTBS확인
+
+// 터미널전환
+HR> !pwd
+/mnt/ws1_labs
+HR> @cre_bigemp // 대용량 자료 insert(655360건)
+//파폭EM-서버-Tablespaces의 UNDOTBS 변화 확인(쥐똥만큼 늘어남)
+
+// 업댓을 해보자
+HR> update bigemp set salary=salary*1.1;
+//한~참 걸림. UNDOTBS도 확 늘어나 있음
+//결론: insert는 undo별로 안 먹음. update,delete가 많이 먹음
+HR> rollback;
+
+// 터미널전환
+SYS> @lab07_01
+
+// 터미널전환(창2개 각각 따로)
+HR> update employees set salary=salary*1.1 where employee_id=101;
+HR> update employees set salary=salary*1.1 where employee_id=102;
+
+// 터미널전환
+SYS> @lab07_02
+  // 하단부에 UNOTBS1무리들 목록에 status가 2~3개가 ONLINE이고 나머지는 다 꺼짐(OFFLINE)을 확인할 수 있다
+  // HR터미널2개 다 commit또는rollback하고 터미널창 꺼도 여전히 3개 online상태임
+
+// 새터미널
+HR> update bigemp set salary=salary*1.1;
+  ORA-30036: unable to extend segment by 8 in undo tablespace 'UNDO2
+// UNDO공간이 부족해서 실패남
+
+HR> rollback;
+
+// UNDO용량 늘리기
+// 터미널전환
+SYS> @q_dbf
+SYS> alter database datafile '/u01/app/oracle/oradata/orcl/undo2.dbf'
+  2  resize 350m;
+// 터미널전환
+HR> update bigemp set salary=salary*1.1;
+// 다시 해보면 업댓 성공함
+
+
+
+// 5교시
+
+// 쿼리문 하면서 동시에 파폭EM-테이블스페이스 그래프 변화 확인하자
+HR> update bigemp set employee_id = rownum; // 1,2,3,... 일련번호 매기기
+HR> select min(employee_id), max(employee_id) from bigemp;
+HR> update bigemp set email = concat(email,'@yedam.co.kr');
+
+// 파폭EM-서버-Automatic Undo Management에서 Analysis Time period 바꿔가면서 확인해보자
+SYS> alter system set undo_retention=1800;
+  // Automatic Undo Management 재접해보면 위에 Undo Retention이 30분으로 바껴있음
+
+SYS> alter system set undo_tablespace = undotbs1;
+  System altered.
+SYS> drop tablespace undo2 including contents and datafiles;
+  Tablespace dropped.
+SYS> @q_rbs
+  // 실습초기 상태로 원복됨
+
+
+// 6교시~던짐
+
+
+
+
+
+
+
+
+
+
 
 
 
