@@ -541,6 +541,18 @@ SYS> @q_rbs
 
 
 
+// ---------------------------------------------------------
+// 220719
+// 1교시
+
+[oracle@localhost ws1_labs]$ home
+[oracle@localhost db_1]$ cd rdbms/admin
+[oracle@localhost admin]$ sys
+SYS> @awrrpt
+Type Specified:  text
+
+
+
 
 
 
