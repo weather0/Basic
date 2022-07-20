@@ -32,6 +32,7 @@ SYS> startup nomount;
 SYS> alter database mount;
 SYS> alter database open;
 
+
 // 오라클 실행상태에서 접속만
 conn hr/hr;
 
@@ -196,7 +197,7 @@ LSNRCTL> services
 
 // 테이블스페이스 확인 (system, sysaux, undo, temp, users 등..)
 [oracle@localhost ws1_labs]$ sqlplus / as sysdba
-SYS> select tablespace_name, contents, status FROM dba_tablespac;
+SYS> select tablespace_name, contents, status FROM dba_tablespace;
 
 // 개꿀팁 !!!!!! sqlplus 접속상태에서 외부 커맨드 실행방법: 느낌표(!)접두
 SYS> !pwd
@@ -552,15 +553,53 @@ SYS> @awrrpt
 Type Specified:  text
 
 
+// ---------------------------------------------------------
+// 220720
+// 1교시
+
+// 아카이브: 보통 기업에서 DB백업은 넘 커서 아카이빙을 매일 함
+SYS> shutdown immediate
+SYS> startup mount
+SYS> alter database archivelog
+SYS> alter database open
+SYS> archive log list
+SYS> alter system switch logfile;
+SYS> archive log list
+
+// 터미널 전환
+[oracle@localhost ws1_labs]$ fa
+  // 위에서 아카이브만들어서 ORCL폴더가 생성됨
+[oracle@localhost flash_recovery_area]$ cd ORCL
+[oracle@localhost ORCL]$ cd archivelog/
+  // 여기에 날짜별로 로그폴더 생성됨
+[oracle@localhost archivelog]$ cd *20
+
+HR> update bigemp set salary=salary*1.1
+  // 업댓하고 나면 [oracle@localhost archivelog]$ 여기에 .arc파일 계속 쌓임
+HR> rollback; // 롤백해도 쌓임
+
+파폭EM-Availability-Recovery Settings확인
 
 
+// 2교시
+[oracle@localhost 2022_07_20]$ rman
+RMAN> connect target /
+RMAN> backup database;
+  // [oracle@localhost ORCL]$ 여기에 backupset폴더-날짜폴더 생성됨
+// 백업삭제
+RMAN> delete obsolete;
+
+파폭EM-Availability-Recovery Settings확인
+중간쯤 Flash Recovery Area Size 10GB로 바꾸고 apply
+  ★주의!! 아뒤,비번 입력창 나오는데 이때 oracle/oracle을 입력해야함!!!!!!
+  SYS> show parameter db_recovery; // 10G로 늘어남 확인 가능
 
 
+// 3교시
+파폭EM-Availability-Schedule Backup // 파폭EM백업(스샷참고)
+View Backup Report 확인
+Manage Current Backups 확인
 
-
-
-
-
-
-
-
+// 백업카피
+RMAN> connect target / 
+RMAN> backup as copy database;
