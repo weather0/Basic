@@ -1,0 +1,4 @@
+스프링pom.xml Failed to create the part's controls 오류시
+Help-Install New Software
+주소에 http://download.eclipse.org/tm4e/snapshots/ 적고 엔터
+밑에 4개 다 체크 설치 -> 완료되면 restart now 클릭
