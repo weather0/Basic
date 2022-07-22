@@ -2,3 +2,22 @@
 Help-Install New Software
 주소에 http://download.eclipse.org/tm4e/snapshots/ 적고 엔터
 밑에 4개 다 체크 설치 -> 완료되면 restart now 클릭
+
+에러코드
+200~300: 정상
+
+400~500: 찐에러
+  403: 권한 없음
+  404: not found
+  406: method관련
+  400: bad request(파라미터 -> 커맨드객체:타입)
+
+
+
+0722 과제
+게시판 CRUD(7개 파일)
+1. 테이블생성, 샘플데이터 등록
+2. BoardVO(p.183)
+3. BoardMapper 인터페이스, BoardMapper.xml
+4. BoardController
+5. view (boardList.jsp, boardInser.jsp, boardUpdate.jsp)
