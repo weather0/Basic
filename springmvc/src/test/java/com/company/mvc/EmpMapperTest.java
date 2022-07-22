@@ -23,19 +23,19 @@ public class EmpMapperTest {
 //		EmpMapper mapper = ctx.getBean(EmpMapper.class);
 		EmpVO param = new EmpVO();
 		param.setEmployeeId("100");
-//		EmpVO result = mapper.getEmp(param);
-		Map<String, Object> result = mapper.getEmp(param);
-		System.out.println(result.get("FIRST_NAME")); // result->콘솔에 {키,밸} 확인가능(대문자 필수!)
-		System.out.println(result.get("firstName")); // 또는 쿼리문에 AS ""활용하면 원하는 키값 지정 가능!
+		EmpVO result = mapper.getEmp(param);
+//		Map<String, Object> result = mapper.getEmp(param);
+//		System.out.println(result.get("FIRST_NAME")); // result->콘솔에 {키,밸} 확인가능(대문자 필수!)
+//		System.out.println(result.get("firstName")); // 또는 쿼리문에 AS ""활용하면 원하는 키값 지정 가능!
 	}
 	
 	@Test
 	public void list() {
 		EmpVO param = new EmpVO();
 		param.setDepartmentId("40");
-		List<EmpVO> result = mapper.getEmpList(param);
+//		List<EmpVO> result = mapper.getEmpList(param);
 //		List<EmpVO> list = mapper.getEmpByDept(new String);
-		System.out.println(result);
+//		System.out.println(result);
 	}
 	
 }

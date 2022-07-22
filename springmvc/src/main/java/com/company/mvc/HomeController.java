@@ -19,7 +19,7 @@ import com.company.mvc.emp.EmpVO;
 /**
  * Handles requests for the application home page.
  */
-@Controller
+@Controller // POJO이면서 @Component역할도 해줌(상속)(Bean등록, 서블릿이 호출하도록 command와 시킴)
 public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -27,7 +27,7 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET) // value값 여러개 설정 가능
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 
@@ -49,21 +49,6 @@ public class HomeController {
 		return vo;
 	}
 
-	@Autowired
-	EmpMapper mapper;
-
-	@RequestMapping("/emp")
-	public String emp(EmpVO vo, Model model) {
-		logger.info("파라미터: " + vo.toString());
-		model.addAttribute("emp", mapper.getEmp(vo));
-		return "emp";
-	}
-	
-	@RequestMapping("/empList")
-	public String empList(EmpVO vo, Model model) {
-		model.addAttribute("emps", mapper.getEmpList(vo));
-		return "empList";
-	}
 	
 	
 }

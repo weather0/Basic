@@ -7,7 +7,6 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	<mybatis-spring:scan base-package="com.company.mvc"></mybatis-spring:scan>
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- datasource connection pool -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
@@ -18,13 +17,10 @@
 		<property name="username" value="hr" />
 		<property name="password" value="hr" />
 	</bean>
+	
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
 		destroy-method="close">
 		<constructor-arg ref="hikariConfig" />
 	</bean>
-	<!-- mybatis SqlSessionFactory -->
-	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
-	</bean>
+	
 </beans>
