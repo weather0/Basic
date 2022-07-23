@@ -18,7 +18,6 @@
 				and job_id = #{jobId}
 			</if>
 			
-			<!-- 과제작성중 -->
 			<if test="depts != null">
 				and department_id in(
 				<foreach item="item" collection="depts" separator=","> #{item}</foreach>

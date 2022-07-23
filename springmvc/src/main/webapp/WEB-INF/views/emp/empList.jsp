@@ -12,14 +12,25 @@
 <h3>사원목록</h3>
 
 
-<table border="1px">
-  <c:forEach items="${emps }" var="emps">
+<table border="1">
+  <tr>
+    <th>사번</th>
+    <th>이름</th>
+    <th>성</th>
+    <th>입사일</th>
+    <th>급여</th>
+    <th>직무</th>
+    <th>부서</th>    
+  </tr>
+  <c:forEach var="item" items="${emps }">
     <tr>
-      <td><a href="empUpdate/${emps.employeeId}">${emps.employeeId }</a></td>
-      <td>${emps.lastName }</td>
-      <td><fmt:formatDate value="${emps.hireDate }" pattern="yyyy-MM-dd"></fmt:formatDate></td>
-      <td>${emps.salary }</td>
-      <td>${emps.jobId }</td>
+      <td><a href="empUpdate/${item.employeeId}">${item.employeeId }</a></td>
+      <td>${item.firstName }</td>
+      <td>${item.lastName }</td>
+      <td><fmt:formatDate value="${item.hireDate }" pattern="yyyy-MM-dd"></fmt:formatDate></td>
+      <td>${item.salary }</td>
+      <td>${item.jobId }</td>
+      <td>${item.departmentId }</td>
     </tr>
   </c:forEach>
 </table>
@@ -33,7 +44,9 @@
   <br>
   부서<input type="checkbox" name="depts" value="10">10
       <input type="checkbox" name="depts" value="20">20
-      <input type="checkbox" name="depts" value="30">30
+      <input type="checkbox" name="depts" value="50">50
+      <input type="checkbox" name="depts" value="60">60
+      <input type="checkbox" name="depts" value="90">90
   <br>
   직무<select name="jobId">
         <option value="">선택
