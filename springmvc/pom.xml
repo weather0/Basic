@@ -147,6 +147,17 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.13.2.2</version>
 		</dependency>
+		
+		
+		<!--
+			<dependency>
+				<groupId>com.fasterxml.jackson.dataformat</groupId>
+				<artifactId>jackson-dataformat-xml</artifactId>
+				<version>2.13.2</version>
+			</dependency>
+		-->
+		
+		
 		<!-- 여기까지 넣고 hello world 테스트 -->
 
 		<!-- Database connection pool -->
