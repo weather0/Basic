@@ -45,13 +45,6 @@
 
         <h3>댓글 리스트</h3>
         <div id="replyList">
-          <div data-rno="1">
-            <span class="reWiter">댓글작성자</span>
-            <span class="reContent">댓글내용</span>
-            <span class="reDate">작성일시</span>
-            <span class="btnReUpd"><button>수정</button></span>
-            <span class="btnReDel"><button>삭제</button></span>
-          </div>
         </div>
 
 
@@ -61,7 +54,7 @@
             location.href = "${path}/boardDelete?bno=${board.bno}";
           })
 
-          $.ajax("/mvc/reply/${bno}")
+          $.ajax("http://localhost:8080/mvc/replyList/${bno}")
           .done(function(objs){
              for(obj of objs){
             	 let node = `
