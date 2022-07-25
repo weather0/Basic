@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+  <style>
+    .checked {
+      background-color: aqua;
+    }
+  </style>
+</head>
+<script>
+  $(function () {
+
+    // input 태그의 값으로 li태그 생성해서 ul태그에 추가
+    $("#btn").on("click", function () {
+      //.val()은 읽기, 쓰기 다 가능(값 비우면 읽기, 값 넣으면 쓰기) 
+      $('#list').append($(`<li>${$('#content').val()}</li>`)) // val(): 읽기
+      $('#content').val('') // val('값'): 쓰기
+    })
+
+
+    // 직접이벤트
+    // $("li").on("click", function (ev) {
+    //   // ev.target.classList.toggle('checked') // 토글방법1: ev.target은 이벤트타겟(클릭한 그 놈)
+    //   $(this).toggleClass('checked') // 토글방법2(jQuery): this는 이벤트타겟
+    // })
+
+    // 직접이벤트의 단점: 바로 위 input이벤트로 새로 넣은 li에는 이 이벤트가 적용이 안 된다!
+    // 해결방법1: 위에 input이벤트 안에 이 토글이벤트를 꾸역꾸역 넣는 방식
+
+    // 해결방법2: 그룹이벤트이용!!
+    // 그룹이벤트(이벤트위임): 이벤트 자체는 ul에 거는데, 실제 타겟은 li로 걸기가 가능하다!!!
+    $("ul").on('click', 'li', function (ev) {
+      // ev.target.classList.toggle('checked') // 방법1: ev.target은 이벤트타겟(클릭한 그 놈)
+      $(this).toggleClass('checked') // 방법2(jQuery): this는 이벤트타겟
+    })
+
+
+  })
+</script>
+
+<body>
+  <input id="content"><button id="btn">등록</button>
+  <ul id="list">
+    <li>li11</li>
+    <li>li22</li>
+    <li>li33</li>
+  </ul>
+</body>
+
+</html>
