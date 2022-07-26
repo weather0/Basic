@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- mybatis SqlSessionFactory -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<!-- 매퍼xml위치 다르게 설정하려할 때 (아스타* 주의!!)-->
+		<property name="mapperLocations" value="classpath*:com/company/app/**/mapper/*.xml"></property>
+	</bean>
+	
+	<!-- Mapper 인터페이스 -> 상속받고 구현클래스 @Repository 빈 등록 -->
+	<!-- 빨간줄 뜨면 Namespaces에서 mybatis체크 -->
+	<mybatis-spring:scan base-package="com.company.app.**.mapper" />
+
+</beans>
