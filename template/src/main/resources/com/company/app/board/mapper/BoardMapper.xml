@@ -10,7 +10,7 @@
 
   <sql id="criteria">
     <if test="keyword != null and keyword != ''">
-      and ${type} = #{keyword} 
+      and ${type} like '%' || #{keyword} || '%' 
       <!-- ${} 달러는 따옴표 안써도 됨 -->
     </if>
   </sql>

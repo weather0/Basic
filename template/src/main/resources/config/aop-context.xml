@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AOP방식1(xml방식): Namespace에 AOP, context체크 -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+<!--
+  <bean id="logAdvice" class="com.company.app.common.LogAdvice"></bean>
+  <aop:config>
+    클래스명: *Impl, 메서드명: * 
+    <aop:pointcut expression="execution(* com.company.app..*Impl.*(..))" id="allpointcut"/>
+    <aop:aspect ref="logAdvice">
+      <aop:before method="printLog" pointcut-ref="allpointcut"/>
+    </aop:aspect>
+  </aop:config>
+-->
+
+  <!-- AOP방식2(@어노테이션방식) -->
+  <!-- LogAdvice클래스에 @Service @Aspect @Pointcut @Before 달고, allpointcut()메서드 만듦-->
+  <!-- 그리고 autoproxy추가 -->
+  <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+  
+</beans>
