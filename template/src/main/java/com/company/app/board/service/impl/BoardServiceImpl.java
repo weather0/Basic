@@ -22,6 +22,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> getBoardList(Criteria cri) {
+		System.out.println("(220727AOP수업)위에 before로그, list service(이줄), 밑에 after로그");
 		return mapper.getBoardList(cri);
 	}
 

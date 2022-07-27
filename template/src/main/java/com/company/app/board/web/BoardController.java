@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class BoardController {
 
 	// 목록
 	@RequestMapping("/boardList")
-	public String boardList(Model model, Criteria cri) {
+	public String boardList(Model model, @ModelAttribute("cri") Criteria cri) {
 		// 페이징
 		// 전체건수
 		cri.setAmount(5);
@@ -85,8 +86,11 @@ public class BoardController {
 	
 	// 삭제처리
 	@GetMapping("/boardDelete")
-	public String boardDeleteForm(Model model, BoardVO vo) {
-		service.deleteBoard(vo);
+	public String boardDeleteForm(Model model, BoardVO vo, RedirectAttributes rttr) {
+		if(service.deleteBoard(vo)) {
+			rttr.addFlashAttribute("result1","success"); // 일회성
+			rttr.addAttribute("result2","success"); // 파라미터
+		}
 		return "redirect:boardList";
 	}
 

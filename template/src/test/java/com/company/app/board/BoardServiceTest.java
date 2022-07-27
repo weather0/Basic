@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.company.app.board.service.BoardService;
 import com.company.app.board.service.BoardVO;
+import com.company.app.common.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -20,14 +21,19 @@ public class BoardServiceTest {
 	BoardService service;
 
 	@Test
-	public void insert() {
-		for (int i = 1; i < 100; i++) {
-			BoardVO vo = new BoardVO();
-			vo.setTitle("제목" + i);
-			vo.setContent("테스트" + i);
-			vo.setWriter("작성자" + i);
-			service.insertBoard(vo);
-//			log.info("생성된 게시물 번호: " + vo.getBno());
-		}
+	public void list() {
+		service.getBoardList(new Criteria());
 	}
+	
+//	@Test
+//	public void insert() {
+//		for (int i = 1; i < 100; i++) {
+//			BoardVO vo = new BoardVO();
+//			vo.setTitle("제목" + i);
+//			vo.setContent("테스트" + i);
+//			vo.setWriter("작성자" + i);
+//			service.insertBoard(vo);
+////			log.info("생성된 게시물 번호: " + vo.getBno());
+//		}
+//	}
 }
