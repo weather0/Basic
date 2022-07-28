@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>사원목록페이지</title>
+  <style>
+    .gray {
+      background-color: lightgray;
+    }
+  </style>
+</head>
+
+<body>
+
+  <form action="">
+    <select name="jobId" class="form-control" id="jobId">
+      <option value="">선택</option>
+      <th:block th:each="item : ${jobs}">
+        <option th:text="${item.jobTitle}" th:value="${item.jobId}"></option>
+      </th:block>
+    </select>
+  
+    <select name="departmentId" class="form-control" id="departmentId">
+      <option value="">선택</option>
+      <th:block th:each="item : ${deps}">
+        <option th:text="${item.departmentName}" th:value="${item.departmentId}"></option>
+      </th:block>
+    </select>
+  </form>
+
+  <table>
+    <tr>
+      <th>순번</th>
+      <th>사번</th>
+      <th>이름</th>
+      <th>성</th>
+      <th>입사일</th>
+      <th>급여</th>
+      <th>커미션</th>
+    </tr>
+    <tr th:each="emp : ${empList}" th:class="${empStat.even}?'gray':''">
+    <!-- th:each="emp,st : 이렇게 하면 두번째 변수는 상태변수명 -->
+    <!-- 두번째 인자 생략하면 요소변수명에Stat붙인게 상태변수명 -->
+      <td th:text="${empStat.count}">순번</td>
+      <td th:text="${emp.employeeId}">100</td>
+      <!-- 링크방식1 -->
+      <td><a th:href="@{empUpdate(employeeId=${emp.employeeId})}">[[${emp.firstName}]]</a></td>
+      <!-- 링크방식2 -->
+<!--       <td><a th:href="@{empUpdate/{id}(id=${emp.employeeId})}">[[${emp.firstName}]]</a></td> -->
+      <td th:text="${emp.lastName}">박</td>
+      <td th:text="${#calendars.format(emp.hireDate,'yyyy-MM-dd')}">2020-01-27</td>
+      <td th:text="${#numbers.formatInteger(emp.salary,0,'COMMA')}" align="right">급여</td>
+      <td>
+        <span th:if="${emp.commissionPct != null}" th:text="${emp.commissionPct}">값있음</span>
+        <span th:if="${emp.commissionPct == null}">0</span>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
