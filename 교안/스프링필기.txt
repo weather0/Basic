@@ -64,3 +64,23 @@ localhost/home 실행해보자
   Copy required libraries into ~ 선택하고 finish
 4.cmd에서 java -Dserver.port=80 -jar demo-1.jar
   브라우저로 결과 확인: localhost/home
+
+
+
+
+─────────────
+0729 스프링부트JPA
+서버실행하고
+localhost/h2-console/
+접속해보면 무슨 유틸폼 나옴
+
+이클립스 콘솔창에 
+Database available at 'jdbc:h2:mem:80bcacee-b7fb-4345-89d3-11acac7e61cc'
+부분 찾아서
+
+브라우저 유틸화면에 JDBC URL: 에
+jdbc:h2:mem:80bcacee-b7fb-4345-89d3-11acac7e61cc
+주소 입력하고 하단 '연결' 클릭 - H2콘솔(DB관리창) 나옴
+
+select * from customer 쿼리한번 실행하면
+하단에 행추가할 수 있게 폼 나옴(개꿀!)
