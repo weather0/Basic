@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>emp목록</title>
+</head>
+<body>
+  <table border="1">
+    <tr>
+      <th>사번</th>
+      <th>이름</th>
+      <th>성</th>
+      <th>메일</th>
+      <th>연락처</th>
+      <th>입사일</th>
+      <th>직무</th>
+      <th>급여</th>
+      <th>상여</th>
+      <th>매니저</th>
+      <th>부서번</th>
+      <th>부서명</th>
+    </tr>
+    <tr th:each="item : ${emps}">
+      <td th:text="${item.employeeId}"></td>
+      <td th:text="${item.firstName}"></td>
+      <td th:text="${item.lastName}"></td>
+      <td th:text="${item.email}"></td>
+      <td th:text="${item.phoneNumber}"></td>
+      <td th:text="${item.hireDate}"></td>
+      <td th:text="${item.jobId}"></td>
+      <td th:text="${item.salary}" align="right"></td>
+      <td th:text="${item.commissionPct}"></td>
+      <td th:text="${item.managerId}"></td>
+      <td th:text="${item.departments} != null ? ${item.departments.departmentId}"></td>
+      <td th:text="${item.departments} != null ? ${item.departments.departmentName}"></td>
+    </tr>
+  </table>
+</body>
+</html>
