@@ -58,4 +58,57 @@
     delete from employees
     where employee_id = #{employeeId}
   </delete>
+  
+  
+  
+  
+  <!-- 방법1: resultMap="empDeptMap" -->
+  <!-- 방법2: resultType="EmpVO" 하고 열마나 "depts.departmentName"이런식으로 별칭 달아줌 -->
+  <resultMap type="EmpVO" id="empDeptMap">
+    <id column="employee_id" property="employeeId" />
+    <result column="first_name" property="firstName" />
+    <result column="last_name" property="lastName" />
+    <association property="depts" javaType="DepVO">
+      <id column="department_id" property="departmentId" />
+      <result column="department_name" property="departmentName" />
+      <result column="manager_id" property="managerId" />
+      <result column="location_id" property="locationId" />
+    </association>
+  </resultMap>
+  
+  <select id="getEmpDept" resultMap="empDeptMap">
+    select e.employee_id, 
+           e.first_name,
+           d.department_id,
+           d.department_name, 
+           d.manager_id, 
+           d.location_id
+    from employees e, departments d
+    where e.department_id = d.department_id
+  </select>
+  
+  
+  <resultMap type="DepVO" id="deptEmpsMap">
+    <id column="department_id" property="departmentId" />
+    <result column="department_name" property="departmentName" />
+    <result column="manager_id" property="managerId" />
+    <result column="location_id" property="locationId" />
+    <collection property="emp" ofType="EmpVO">
+      <id column="employee_id" property="employeeId" />
+      <result column="first_name" property="firstName" />
+    </collection>
+  </resultMap>
+  
+  <select id="getDeptEmps" resultMap="deptEmpsMap">
+    select e.employee_id, 
+           e.first_name,
+           d.department_id,
+           d.department_name, 
+           d.manager_id, 
+           d.location_id
+    from employees e, departments d
+    where e.department_id = d.department_id
+  </select>
+  
+  
 </mapper>

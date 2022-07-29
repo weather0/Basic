@@ -1,6 +1,7 @@
 package com.company.app.emp.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,5 +20,6 @@ public class EmpVO {
 	private String salary;
 	private String departmentId;
 	
+	private List<DepVO> depts;
 
 }

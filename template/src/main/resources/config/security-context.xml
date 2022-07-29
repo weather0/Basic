@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security" xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="customLoginSuccessHandler" class="com.company.app.common.CustomLoginSuccessHandler"></bean>
+  <!-- Namespaces 체크! -->
+  <security:http pattern="/css/**" security="none" />
+  <security:http>
+    <security:intercept-url pattern="/top.jsp" access="permitAll()" />
+    <!-- 로그인페이지 접근시 ERR_TOO_MANY_REDIRECTS날 경우 permitAll을 해줘야 함 -->
+    <security:intercept-url pattern="/login.jsp" access="permitAll()" />
+    <security:intercept-url pattern="/admin/**" access="hasAuthority('ROLE_ADMIN')" />
+    <security:intercept-url pattern="/**" access="isAuthenticated()" />
+    <security:access-denied-handler error-page="/accessDenied.jsp"/>
+    <security:form-login 
+      login-page="/login.jsp"
+      authentication-success-handler-ref="customLoginSuccessHandler"
+      authentication-failure-url="/login.jsp"
+      default-target-url="/top.jsp" />
+    <security:logout logout-url="/logout" logout-success-url="/top.jsp" />
+    <!-- csrf disabled="false"하고 로그인 시도하면 엑세스거부페이지로 넘어가고 404에러 남(콘솔로그: Invalid CSRF token found for 뜸)-->
+    <!-- 로그인페이지에 <sec:csrfInput /> 또는
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" 넣어주면 해결됨 -->
+    <security:csrf disabled="false" />
+  </security:http>
+  <security:authentication-manager>
+    <security:authentication-provider>
+      <security:jdbc-user-service data-source-ref="dataSource"
+        users-by-username-query="select id, password, 1 from users where id = ?"
+        authorities-by-username-query="select id, 'ROLE_' || upper(role) from users where id = ?"
+      />
+      <!-- 암호화 문서: https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html -->
+      <!-- '{noop}' || password  -> 암호화 안하겠다 -->
+      <security:password-encoder hash="bcrypt"/>
+      
+      <!-- 
+      <security:user-service>
+        <security:user name="user" password="{noop}1234" authorities="ROLE_USER" />
+        <security:user name="admin" password="{noop}1234" authorities="ROLE_ADMIN" />
+      </security:user-service>
+      -->
+      
+    </security:authentication-provider>
+  </security:authentication-manager>
+
+</beans>
