@@ -1,0 +1,5 @@
+제출방식 : 메일
+메일 제목 : 2강의장, 누구
+첨부파일 : exam_누구.zip
+		( 캡쳐이미지, index.html, style.css )
+메일주소 : mjk@yedam.ac
