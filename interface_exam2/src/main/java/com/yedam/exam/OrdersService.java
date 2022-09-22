@@ -1,7 +1,8 @@
 package com.yedam.exam;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrdersService {
-	public int insertOrders(List<Orders> orders) ;
+	public Map insertOrders(List<Orders> orders) ;
 }

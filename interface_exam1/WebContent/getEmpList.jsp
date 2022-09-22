@@ -28,7 +28,7 @@
       	
       	function makeData(){
       		let list = [];
-      		
+      		let err;
             //체크한 행만 전송할 데이터 만들기.
             $("[name='selId']:checked").each(function(i, checkbox){
                var tr = $(checkbox).parent().parent();
@@ -36,22 +36,58 @@
                
                var employee_id = td.eq(1).text();
                var goods       = td.eq(3).find("select").val();
+               var dttm         = new Date();
+               var cnt         = td.eq(5).find("input").val();
+               var price         = td.eq(4).text();
+               console.log(goods)
+               console.log(cnt)
+               console.log(price)
+               console.log(dttm)
+               
+               if (goods == null || goods == ''){
+                 alert('사번 '+ employee_id + '의 상품을 선택해 주세요')
+                 err = 1;
+               } else if (cnt == null || cnt == ''){
+                 alert('사번 '+ employee_id + '수량을 입력해 주세요')
+                 err = 1;
+               }
                
                //객체에 담기
                var obj = {};
                obj["customer"] = employee_id;     // 사번
                obj["ord_goods"] = goods;  	     // 상품
+               obj["ord_dttm"] = dttm;  	     // 신청일시
+               obj["ord_cnt"] = cnt;  	     // 신청수량
+               obj["price"] = price;  	     // 단가
                
                //목록에 담기
                list.push(obj);
             });
       
+            
+            
             //객체를 string으로 변환
             console.log(JSON.stringify(list));
+            let orders = JSON.stringify(list)
             
-            //ajax함수를 이용하여 체크항 행의 정보를 서버로 전송하여 등록 처리
-            $.ajax()
 
+            //ajax함수를 이용하여 체크항 행의 정보를 서버로 전송하여 등록 처리
+            if(err != 1){
+              $.ajax({
+                url: '/exam/insertOrders',
+                type: 'POST',
+                contentType : 'application/json; charset=UTF-8',
+                data: orders,
+                success: (res) =>{
+                  alert('등록성공')
+                  alert('처리건수: ' + res.total + ', 성공건수: ' + res.success + ', errList: ' + res.errList)
+                },
+                error: (e) => {
+                  console.log(e)
+                }
+              })
+            }
+            
       	}
       </script>
    </head>

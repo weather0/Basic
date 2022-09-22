@@ -12,7 +12,7 @@
 						ORD_GOODS,
 						ORD_CNT,		
 						ORD_PRICE)
-			VALUES ( #{ord_no},
+			VALUES ( ORDERS_SEQ.nextval,
 			         #{customer},
 				     sysdate,
 				     #{ord_goods},
