@@ -1,0 +1,17 @@
+table {
+  border-collapse: collapse;
+}
+
+tr>:nth-child(1) {
+  background-color: rgba(213, 58, 58, 0.75);
+}
+tr>:nth-child(7) {
+  background-color: rgba(38, 31, 244, 0.632);
+}
+th{
+  font-weight: bold;
+}
+th,td{
+  width: 35px;
+  text-align: center;
+}
