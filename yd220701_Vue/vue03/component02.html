@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 어제까지 배웠던 "Vue객체와 html태그간의 bind 관계"와 마찬가지로,
+      // 이번 단원은 "Vue객체와 컴포넌트의 템플릿 간의 bind"라고 이해하면 수월!
+      let component = {
+        // 템플릿규칙 1. 태그로 구성할 것
+        //            2. 태그는 부모-자식 관계로 구성(하나의 큰 태그로 묶여 있을 것)
+        template: `<div>Hello, vue.js<br><p>{{text}}</p></div>`, // 흐름④ 태그의 변수명
+
+        // 컴포넌트도 하나의 인스턴스라고 간주하면 이해 수월
+        // 컴포넌트의 data는 함수!! return값은 오브젝트!!
+        data: function () {
+          return {
+            message: '컴포넌트 메시지'
+          }
+        },
+        // props: 1.객체(옵션필요시) 2.배열(단순나열)
+        props: {
+          // 흐름②: 태그에서 지정한 변수명 정의
+          text: {
+            // 타입 두개(AorB)이상 지정도 배열로 가능
+            type: [String, Number],
+            // required: true -> 외부에서 값이 반드시 컴포넌트로 들어와야하는 옵션
+            required: true,
+            // default -> 단순값이면 그냥 쓰면 되고, 객체나 배열 같은 참조타입일거면 반드시 함수(리턴값필수)로 구성해야 함.
+            default: function (value) {
+              return value + '검증완료'
+            }
+          }
+        },
+        computed: {},
+        methods: {},
+        watch: {}
+      };
+
+
+      // 전역 등록: html의 모든 vue 인스턴스에서 사용 가능
+      Vue.component('static-component', component);
+
+      new Vue({
+        el: '#app',
+        // 지역 등록(인스턴스 등록): 포함된 vue 인스턴스의 범위에 한정하여 사용 가능
+        // 즉 div#app 안에서만 동작한다는 말임
+        components: {
+          'instance-component': component
+        },
+        data: {
+          // 흐름③: 태그에 뿌릴 값
+          data: '테스트입니다'
+        }
+      })
+    })
+  </script>
+  <div id="app">
+    <!-- <h3>전역 컴포넌트</h3>
+    <static-component></static-component> -->
+    <hr>
+    <h3>지역 컴포넌트</h3>
+    <!-- 흐름①: v-bind:원하는변수명(컴포넌트쪽props)=뿌릴값변수(vue객체 data의 변수) -->
+    <instance-component :text="data"></instance-component>
+    <input v-model="data">
+
+  </div>
+  <br><br>
+  <hr>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const component = {
+        template: `<div>
+                    숫자: {{num+1}} <br>
+                    문자: {{str + ': 문자열'}} <br>
+                    짝수: {{even}} <br>
+                    객체: {{obj.message}} <br>
+                  </div>`,
+        props: {
+          num: {
+            type: Number,
+            required: true
+          },
+          str: {
+            type: String,
+            default: '안녕'
+          },
+          obj: {
+            type: Object,
+            default: () => {
+              return { message: '안녕, 객체로부터' }
+            }
+          },
+          even: {
+            // 유효성 검사 실패시: 콘솔에 찍힘(custom validator check failed for prop "even".)
+            validator: (value) => {
+              return (value % 2) == 0;
+            }
+          }
+        }
+      }
+
+      new Vue({
+        el: '#app2',
+        components: {
+          'my-component': component
+        },
+        data: {
+          myNumber: 44,
+          passedString: '안녕, 부모로부터',
+          passedObj: {
+            message: '넘겨준 객체'
+          }
+        }
+
+      })
+
+
+
+    })
+  </script>
+  <div id="app2">
+    <my-component :num="myNumber" :str="passedString" :even="myNumber" :obj="passedObj"></my-component>
+  </div>
+
+</body>
+
+</html>
