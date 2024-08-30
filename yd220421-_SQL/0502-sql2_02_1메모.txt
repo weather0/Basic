@@ -1,0 +1,99 @@
+───── 관리자계정 ──────
+CREATE ROLE r1;
+GRANT create session, create table, create view TO r1;
+GRANT r1 TO demo;
+
+CREATE USER test IDENTIFIED BY test;
+GRANT r1 TO test;
+
+--롤에 권한 추가하면 사용자에 권한 자동 추가됨
+GRANT create sequence, create synonym TO r1;
+
+--public synonym 공용동의어 생성
+CREATE PUBLIC SYNONYM dlist FOR HR.dept_loc_list_vu;
+
+--대표적인 공용동의어: dual이라는 테이블에 dual이라는 동의어 기본제공
+SELECT object_name, object_type, owner
+FROM dba_objects
+WHERE object_name = 'DUAL';
+
+--롤삭제
+DROP ROLE r1;
+
+--사용자삭제(접속해제,cascade필수). 개별동의어 등 자동삭제됨
+DROP USER demo CASCADE;
+DROP USER test CASCADE;
+
+
+───── 인사관리계정 ──────
+CREATE view emp_list_vu
+AS
+SELECT employee_id empno, first_name||' '||last_name empname, job_id, department_id,
+          CONCAT(email, '@yd.com') email_addr
+FROM employees;
+
+SELECT * FROM emp_list_vu;
+
+GRANT select on hr.emp_list_vu TO r1;
+
+--뷰변경
+CREATE OR REPLACE view emp_list_vu
+AS
+SELECT employee_id empno, first_name||' '||last_name empname, job_id, department_id,
+          CONCAT(email, '@yd.co.kr') email_addr
+FROM employees
+WHERE department_id <> 90;
+
+CREATE OR REPLACE VIEW dept_loc_list_vu
+AS
+SELECT department_id, department_name, city
+FROM departments JOIN locations
+USING (location_id);
+
+--공용 SELECT 권한 주기
+GRANT select on hr.dept_loc_list_vu TO public
+
+
+
+───── demo계정 ──────
+SELECT *
+FROM session_privs;
+
+SELECT *
+FROM hr.emp_list_vu;
+
+--private(개별)동의어
+CREATE SYNONYM d FOR hr.emp_list_vu;
+
+SELECT *
+FROM d;
+
+--공용동의어 사용
+SELECT *
+FROM HR.dept_loc_list_vu;
+
+SELECT *
+FROM dlist;
+
+
+
+
+───── TEST계정 ──────
+SELECT *
+FROM session_privs;
+
+SELECT *
+FROM hr.emp_list_vu;
+
+--private(개별)동의어
+CREATE SYNONYM emp FOR hr.emp_list_vu;
+
+SELECT *
+FROM emp;
+
+--공용동의어 사용
+SELECT *
+FROM HR.dept_loc_list_vu;
+
+SELECT *
+FROM dlist;

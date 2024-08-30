@@ -1,0 +1,33 @@
+■사용자 계정 생성
+cmd커맨드창 켜서 작업:
+sqlplus
+사용자명: system
+비밀번호: oracle
+SQL> conn / as sysdba
+SQL> CREATE USER starbucks IDENTIFIED BY starbucks;
+  --오라클 12c버전 이후:
+  SQL> CREATE USER c##starbucks IDENTIFIED BY 1234; 
+  --근데c##이 접두어가 아니라 이름문자열에 실제로 포함되어 존나 불편
+  --그래서 아래와 같이 해줘야 깔끔하게 이름 생성 가능
+  SQL> ALTER SESSION SET "_ORACLE_SCRIPT"=true;
+  SQL> CREATE USER starbucks IDENTIFIED BY 1234;
+
+
+■사용자 권한 부여
+cmd커맨드창 닫고 오라클SQL관리자로 접속해서 계속 진행:
+관리자-다른사용자-starbucks우클릭-사용자 편집을 눌러본다
+
+일단 아무권한 없이 생짜로 만든 상태라면 롤,권한 암것도 없을 것이다.
+
+이제 미친 권한들을 부여해주자
+GRANT connect, resource, dba, create session, create view, create synonym, create any table, select any table TO starbucks;
+
+관리자-다른사용자-starbucks우클릭-사용자 편집에서 결과를 확인하자
+부여된 롤: connect, resource, dba가 체크됨
+시스템권한: 상기 5권한 + UNLIMITED TABLESPACE도 자동 체크되어 있다
+
+쿼리문으로 조회도 가능하다
+SELECT * FROM user_role_privs;
+SELECT * FROM user_sys_privs;
+
+

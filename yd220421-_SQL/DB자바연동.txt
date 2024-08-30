@@ -1,0 +1,13 @@
+driver = oracle.jdbc.driver.OracleDriver
+url = jdbc:oracle:thin:@localhost:1521:xe
+user = micol
+password = 1234
+
+
+JDBC 실행순서(흐름)
+1. Driver loading: Class.forName(driver);
+2. Connection : con = DriverManager.getConnection(url,id,pw);
+3. query
+  select는 set을, insert update delete 는 int값을 가져옴
+4. PreparedStatement(Statement보다 보안이점): sq 결과를 커넥션을 통해서 전달해주는 기능. pstmt=con.prepareStatement(sq);  
+5. run: excuteQuery, executeUpdate 두개 뿐임
