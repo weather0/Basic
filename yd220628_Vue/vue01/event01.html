@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function printMessage() {
+        alert('클릭함')
+      }
+      new Vue({
+        el: '#app',
+        data: {
+          count: 0,
+          num: 0,
+          isClick: false
+        },
+        methods: {
+          countUp: function (value) {
+            this.count += value;
+          },
+          oneClick: function () {
+            this.isClick = true;
+            printMessage();
+          }
+        }
+      })
+    })
+  </script>
+  <h1>App1</h1>
+  <div id="app">
+    <p>{{count}}</p>
+    <button v-on:click="countUp(3)">3씩증가</button>
+    <!-- isClick이 true면 disabled -->
+    <button v-on:click="oneClick" :disabled="isClick">원클릭</button>
+    <hr>
+    <label>증가숫자: </label><input v-model.number="num" type="number"><br>
+    <button v-on:click="countUp(num)">{{num}}씩 증가</button>
+  </div>
+  <hr>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#app2',
+        data: {
+          myText: ''
+        },
+        methods: {
+          showAlert: function () {
+            alert('Enter키를 눌렀습니다');
+          }
+        }
+      })
+    })
+  </script>
+  <h1>App2</h1>
+  <div id="app2">
+    <input v-on:keyup.enter="showAlert" v-model="myText">
+    <p>{{myText}}</p>
+  </div>
+</body>
+
+</html>

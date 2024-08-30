@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 굳이 변수 선언할 필요는 X
+      /* new Vue({
+        el: 'HTML 요소',
+        // 사용하는 모든 데이터에 정의
+        data: '데이터에 대한 정보',
+        computed: '데이터를 연산',
+        methods: '데이터 처리',
+        watch: '데이터를 감시'
+      }) */
+
+      // 템플릿문법 {{}} -> render() 함수
+      // 솔직히 템플릿문법{{}}보다 디렉티브(v-)방식을 더 많이 쓴다고
+      let app = new Vue({
+        el: '#app',
+        data: {
+          // 프로퍼티
+          myText: '<h1>Hello!</h1>' // 태그는 걍 쌩으로는 인식 못 함. v-html해야 먹음
+        }
+
+
+      })
+
+    })
+  </script>
+  <div id="app">
+    <!-- 템플릿 -->
+    <p>{{ myText.replace('Hello','안녕하세요') }}</p>
+    <!-- 디렉티브: 해당 요소에 대해 vue가 실행할 명령어(v-) -->
+    <p v-text="myText"></p>
+    <p v-html="myText"></p>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let app2 = new Vue({
+        el: '#app2',
+        data: {
+          myNumber: 12345,
+          myText: 'vue.js',
+          myBoolean: true,
+          myArr: ['원숭이', '바나나', '타이슨'],
+          myObject: { 이름: '콜롬보', price: 800, 진짜임: false }
+        }
+      })
+    })
+  </script>
+  <div id="app2">
+    <p>{{ myNumber + 87654 }}</p>
+    <p>{{ myText + '배워보자' }}</p>
+    <p>{{ myBoolean }}</p>
+    <p>{{ myArr[2] }}</p>
+    <p>{{ myObject.이름+'형사' }} {{ myObject.진짜임 }}</p>
+    <!-- $: 인스턴스의 필드자체에 접근 -->
+    <p>{{ $data }}</p> <!-- 모든 값 객체형태로 뿌림-->
+  </div>
+</body>
+
+</html>

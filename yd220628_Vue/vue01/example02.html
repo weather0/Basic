@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    #myForm>label {
+      display: inline-block;
+      width: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#myForm',
+        data: {
+          myName: '',
+          myHome: '',
+          mySkill: [],
+          myField: '',
+          myMemo: ''
+        },
+        computed: {
+          skillList: function () {
+            let result = '';
+            for (let i = 0; i < this.mySkill.length; i++) {
+              if (i == this.mySkill.length - 1) {
+                result += this.mySkill[i];
+              } else {
+                result += this.mySkill[i] + ", ";
+              }
+            }
+            return result;
+          }
+        }
+      })
+    })
+  </script>
+  <div id="myForm">
+    <h1>입력폼 활용</h1>
+    <label>이름:</label><input type="text" v-model="myName"><br>
+    <label>거주지:</label><input type="text" v-model="myHome"><br>
+    <div>
+      기술스택<br>
+      <label><input type="checkbox" v-model="mySkill" value="java">java</label>
+      <label><input type="checkbox" v-model="mySkill" value="JS">javascript</label>
+      <label><input type="checkbox" v-model="mySkill" value="C++">c++</label>
+      <label><input type="checkbox" v-model="mySkill" value="GO">go</label>
+      <label><input type="checkbox" v-model="mySkill" value="python">python</label>
+    </div>
+    <div>
+      지원분야<br>
+      <label><input type="radio" v-model="myField" value="Front">Front</label>
+      <label><input type="radio" v-model="myField" value="Back">Back</label>
+      <label><input type="radio" v-model="myField" value="Full">Full</label>
+    </div>
+    <textarea name="" id="" cols="30" rows="5" v-model="myMemo">안녕하세요</textarea>
+
+    <hr>
+
+    <div>
+      <ul>
+        <li>이름: {{myName}}</li>
+        <li>거주지: {{myHome}}</li>
+        <li>기술스택: {{mySkill.join(', ')}}<br>
+          <!--computed활용-->
+          {{skillList}}
+        </li>
+        <li>지원분야: {{myField}}</li>
+        <li>지원동기: {{myMemo}}</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    .strike-through {
+      text-decoration: line-through;
+      color: lightgray;
+    }
+
+    .dark {
+      background-color: gray;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // v-bind: 속성 값을 주는 것
+      let v1 = new Vue({
+        el: '#app',
+        data: {
+          fileName: '강아지.jpg',
+          styleObject: {
+            width: '50%',
+            border: '1px solid black'
+          },
+          myLink: 'https://www.naver.com'
+        }
+      })
+
+
+
+    })
+  </script>
+  <div id="app">
+    <hr>
+    <h1>App1</h1>
+    <hr>
+    <img src="강아지.jpg" style="width: 20%;">직접지정</img>
+    <img v-bind:src="fileName" v-bind:style="styleObject">v-bind로 지정</img>
+    <hr>
+
+    <a href="https://www.naver.com">링크를 직접지정</a>
+    <!-- 'v-bind'생략하고 바로 콜론 가능 개꿀 -->
+    <a :href="myLink">링크를 v-bind로 지정</a>
+
+    <br>
+    <br>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let v2 = new Vue({
+        el: '#app2',
+        data: {
+          myColor: 'violet',
+          mySize: '200%',
+          myBackColor: 'aqua'
+        }
+      })
+    })
+  </script>
+  <div id="app2">
+    <hr>
+    <h1>App2</h1>
+    <hr>
+    <!-- v-bind:style="프로퍼티명" -->
+    <!-- v-bind:style="{ color: 프로퍼티명 }" -->
+    <p style="color: violet">문자색 직접 지정</p>
+    <p :style="{color: myColor}">문자색 v-bind로 지정</p>
+    <hr>
+    <p style="font-size: 200%">문자크기 직접 지정</p>
+    <!-- JS표기방식: 중간에 하이픈(-)들어간 필드(font-size등)은 카멜식으로 적거나 따옴표 붙여줘야 함 -->
+    <p :style="{fontSize: mySize}">문자색 v-bind로 지정</p>
+    <hr>
+    <p style="background-color: aqua">배경색 직접 지정</p>
+    <p :style="{'background-color': myBackColor}">배경색 v-bind로 지정</p>
+    <br>
+    <br>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let v3 = new Vue({
+        el: '#app3',
+        data: {
+          myClass: 'strike-through',
+          darkClass: 'dark',
+          isOn: false
+        }
+      })
+
+    })
+  </script>
+  <div id="app3">
+    <hr>
+    <h1>App3</h1>
+    <hr>
+    <p class="strike-through">직접 클래스 지정</p>
+    <p :class="myClass">v-bind로 클래스 지정</p>
+    <p :class="[myClass, darkClass]">v-bind로 복수의 클래스 지정(배열형태)</p>
+    <p :class="{'strike-through' : isOn}">데이터로 클래스 ON/OFF</p> <!-- 불린으로 조절 -->
+  </div>
+</body>
+
+</html>

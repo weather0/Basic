@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+  .blue-underline {
+    text-decoration: underline blue;
+  }
+
+  .dark {
+    background-color: black;
+    color: white;
+  }
+</style>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#app',
+        data: {
+          vUrl: 'https://www.naver.com',
+          vImg: '강아지.jpg',
+          vRight: 'right',
+          vCenter: 'center',
+          vInline: 'inline-block',
+          vColor: 'red',
+          vSize: '150%',
+          vBC: 'yellow',
+          vClassB: 'blue-underline',
+          vClassD: 'dark'
+        }
+      })
+    })
+  </script>
+  <div id="app">
+    <p><a :href="vUrl">네이버로 연결</a></p>
+    <p><img :src="vImg">이미지 표시</img></p>
+    <p :style="{textAlign: vRight}">텍스트 우측 정렬</p>
+    <!-- <p :style="{textAlign: vCenter}">텍스트 가운데 정렬</p> -->
+    <p :align="vCenter">텍스트 가운데 정렬</p> <!-- :align이 있었음! -->
+    <p :style="{display: vInline, color:vColor}">인라인 스타일로 글자색 빨간색</p>
+    <p :style="{display: vInline, fontSize:vSize, color:vColor}">인라인 스타일로 글자크기 150% 빨간색</p>
+    <p :style="{display: vInline, fontSize:vSize, color:vColor, backgroundColor:vBC}">인라인 스타일로 글자크기 150% 빨간색 배경 노란색</p>
+    <p :class="vClassB">blue-underline(파락색 밑줄) class 지정</p>
+    <p :class="[vClassB, vClassD]">blue-underline(파락색 밑줄), dark(배경블랙) class 지정</p>
+    <p class="static" :class="[vClassB, vClassD]">blue-underline(파락색 밑줄), dark(배경블랙) class 지정</p>
+  </div>
+
+</body>
+
+</html>
