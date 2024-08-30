@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+</head>
+
+<body>
+  <div>
+    <h1>탐색 선택자</h1>
+    <ul id="menu">
+      <li>내용1</li>
+      <li>내용2</li>
+      <li>내용3</li>
+      <li>내용4</li>
+      <li>내용5</li>
+    </ul>
+  </div>
+  <script>
+    // 배열 활용
+    console.log($('li'))
+    $($('li')[3]).text('하이')
+
+    // first, last
+    $('#menu li:first').text("first 변경")
+    $('li').first().css('color', 'red');
+    $('#menu li:last').text('last 변경');
+    $('li').last().css('color', 'red');
+
+    // 홀수번,짝수번
+    let even = $('li:even').css('background-color', 'lightgray')
+    let odd = $('li:odd').css('font-weight', 'bold')
+
+
+    // eq(), lt(), gt() less than, greather than
+    $('#menu li:eq(2)').text('eq(2)');
+    $('#menu li').eq(2).css('color', 'blue');
+
+    $('li:lt(2)').css('font-style', 'italic')
+
+  </script>
+
+  <div>
+    <h1>탐색선택자2</h1>
+    <ul>
+      <li>내용1-1</li>
+      <li>내용1-2</li>
+      <li>내용1-3</li>
+      <li>내용1-4</li>
+      <li>내용1-5</li>
+    </ul>
+    <ul>
+      <li>내용2-1</li>
+      <li>내용2-2</li>
+      <li>내용2-3</li>
+    </ul>
+  </div>
+  <script>
+    // first-of-type, last-of-type
+    $('li:first-of-type').text('첫번째')
+
+    // nth-child
+    $('li:nth-child(3)').text('nth-child(3)')
+    $('li:nth-child(2n)').text('nth-child(2n)')
+
+    // only-child, slice(start index, end index)
+    $('li:only-child').text('외동')
+  </script>
+</body>
+
+</html>

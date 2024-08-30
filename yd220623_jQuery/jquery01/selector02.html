@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <!-- 스트립트를 태그 위에 쓸 때에는 JS이벤트DOMContentLoaded 또는 jQuery ready함수를 선언해야함-->
+  <!--  ㄴ body내 모든 태그 다 읽고 실행하게끔 하는 이벤트/함수 -->
+  <!-- 그래서 웬만하면 스크립트는 태그 다 적고 바디 젤 하단부에 위치시키는 게 좋음(위~아래 순서대로 동작)-->
+  <script>
+    // JS
+    document.addEventListener('DOMContentLoaded', function () {
+
+    });
+
+    // jQuery
+    $(document).ready(function () {
+      let h1Tag = document.getElementsByTagName('h1')[0];
+      // console.log($(h1Tag));
+
+      // 전체선택자
+      $('*').css('border', '1px solid blue');
+
+      // 아이디 선택자
+      $('#title').css('background-color', 'gray').css('border', '2px solid black')
+
+      // 클래스 선택자
+      for (let i = 0; i < $('.blue').length; i++) {
+        $('.blue').textContent += i;
+      }
+
+      $('.blue').text('중복');
+
+      // 태그 선택자
+      $('h3').text('직접선택자로 다시 변경')
+
+      // 그룹 선택자
+      $('#title, .blue, h4')
+
+      // 종속 선택자
+      $('h3.blue').text('종속 선택자로 선택')
+      $('h2#title').text('ㅈㅅ선택자')
+
+    });
+  </script>
+  <h1>제이쿼리</h1>
+  <h2 id="title">선택자</h2>
+  <h3 class="blue">직접 선택자</h3>
+  <h4>그룹선택자</h4>
+
+</body>
+
+</html>

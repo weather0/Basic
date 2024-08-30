@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <ul>
+    <li id="apple">Apple</li>
+    <li id="banana">Banana</li>
+    <li id="orange">Orange</li>
+  </ul>
+  <script>
+    let ulge = document.getElementsByTagName('ul');
+    let ulqs = document.querySelector('ul');
+    let li = document.createElement('li');
+    li.innerText = "추가";
+    ulge[0].appendChild(li); // getElement's'(복수주의!): 는 배열로 반환(getElementById는 배열X)
+    ulqs.appendChild(li); // 쿼리셀렉터는 배열X
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <form id="info">
+    <div>
+      <label for="user_name">이름</label>
+      <input type="text" name="user_name" id="user_name">
+    </div>
+    <div>
+      <label for="user_dept">소속</label>
+      <select name="user_dept" id="user_dept">
+        <option value="student">학생</option>
+        <option value="teacher">교수</option>
+      </select>
+    </div>
+    <div>
+      <label for="user_hobby">취미</label>
+      <input type="checkbox" name="user_hobby" value="독서">독서
+      <input type="checkbox" name="user_hobby" value="영화">영화
+      <input type="checkbox" name="user_hobby" value="글쓰기">글쓰기
+    </div>
+    <button type="button" name="input" id="input">등록</button>
+  </form>
+
+  <div id="show">
+    <table style="border: 1px solid black">
+      <thead>
+        <tr>
+          <th>이름</th>
+          <th>소속</th>
+          <th>취미1</th>
+          <th>취미2</th>
+          <th>취미3</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+
+
+
+  <!-- JS방식 -->
+  <!-- <script>
+    let button = document.querySelector('#input');
+    let tbody = document.querySelector('#show tbody');
+    let name = document.querySelector('#user_name')
+    let dept = document.querySelector('#user_dept')
+
+    button.addEventListener('click', function () {
+      let hobbies = document.querySelectorAll('#info input[type="checkbox"]:checked')
+      let tr = document.createElement('tr')
+      let td = document.createElement('td')
+      td.innerHTML = name.value
+      tr.append(td)
+      td = document.createElement('td')
+      td.innerHTML = dept.value
+      tr.append(td)
+
+      for (let hobby of hobbies) {
+        console.log(hobby.value);
+        td = document.createElement('td')
+        td.innerHTML = hobby.value
+        tr.append(td)
+      }
+      tbody.append(tr)
+    })
+  </script> -->
+
+
+  <!-- jQuery방식 -->
+  <script>
+    let button = $('#input');
+    let tbody = $('#show tbody');
+    let name = $('#user_name')
+
+    button.click(function () {
+      let hobbies = $('#info input[type="checkbox"]:checked')
+      let dept = $('#user_dept')
+      console.log(hobbies)
+      let tr = $('<tr>')
+      let td = $('<td>')
+      td.text(name.val())
+      tr.append(td)
+      td = $('<td>')
+      td.text(dept.val())
+      tr.append(td)
+
+      for (let hobby of hobbies) {
+        td = $('<td>')
+        td.text(hobby.value)
+        tr.append(td)
+      }
+      tbody.append(tr)
+    })
+  </script>
+
+
+
+</body>
+
+</html>
