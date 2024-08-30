@@ -1,0 +1,73 @@
+1. github.com에서 새 repo생성: Basic
+2. 바탕화면에서 git clone https://github.com/weather0/Basic
+3. .gitignore 파일 넣기
+  .project
+  .classpath
+  .settings
+  **/.gitignore
+  !/.gitignore
+  # 하위폴더 .gitignore 모두 제거 (루트폴더 .gitignore 제외)
+
+4. 최초 1회 커밋 해줘야 오류 안 남
+git commit -m 'init'
+
+5. 
+git subtree add --prefix=yd220411_Java https://github.com/weather0/yd220411_Java master
+git subtree add --prefix=yd220412_Java https://github.com/weather0/yd220412_Java master
+git subtree add --prefix=yd220413_Java https://github.com/weather0/yd220413_Java master
+git subtree add --prefix=yd220414_Java https://github.com/weather0/yd220414_Java master
+git subtree add --prefix=yd220415_Java_Exam https://github.com/weather0/yd220415_Java_Exam master
+git subtree add --prefix=yd220418_Java https://github.com/weather0/yd220418_Java master
+git subtree add --prefix=yd220419_Java https://github.com/weather0/yd220419_Java master
+git subtree add --prefix=yd220420_Java https://github.com/weather0/yd220420_Java master
+git subtree add --prefix=yd220421_Java https://github.com/weather0/yd220421_Java master
+git subtree add --prefix=yd220421-_SQL https://github.com/weather0/yd220421-_SQL master
+git subtree add --prefix=yd220422_Java https://github.com/weather0/yd220422_Java master
+git subtree add --prefix=yd220426_Java https://github.com/weather0/yd220426_Java master
+git subtree add --prefix=yd220427_Java https://github.com/weather0/yd220427_Java master
+git subtree add --prefix=yd220428_Java_Exam https://github.com/weather0/yd220428_Java_Exam master
+git subtree add --prefix=yd220429_Java_JDBC https://github.com/weather0/yd220429_Java_JDBC master
+git subtree add --prefix=yd220503_Java_JDBC https://github.com/weather0/yd220503_Java_JDBC master
+git subtree add --prefix=yd220504_Java_OpenAPI https://github.com/weather0/yd220504_Java_OpenAPI master
+git subtree add --prefix=yd220510_Java_Exam https://github.com/weather0/yd220510_Java_Exam master
+git subtree add --prefix=yd220517-_HTML.CSS https://github.com/weather0/yd220517-_HTML.CSS master
+git subtree add --prefix=yd220524_JS https://github.com/weather0/yd220524_JS master
+git subtree add --prefix=yd220525_JS https://github.com/weather0/yd220525_JS master
+git subtree add --prefix=yd220526_JS https://github.com/weather0/yd220526_JS master
+git subtree add --prefix=yd220527_JS_DOM https://github.com/weather0/yd220527_JS_DOM master
+git subtree add --prefix=yd220530_JS_AJAX https://github.com/weather0/yd220530_JS_AJAX master
+git subtree add --prefix=yd220531_JS_Exam https://github.com/weather0/yd220531_JS_Exam master
+git subtree add --prefix=yd220603_JSP_Todolist https://github.com/weather0/yd220603_JSP_Todolist master
+git subtree add --prefix=yd220607_JSP_Servlet https://github.com/weather0/yd220607_JSP_Servlet master
+git subtree add --prefix=yd220608_Bootstrap https://github.com/weather0/yd220608_Bootstrap master
+git subtree add --prefix=yd220623_jQuery https://github.com/weather0/yd220623_jQuery master
+git subtree add --prefix=yd220624_jQuery https://github.com/weather0/yd220624_jQuery master
+git subtree add --prefix=yd220627_jQuery_AJAX https://github.com/weather0/yd220627_jQuery_AJAX master
+git subtree add --prefix=yd220628_Vue https://github.com/weather0/yd220628_Vue master
+git subtree add --prefix=yd220629_Vue https://github.com/weather0/yd220629_Vue master
+git subtree add --prefix=yd220630_Vue https://github.com/weather0/yd220630_Vue master
+git subtree add --prefix=yd220701_Vue https://github.com/weather0/yd220701_Vue master
+git subtree add --prefix=yd220704_Vue https://github.com/weather0/yd220704_Vue master
+git subtree add --prefix=yd220705_Vue https://github.com/weather0/yd220705_Vue master
+git subtree add --prefix=yd220706_Vue_Router https://github.com/weather0/yd220706_Vue_Router master
+git subtree add --prefix=yd220707_Vue_Exam https://github.com/weather0/yd220707_Vue_Exam master
+git subtree add --prefix=yd220707-_SQL https://github.com/weather0/yd220707-_SQL master
+git subtree add --prefix=yd220711-_PLSQL https://github.com/weather0/yd220711-_PLSQL master
+git subtree add --prefix=yd220721_Spring https://github.com/weather0/yd220721_Spring master
+git subtree add --prefix=yd220726_Spring https://github.com/weather0/yd220726_Spring master
+git subtree add --prefix=yd220727_Spring_Exam https://github.com/weather0/yd220727_Spring_Exam master
+git subtree add --prefix=yd220728_SpringBoot_Thymeleaf https://github.com/weather0/yd220728_SpringBoot_Thymeleaf master
+git subtree add --prefix=yd220729_SpringBoot_JPA https://github.com/weather0/yd220729_SpringBoot_JPA master
+git subtree add --prefix=yd220802_jQuery_Exam https://github.com/weather0/yd220802_jQuery_Exam master
+git subtree add --prefix=yd220922_Interface_Exam https://github.com/weather0/yd220922_Interface_Exam master
+
+
+6. 하위 폴더에 있던 찌꺼기 파일들 제거
+git rm -r --cached **/.project
+git rm -r --cached **/.gitignore
+git rm -r --cached **/.classpath
+git rm -r --cached **/.settin*  // 그대로 쓰면 폴더명으로 인식을 못해서 와일드카드로 하니 인식 함
+
+7. git add .
+8. git commit -m 'all in one'
+9. git push origin main
