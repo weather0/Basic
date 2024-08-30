@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yd220527/ch07/dom1.html</script>
+  </title>
+</head>
+
+<body>
+  이름: <input type="text" name="" id="name" value="홍길동"><br>
+  나이: <input type="number" name="" id="age" value="20"><br>
+  <button>입력</button>
+  <hr>
+
+  <!-- ul li 만들기 -->
+
+  <!-- <ul id="list"></ul> -->
+  <!-- <script>
+    document.querySelector('button').addEventListener('click', addContent);
+    function addContent(){
+      // console.log(this); // this = Window
+      let vname = document.getElementById('name').value;
+      let vage = document.getElementById('age').value;
+      let li = document.createElement('li');
+      li.innerText = `${vname}, ${vage}`;
+
+      // ul 하위요소 li 추가
+      document.getElementById('list').append(li);
+
+      // 입력항목 지우기
+      document.getElementById('name').value = '';
+      document.getElementById('age').value = '';
+      document.getElementById('name').focus();
+    }
+    addContent();
+  </script> -->
+
+
+
+
+
+
+  <!-- 표로 만들기 -->
+
+  <!-- 방법1.노가다 -->
+  <div style="display: none;">
+  <table border="1">
+    <thead>
+      <th>이름</th>
+      <th>나이</th>
+    </thead>
+    <tbody id="list">
+
+    </tbody>
+  </table>
+  </div>
+
+  <!-- 방법2.클론 -->
+  <!-- <div style="display: none;"> -->
+    <table border="1" id="table2">
+      <thead>
+        <th>이름</th>
+        <th>나이</th>
+      </thead>
+      <tr id="result">
+        <td>홍길동</td>
+        <td>20</td>
+      </tr>
+    </table>
+  <!-- </div> -->
+
+  <script>
+    document.querySelector('button').addEventListener('click', addContent);
+    function addContent() {
+      let vname = document.getElementById('name').value;
+      let vage = document.getElementById('age').value;
+
+      // 입력값이 없으면 처리가 중단
+      if (!vname || !vage){ // 0, '', null, undefined => false
+        alert('값을 입력하세요');
+        return;
+      }
+
+
+
+      // 방법1.노가다+배열 활용
+      // let elem = [vname, vage];
+      // function makeTr(elem) {
+      //   let tr = document.createElement('tr');
+      //   elem.forEach(el => {
+      //     let td = document.createElement('td');
+      //     td.innerText = el;
+      //     tr.append(td);
+      //   })
+      //   return tr; // DOM
+      // }
+      // document.getElementById('list').append(makeTr(elem));
+
+
+
+      // 방법2.클론(위에 result양식 활용)
+      // function cloneElement() {
+      //   let cloneTr = document.getElementById('result').cloneNode(true);
+      //   cloneTr.firstElementChild.innerText = document.getElementById('name').value;
+      //   cloneTr.lastElementChild.innerText = document.getElementById('age').value;
+      //   return cloneTr;
+      // }
+      // document.getElementById('table2').append(cloneElement());
+
+
+
+
+      // 방법2-2.클론+배열활용
+      let elem = [vname, vage];
+      function cloneElement(el) {
+        let cloneTr = document.getElementById('result').cloneNode(true);
+        cloneTr.firstElementChild.innerText = el[0];
+        cloneTr.lastElementChild.innerText = el[1];
+        return cloneTr;
+      }
+      document.getElementById('table2').append(cloneElement(elem));
+
+
+
+      
+      // 입력항목 지우기
+      document.getElementById('name').value = '';
+      document.getElementById('age').value = '';
+      document.getElementById('name').focus();
+    }
+    addContent();
+
+  </script>
+
+
+</body>
+
+</html>
