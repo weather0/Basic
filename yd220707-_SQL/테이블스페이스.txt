@@ -1,0 +1,53 @@
+##테이블스페이스 유형
+-SYSTEM 관련 여부
+--시스템테이블스페이스 
+  - SYSTEM, SYSAUX
+  - CREATE, DROP 불가
+--비시스템테이블스페이스 
+  - 나머지(TEMP, UNDOTBS, USERS, ....)
+  - 관리자에 의해 CREATE, DROP 가능
+
+-CONTENTS 기준 분류
+--PERMANENT
+  - 테이블, 인덱스 저장용
+  - 명시적 삭제 전까지 지속적으로 보관
+--TEMPORARY
+  - 정렬작업에 대한 임시 결과 용
+  - 정렬작업이 완료되면 비워짐
+--UNDO
+  - 언두데이터(실행취소, ROLLBACK)전용 영역
+  - 커밋이나 롤백 후 시간이 흐르면 비워짐
+
+##테이블스페이스와 데이터파일 정보 보기
+--DBA_TABLESPACES
+--DBA_DATA_FILES
+
+##테이블스페이스 생성
+--CREATE TABLESPACE 테이블스페이스 이름
+  DATAFILE '경로/파일이름' SIZE 사이즈;
+
+##테이블스페이스 공간 추가
+--데이터파일 추가
+  ALTER TABLESPACE 테이블스페이스이름
+  ADD DATAFILE '경로/파일이름' SIZE 사이즈;
+--기존데이터파일 리사이즈
+  ALTER DATABASE DATAFILE
+  '경로/이름' RESIZE 사이즈;
+
+##상태변경
+--ONLINE/OFFLINE
+--READ WRITE(ONLINE)/READ ONLY
+--ALTER TABLESPACE 테이블스페이스이름 상태;
+
+##삭제
+--DROP TABLESPACE 테이블스페이스이름
+  INCLUDING CONTENTS AND DATAFILES;
+
+
+
+
+
+
+
+
+

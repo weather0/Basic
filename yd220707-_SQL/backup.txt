@@ -1,0 +1,23 @@
+Database Backup
+#도구
+-Recovery Manager(CLI,rman)
+-EM(rman의 GUI)
+#백업용어
+-Whole Backup : 모든 데이터파일과 콘트롤파일을 백업
+-Partial Backup : 특정 데이터파일, 테이블스페이스, 콘트롤파일을 백업
+
+-Full  Backup : 하나의 데이터파일의 모든 블록을 백업
+-Incremental Backup : Full backup 이후 변경된 블록만 백업
+
+-Cold Backup : Closed DB Backup
+-Hot Backup : Opened DB Backup
+
+#백업유형(rman)
+-Backupset : 여러 데이터파일의 사용중인 블록만 모아서 백업한 모음
+-Copy : 운영체제의 복사방식과 동일하게 각 데이터파일의 개별적 복사본
+
+#백업방식(운영모드따라 결정)
+-Noarchive Log Mode
+ Closed Whole Backup(Cold Backup)
+-Archive Log Mode
+ 모든 백업 방식 가능 
