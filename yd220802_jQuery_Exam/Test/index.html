@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="bdy">
+  <div id="box">
+    <div class="full">
+
+      <form id="info" onsubmit="return false">
+        <div id="box">
+          <div id="row">
+            <label for="">사원번호</label>
+            <input type="number" id="employee_id" name="employee_id">
+          </div>
+          <div id="row">
+            <label for="">성</label>
+            <input type="text" id="last_name" name="last_name">
+          </div>
+          <div id="row">
+            <label for="">이름</label>
+            <input type="text" id="first_name" name="first_name">
+          </div>
+          <div id="row">
+            <label for="">이메일</label>
+            <input type="email" id="email" name="email">
+          </div>
+          <div id="row">
+            <label for="">직책</label>
+            <input type="text" id="job_id" name="job_id">
+          </div>
+        </div>
+        <div id="btn">
+          <button id="submit">등록</button>
+          <button>선택삭제</button>
+        </div>
+
+      </form>
+
+      <div id="list">
+
+      </div>
+    </div>
+    <script>
+
+      $.ajax({
+        url: 'http://localhost/myserver/empSelect',
+        dataType: 'json',
+        success: function (data) {
+          console.log(data);
+          let table = $('<table border="1px">');
+          let tr = $('<tr>');
+
+          // 테이블 헤더
+          $(table).append($('<th>').append($('<input type="checkbox">')))
+          $(table).append($('<th>').text('employee_id'))
+          $(table).append($('<th>').text('first_name'))
+          $(table).append($('<th>').text('last_name'))
+          $(table).append($('<th>').text('email'))
+          $(table).append($('<th>').text('job_id'))
+          $(table).append($('<th>').text('Delete'))
+
+
+
+          // 테이블 각 행
+          $(data).each(function (idx, obj) {
+            tr = $('<tr>');
+            tr.append($('<td>').append($('<input type="checkbox">')))
+            for (let field in data[idx]) {
+              if (field == 'employee_id') {
+                tr.append($('<td>').text(obj[field]))
+              }
+              if (field == 'first_name') {
+                tr.append($('<td>').text(obj[field]))
+              }
+              if (field == 'last_name') {
+                tr.append($('<td>').text(obj[field]))
+              }
+              if (field == 'email') {
+                tr.append($('<td>').text(obj[field]))
+              }
+              if (field == 'job_id') {
+                tr.append($('<td>').text(obj[field]))
+              }
+              $(table).append(tr);
+            }
+
+            tr.append($('<td>').append($('<button class="deleteBtn">').text("delete")))
+
+
+          });
+
+          // div에 테이블 추가
+          $('#list').append(table);
+
+        },
+        error: function (reject) {
+          console.log(reject)
+        }
+
+      })
+
+      // 등록
+      $('#submit').on('click', function () {
+        $.ajax({
+          url: 'http://localhost/myserver/empInsert',
+          type: 'post',
+          // serialize(): field1=val1&field2=val2&...
+          data: $('#info').serialize(),
+          success: function (data) {
+            console.log(data);
+            alert('입력완료');
+            $('input').val('')
+            location.reload();
+          },
+          error: function (reject) {
+            console.log(reject)
+            alert('입력실패')
+          }
+        })
+      })
+
+
+      // 삭제
+      $(document).on('click', '.deleteBtn', function (e) {
+        e.stopPropagation();
+        let empId = $(e.target.parentElement.parentElement).find(':nth-child(2)').text();
+        console.log(empId)
+        $.ajax({
+          url: 'http://localhost/myserver/empDelete',
+          type: 'POST',
+          data: JSON.stringify({ "employee_id": empId }),
+          dataType: 'json',
+          contentType: 'application/json',
+          success: function (data) {
+            alert('삭제 완료')
+          },
+          error: function (reject) {
+            console.log(reject)
+          }
+        })
+      })
+
+
+    </script>
+</body>
+
+</html>
