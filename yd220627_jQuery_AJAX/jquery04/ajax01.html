@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <script>
+    $(function () {
+      /* $.ajax({
+        // 접속할 주소
+        url: ,
+        // 전송박식(get,post)
+        type: ,
+        // 전송할 데이터
+        data: ,
+        // 전송할 데이터 content-type : application/x-www-form-urlencoded
+        contentType: ,
+        // 리턴 데이터 타입
+        dataType: ,
+        // 전송 성공시
+        success: function (data) {
+
+        },
+        // 전송 실패시
+        error: function (reject) {
+
+        }
+
+        // async필드: 동기식과 비동기식을 제어, false-동기식으로 동작
+        // beforeSend: 전송 전 이뤄져야하는 작업(function) 등록
+
+      }); */
+
+      $.ajax({
+        url: 'http://192.168.0.29/myserver/empSelect',
+        dataType: 'json',
+        success: function (data) {
+          let table = $('<table>');
+          let tr = $('<tr>');
+
+          // 테이블 헤더
+          let header = data[0];
+          for (let field in header) {
+            $(tr).append($('<th>').text(field))
+          }
+          $(table).append(tr)
+
+          // 테이블 각 행
+          $(data).each(function (idx, obj) {
+            tr = $('<tr>');
+            for (let field in data[idx])
+              tr.append($('<td>').text(obj[field]))
+            $(table).append(tr);
+          });
+
+          // div에 테이블 추가
+          $('#content').append(table);
+        },
+        error: function (reject) {
+          console.log(reject);
+        }
+      })
+
+    })
+  </script>
+  <div id="content"></div>
+</body>
+
+</html>
