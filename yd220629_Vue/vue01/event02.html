@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    .tag {
+      border: 1px solid gray
+    }
+  </style>
+</head>
+
+<body>
+  <h1>btn</h1>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#btn',
+        methods: {
+          warn: function (message, event) {
+            if (event) {
+              console.log(event.target);
+              console.log(event.currentTarget);
+              console.log(event);
+
+              event.preventDefault();
+            }
+            alert(message);
+          }
+        }
+      })
+    })
+
+    // 이벤트 수식어 : on디렉티브에 연결하는 이벤트 동작을 제어
+    // .stop : 이벤트버블링(이벤트전파) 중단
+    // .prevent : 기본 이벤트핸들러 중지
+    // .capture : 이벤트캡쳐링 주단
+    // .self : event 객체의 target == currentTarget인 경우에만 이벤트핸들러 동작
+    // .once : 최대 한 번만 트리거
+    // .passive : wheel 이벤트 동작 시 실제 화면에서 스크롤된 것과 로직 분리
+  </script>
+  <button id="btn" v-on:click="warn('Form cannot be submitted yed',$event)">
+    Submit
+  </button>
+
+  <br>
+  <hr>
+
+  <h1>app: 이벤트버블링, 수식어</h1>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: ('#app'),
+        data: {
+          style: 'tag',
+          message: ''
+        },
+        methods: {
+          printMessage: function (message) {
+            this.message = message;
+            alert(this.message)
+          },
+          changeMessage: function (e) {
+            if (e) {
+              this.message = '이벤트 실행 target : ' + e.target.textContent
+            }
+          },
+          alertExcute: function () {
+            alert('이벤트 핸들러 복수 등록')
+          }
+        }
+      })
+    })
+  </script>
+  <div id="app" :class="style">
+    <!-- submit.prevent효과: 폼버튼 눌러도 폼액션(네이버링크이동)이 중단됨 -->
+    <form action="http://www.naver.com" :class="style" v-on:click="printMessage('form 태그 선택')" v-on:submit.prevent>
+      <!-- .stop효과: div에 걸린 이벤트까지만 동작되고 상위는 무력화됨 -->
+      <div :class="style" v-on:click.stop="printMessage('div 태그 선택')">
+        <!-- .self효과: a를 누르면 p이벤을 건너뛰고 바로 div이벤으로 넘어감. p를 직접 눌러야 p이벤이 실행됨 -->
+        <!-- .once효과: p눌르면 일단 p이벤부터 상위로 실행되고, 모든 이벤 실행 완료 후 그 상태에서 다시 p를 눌르면 p이벤은 무시됨 -->
+        <p :class="style" v-on:click.self.once="printMessage('p 태그 선택')">
+          <!-- .prevent효과: href를 중단시키고 printMessage만 동작함 -->
+          <a :class="style" @click.prevent="printMessage('a 태그 선택')" href="https://www.google.com">구글로이동
+            <!-- v-on: = @ (단축어개꿀)-->
+          </a>
+          {{message}}
+        </p>
+        <button>form</button>
+      </div>
+    </form>
+    <div :class="style">
+      <!-- 중요! 복수등록시에는 매개변수 없어도 ()붙여줘야함!!!!!! -->
+      <span @click="changeMessage($event), alertExcute()">이벤트 핸들러 복수 실행</span>
+    </div>
+  </div>
+
+  <br>
+  <hr>
+
+  <h1>app2: computed</h1>
+  <script>
+    // computed속성: 데이터를 가볍게 연산
+    // watch속성: 데이터변화를 감지해서 필요한 연산
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#app2',
+        data: {
+          price: 0,
+          count: 0,
+          myText: ''
+        },
+        // computed는 캐싱됨. 즉 태그에서 호출이 없어도 실제로는 연산이 발생함
+        // 개발자도구 vue확장도구로 computed내 리턴 값 실시간 변화 확인 가능
+        computed: {
+          // 산출 프로퍼티
+          taxIncluded: function () {
+            return this.sum * 1.1
+          },
+          sum: function () {
+            return this.price * this.count
+          },
+          remain: function () {
+            return 140 - this.myText.length;
+          },
+          computedColor: function () {
+            let col = 'green';
+            if (this.remain < 20) {
+              col = 'orange'
+            };
+            if (this.remain < 1) {
+              col = 'red'
+            };
+            return col;
+          },
+          printDate: function () {
+            return '오늘 날짜 : ' + new Date() + ' / ' + Date.now()
+          }
+        },
+        // getDate를 계속 실행시켜도 printDate는 실시간 업데이트가 안 됨
+        // = 즉 printDate는 메서드처럼 보이지만 실제로는 메서드가 아님!
+        // 결론: computed는 단순 일회성 산출의 의미만 있음(methods와의 가장 큰 차이!)
+        // 시간이 실시간으로 바뀌는 함수를 구현하려면 computed가 아니라 methods로 정의해야 함!
+        methods: {
+          getDate: function () {
+            alert(this.printDate)
+          },
+          printDate2: function () {
+            alert('오늘 날짜 : ' + new Date() + ' / ' + Date.now())
+          }
+        }
+      })
+    })
+  </script>
+  <div id="app2">
+    <input v-model.number="price" type="number">원
+    <br>
+    <input v-model.number="count" type="number">개
+    <br>
+    <p>합계: {{sum}}</p>
+    <p>부가세 포함 금액: {{taxIncluded}}</p>
+    <br><br>
+    <p>감상은 140자 이내로 입력</p>
+    <textarea v-model="myText" name="" id="" cols="30" rows="10"></textarea>
+    <p :style="{color:computedColor}">남은 글자는 {{remain}}입니다.</p>
+    <p>{{printDate}}</p>
+    <!-- 두 날짜 버튼의 실시간 업데이트 여부 차이 확인 -->
+    <button @click="getDate">날짜1</button>
+    <button @click="printDate2">날짜2</button>
+  </div>
+
+  <br>
+  <hr>
+
+  <h1>app3: 검색출력</h1>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let dataList = ['설악산', '한라산', '북한산', '백두산', '지리산']
+      let div = document.querySelector('#appk');
+      if (document.querySelector('#appk input').value == '') {
+        let ul = document.createElement('ul')
+        for (let el of dataList) {
+          let li = document.createElement('li');
+          li.innerHTML = el;
+          ul.append(li)
+        }
+        div.append(ul)
+      }
+
+
+      new Vue({
+        el: '#appk',
+        data: {
+          keyword: ''
+        },
+        methods: {
+          reload: function () {
+
+          },
+          searching: function () {
+            let dataList = ['설악산', '한라산', '북한산', '백두산', '지리산']
+            let div = document.querySelector('#appk');
+            let ul = document.querySelector('#appk ul');
+            for (let el of dataList) {
+              if (this.keyword == el) {
+                let p = document.createElement('p')
+                p.innerHTML = el;
+                div.append(p)
+                ul.style.display = 'none'
+              }
+            }
+          }
+        }
+      })
+    })
+  </script>
+
+
+
+  <!-- 교수님ver. start --------------------->
+  <!-- <script>
+    let dataList = ['설악산', '한라산', '북한산', '백두산', '지리산'];
+
+    //자바스크립트
+    document.addEventListener('DOMContentLoaded', function () {
+
+      init();
+
+      document.getElementById('app3')
+        .querySelector('input[type="text"]')
+        .addEventListener('change', changeData);
+
+      function changeData() {
+        let inVal = document.getElementById('app3').querySelector('input[type="text"]').value;
+
+        let ulTag = document.getElementById('app3').querySelector('ul');
+        ulTag.innerHTML = '';
+
+        if (inVal != '') {
+          dataList.forEach(function (val, idx) {
+            if (val.includes(inVal)) {
+              let liTag = document.createElement('li');
+              liTag.textContent = val;
+              ulTag.appendChild(liTag);
+            }
+          })
+        } else {
+          init();
+        }
+      }
+
+      function init() {
+        dataList.forEach(function (val, idx) {
+          let liTag = document.createElement('li');
+          liTag.textContent = val;
+          document.getElementById('app3').querySelector('ul').appendChild(liTag);
+        });
+      }
+    });
+
+    //제이쿼리
+    $(document).ready(function () {
+
+      init();
+
+      $('#app3 > input:text:eq(0)').on('change', changeData);
+
+      function changeData() {
+        $('#app3 > ul:first').empty();
+
+        let keyword = $('#app3 > input:text:eq(0)').val();
+        if (keyword != '') {
+          $(dataList).each(function (idx, val) {
+            if (val.match(keyword)) {
+              $('#app3 > ul:first').append(
+                $('<li />').text(val)
+              );
+            }
+          })
+        } else {
+          init();
+        }
+      }
+
+
+      function init() {
+        $(dataList).each(function (idx, val) {
+          $('#app3 > ul:first').append(
+            $('<li />').text(val)
+          );
+        });
+      }
+    });
+
+  </script> -->
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let dataList = ['설악산', '한라산', '북한산', '백두산', '지리산']
+      new Vue({
+        el: '#app3',
+        data: {
+          findWord: '',
+          items: dataList
+        },
+        computed: {
+          findItems: function () {
+            // findWord가 존재시
+            if (this.findWord) {
+              // 배열.filter(함수{}): 기존 배열을 필터링하여 새 배열 만듦 
+              return this.items.filter(function (value) {
+                return (value.indexOf(this.findWord) > -1)
+              }, this)
+            } else {
+              return this.items;
+            }
+          }
+        }
+
+      })
+    })
+  </script>
+  <!--------------------- 교수님ver. end -->
+
+
+  <div id="appk">
+    <!-- input의 value속성이 비어있으면 모든 데이터가 보이고 검색시 해당데이터만 보이도록-->
+    <input @keyup.enter="searching" v-model="keyword" type="text">
+  </div>
+  <br>
+  <p>-------- 교수님ver. ---------</p>
+  <div id="app3">
+    <input v-model="findWord" type="text">
+    <ul>
+      <li v-for="item in findItems">{{item}}</li>
+    </ul>
+  </div>
+
+  <br>
+  <hr>
+
+  <h1>app4: watch</h1>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#app4',
+        data: {
+          forbiddenText: '안돼',
+          inputText: '오늘은 날씨가 좋지요',
+          restSec: 5,
+          timerObj: null
+        },
+        methods: {
+          startTimer: function () {
+            // clearInterval(this.timerObj);
+            this.restSec = 5;
+            this.timerObj = setInterval(() => { this.restSec-- }, 1000);
+          }
+        },
+        watch: {
+          inputText: function () {
+            let pos = this.inputText.indexOf(this.forbiddenText)
+            if (pos >= 0) {
+              alert(this.forbiddenText + '는 입력 불가')
+              this.inputText = this.inputText.substr(0, pos)
+            }
+          },
+          restSec: function () {
+            if (this.restSec <= 0) {
+              alert('제한시간입니다');
+              clearInterval(this.timerObj);
+            }
+          }
+        }
+
+      })
+    })
+  </script>
+  <div id="app4">
+    <p>금지문자 [{{forbiddenText}}]</p>
+    <textarea v-model="inputText" name="" id="" cols="30" rows="10"></textarea>
+    <br>
+    <br>
+    <p>앞으로 {{restSec}}</p>
+    <button @click="startTimer">START</button>
+  </div>
+
+</body>
+
+</html>

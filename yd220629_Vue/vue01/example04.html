@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        /*
+          1. 입력금지 문자열을 ,(콤마) 기준으로 입력할 수 있다.
+          2. 제한 시간을 넣고 시작버튼을 누르면 텍스트를 넣을 수 있다.
+          3. 제한 시간이 실시간으로 표시된다.
+          4. 입력중 금지 문자열이 나올 경우 경고를 뛰옥
+             확인버튼을 누르면 해당문자열은 삭제되며 시간이 +10초 추가된다.
+          5. 제한 시간이 완료되면 텍스트 입력창은 비활성화되고
+             입력 창 아래 입력한 문자의 개수가 표시되며
+             금지어를 사용한 횟수 * 12 한 벌점을 출력한다
+        */
+        el: '#app',
+        data: {
+          forbidden: '', // 금지어 입력값(string)
+          inputText: '', // textarea입력텍스트
+          inputSec: 0, // 제한시간입력(고정)
+          restSec: 0, // 남은시간표시(실시간변동)
+          timerObj: null, // 타이머
+          trigger: false, // 비활성화트리거
+          final: '', // 게임결과(타이핑 달성 개수)
+          penaltycnt: 0 // 벌점
+        },
+        computed: {
+          // 금지어 배열 생성(근데 굳이 컴퓻으로 따로 뺼 필요 엄었음. inputText()에서 바로 만들 걸)
+          makeArr: function () {
+            return this.forbidden.split(',')
+          },
+          // 타이핑 달성 개수
+          finalcount: function () {
+            return this.inputText.length
+          }
+        },
+        methods: {
+          // 게임 시작 이벤트
+          startTimer: function () {
+            // clearInterval(this.timerObj);
+            this.restSec = this.inputSec // 제한시간입력칸(고정)과 남은시간표시칸(실시간변동) 구분
+            this.timerObj = setInterval(() => { this.restSec-- }, 1000);
+            this.trigger = true;
+          }
+        },
+        watch: {
+          inputText: function () {
+            // 걍 여기서 바로 금지어 배열 생성하는게 간편했는데.
+            for (let el of this.makeArr) {
+              let pos = this.inputText.indexOf(el)
+              // console.log(pos)
+              if (pos >= 0) {
+                alert(el + '는 입력 불가')
+                // 금지어는 삭제
+                this.inputText = this.inputText.substr(0, pos);
+                // 남은시간 10초 초과
+                this.restSec += 10;
+                // 페널티카운트 추가
+                this.penaltycnt++
+              }
+            }
+          },
+          restSec: function () {
+            if (this.restSec <= 0) {
+              alert('제한시간입니다');
+              this.trigger = false;
+              // 게임종료시에만 결과(타이핑달성개수) 표시되게 이시점에 final값을 할당하고 뷰에 뿌림
+              this.final = this.finalcount;
+              clearInterval(this.timerObj);
+            }
+          }
+        }
+      })
+    })
+  </script>
+  <div id="app">
+    <h1>제한 시간내에 문자 입력하기</h1>
+    <label>
+      금지문자(,로 나누어 복수입력가능)
+      <input type="text" v-model="forbidden" :disabled="trigger">
+    </label>
+    <br>
+    <label>
+      제한시간을 입력하세요(초)
+      <input type="number" v-model="inputSec" :disabled="trigger">
+    </label>
+    <button @click="startTimer">START</button>
+    <p>남은시간 : {{restSec}} 초</p>
+    <textarea v-model="inputText" :disabled="trigger==false" cols="50" rows="5"></textarea>
+    <p>{{final}}개의 문자를 입력하였습니다.</p>
+    <p>별점 : {{penaltycnt*12}} (금지문자 1개당 12점)</p>
+  </div>
+</body>
+
+</html>
