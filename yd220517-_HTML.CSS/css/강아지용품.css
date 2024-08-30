@@ -1,0 +1,104 @@
+
+    body {
+      font-family: "맑은 고딕", "고딕", "굴림";
+      width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: rgb(250,90,120);
+      height: 100px;
+    }
+
+    nav ul li {
+      display: inline-block;
+      padding: 20px;
+      margin: 18px;
+    }
+    
+    nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      padding-bottom: 5px;
+    }
+    
+    nav a:hover{
+      border-bottom: 2px solid;
+    }
+    
+    h1{
+      padding-left: 20px;
+    }
+
+
+    /* section */
+    section {
+      width:780px;
+      /* border: 1px solid black; */
+      float: left;
+    }
+
+
+    article:nth-child(1) h3::after{
+    /* .doghouse h3::after{ */
+      content: "NEW!!";
+      font-size: small;
+      color: red;
+      /* margin: 5px; */
+      background: lightgoldenrodyellow;
+      position: relative;
+      top: -5px;
+      right: -5px;
+    }
+
+    article:nth-child(1) p::first-letter{
+    /* .doghouse p::first-letter{ */
+      color: red;
+      font-weight: bold;
+    }
+
+
+
+    
+    article {
+      width: 350px;
+      height: 270px;
+      border: 1px solid black;
+      padding: 10px;
+      margin:5px;
+      float: left;
+    }
+
+    article p{
+      text-align: justify;
+      line-height: 1.5;
+    }
+
+
+    /* aside */
+    aside {
+      width:170px;
+      float: right;
+      text-align: right;
+      padding-top: 10px;
+      border: 1px solid black;
+    }
+
+    aside img{
+      width:160px;
+    }
+
+
+    /* footer */
+    footer {
+      clear: both;
+      background-color: blue;
+      padding:15px;
+      color:white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+	<title>곽주엽</title>
+	<link href="css/곽주엽.css" rel="stylesheet">
+</head>
+
+<body>
+	<div id="container">
+
+		<!-- 헤더영역 -->
+		<header>
+			<h1>header 영역</h1>
+			<p>곽주엽 페이지에 온 것을 환영합니다</p>
+			<nav>
+				<ul>
+					<li><a href=#>첫 번째 메인메뉴</a></li>
+					<li><a href=#>두 번째 메인메뉴</a></li>
+					<li><a href=#>세 번째 메인메뉴</a></li>
+					<li class="r_login"><a href=#>로그인</a></li>
+				</ul>
+			</nav>
+		</header>
+
+
+		<!-- 왼쪽 사이드영역 -->
+		<aside class="l_side">
+			<h1>좌측사이드</h1>
+			<p>좌측영역 정의 내립니다</p>
+			<p>좌측영역 정의 내립니다</p>
+			<p>좌측영역 정의 내립니다</p>
+		</aside>
+
+
+		<!-- 섹션영역 -->
+		<section>
+			<h1>회원가입 영역입니다</h1>
+			<!-- 회원가입 폼 영역 -->
+			<form action="abc.jsp" method="post">
+				<fieldset>
+					<legend>step 1: 로그인 정보</legend>
+					<ul>
+						<li>
+							<label for="accid">계정아이디</label>
+							<input type="text" id="accid" autofocus required>
+						</li>
+						<li>
+							<label for="pw">비밀번호</label>
+							<input type="password" id="pw">
+						</li>
+						<li>
+							<label for="pw2">비밀번호확인</label>
+							<input type="password" id="pw2">
+						</li>
+					</ul>
+				</fieldset>
+
+				<fieldset>
+					<legend>step 2: 개인 정보</legend>
+					<ul>
+						<li>
+							<label for="myname">이름</label>
+							<input type="text" id="myname" placeholder="5자 미만 공백없이" maxlength="5">
+						</li>
+						<li>
+							<label for="myemail">이메일 계정</label>
+							<input type="email" id="myemail" placeholder="abc@naver.com">
+						</li>
+						<li>
+							<label for="mytel">전화번호</label>
+							<input type="tel" id="mytel">
+						</li>
+					</ul>
+				</fieldset>
+
+				<fieldset>
+					<button type="submit">회원가입</button>
+					<button type="reset">정보수정</button>
+				</fieldset>
+
+			</form>
+		</section>
+
+		<!-- 오른쪽 사이드영역 -->
+		<aside class="r_side">
+			<h1>우측사이드</h1>
+			<p>우측영역 정의 내립니다</p>
+			<p>우측영역 정의 내립니다</p>
+			<p>우측영역 정의 내립니다</p>
+		</aside>
+
+
+
+		<!-- 푸터 영역 -->
+		<footer>
+			<h2>푸터영역 입니다</h2>
+		</footer>
+
+	</div>
+</body>
+
+</html>

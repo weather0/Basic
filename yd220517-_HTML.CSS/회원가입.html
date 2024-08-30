@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입</title>
+  <style>
+    body {
+      width: 1000px;
+      margin: 0 auto;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+
+    /* nav */
+    header {
+      text-align: center;
+    }
+
+    nav {
+      background: black;
+      /* height: 60px; 높이를 주지말고 */
+      overflow: hidden;
+      /* 자식의 크기에 맞춰서 표시하기*/
+    }
+
+    nav ul {
+      padding: 0;
+      margin: 0;
+    }
+
+    nav a {
+      padding: 0px 20px;
+      line-height: 50px;
+      /* 실질적으로 글자박스(a)의 높이로 nav의 크기를 결정*/
+      float: left;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      background: pink;
+      color: black;
+    }
+
+    .r_login {
+      float: right;
+    }
+
+
+    
+
+
+     /* aside */
+    aside {
+      width: 200px;
+      height: 600px;
+      text-align: center;
+      background: lightgray;
+      /* border: 1px solid black; */
+
+    }
+
+    /* l_side */
+    .l_side {
+      float: left;
+    }
+
+    /* r_side */
+    .r_side {
+      float: right;
+    }
+
+
+
+
+
+    /* section */
+    section {
+      text-align: center;
+      width: 594px;
+      height: 600px;
+      float: left;
+      /* border: 1px solid black; */
+    }
+
+    fieldset {
+      border: none;
+    }
+
+    legend {
+      font-size: large;
+      font-weight: bold;
+    }
+
+    form {
+      margin: 0 auto;
+      width: 500px;
+      background: gray;
+      padding: 10px;
+    }
+
+    form li {
+      margin-bottom: 5px;
+      background: lightgray;
+      border-radius: 5px;
+      text-align: center;
+      padding: 5px;
+    }
+
+    /* input을 ul li나 테이블에 넣는 이유!
+     →"블록레벨"로 만들기 위해서 */
+
+    label {
+      width: 120px;
+      float: left;
+    }
+
+    input {
+      width: 250px;
+      padding: 5px;
+    }
+
+    button {
+      width: 120px;
+      padding: 10px;
+      border: 0;
+      border-radius: 10px;
+      font-size: large;
+      font-weight: bold;
+    }
+
+
+    
+
+    /* footer */
+    footer {
+      clear: both;
+      padding: 2px;
+      background: black;
+      color: white;
+      text-align: center;
+      /* border: 1px solid black; */
+    }
+
+    
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>header 영역</h1>
+    <p>000페이지에 온 것을 환영합니다</p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href=#>첫 번째 메인메뉴</a></li>
+      <li><a href=#>두 번째 메인메뉴</a></li>
+      <li><a href=#>세 번째 메인메뉴</a></li>
+      <li class="r_login"><a href=#>로그인</a></li>
+    </ul>
+  </nav>
+
+
+
+
+  <aside class="l_side">
+    <h2>좌측 사이드</h2>
+    <p>좌측영역 정의 내립니다</p>
+    <p>좌측영역 정의 내립니다</p>
+    <p>좌측영역 정의 내립니다</p>
+  </aside>
+
+
+
+
+
+  <section>
+    <h1>회원가입 영역입니다</h1>
+    <form action="abc.jsp" method="post">
+      <fieldset>
+        <legend>step1: 로그인 정보</legend>
+        <ul>
+          <li>
+            <label for="accid">계정 아이디</label>
+            <input type="text" id="accid">
+          </li>
+          <li>
+            <label for="pw1">비밀번호</label>
+            <input type="password" id="pw1">
+          </li>
+          <li>
+            <label for="pw2">비밀번호 확인</label>
+            <input type="password" id="pw2">
+          </li>
+        </ul>
+      </fieldset>
+
+      <fieldset>
+        <legend>step2: 개인 정보</legend>
+        <ul>
+          <li>
+            <label for="myname">이름</label>
+            <input type="text" id="myname" maxlength="5" placeholder="5자 미만 공백없이">
+          </li>
+          <li>
+            <label for="myemail">이메일 계정</label>
+            <input type="email" id="myemail" placeholder="abc@naver.com">
+          </li>
+          <li>
+            <label for="mytel">전화번호</label>
+            <input type="tel" id="mytel">
+          </li>
+        </ul>
+      </fieldset>
+
+      <div class="c_tail">
+        <button type="submit">회원 가입</button>
+        <button type="reset">정보 수정</button>
+      </div>
+
+
+    </form>
+  </section>
+
+
+
+
+  <aside class="r_side">
+    <h2>우측 사이드</h2>
+    <p>좌측영역 정의 내립니다</p>
+    <p>좌측영역 정의 내립니다</p>
+    <p>좌측영역 정의 내립니다</p>
+  </aside>
+
+
+
+
+  <footer>
+    <h2>푸터영역 입니다</h2>
+  </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3단레이아웃</title>
+  <style>
+    /* float은 부모로부터 독립의 기능도 있음. 
+    ->부모가 다시 자식 영역 잡아오려면 부모측에서 overflow:hidden처리*/
+    #container{
+      border: 1px solid black;
+      width: 960px;
+      padding: 20px;
+      margin: 0 auto;
+    }
+
+    header{
+      border: 1px solid black;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    #leftaside{
+      border: 1px solid black;
+      width: 220px;
+      padding: 20px;
+      float: left;
+      margin-bottom: 20px;
+      background: lightblue;
+    }
+    
+    section{
+      border: 1px solid black;
+      width: 384px;
+      padding: 20px;
+      float: left;
+      margin:0 5px;
+      margin-bottom: 20px;
+    }
+    
+    #rightaside{
+      border: 1px solid black;
+      width: 220px;
+      padding: 20px;
+      float: right;
+      margin-bottom: 20px;
+      background: lightblue;
+    }
+    
+    footer{
+      clear: both;
+      border: 1px solid black;
+      padding: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>사이트 제목</h1>
+    </header>
+    <aside id="leftaside">
+      <h3>왼쪽 사이드바</h3>
+      <p>광고1</p>
+      <p>광고2</p>
+    </aside>
+    <section>
+      <h3>본문</h3>
+      <p>내용 입력1</p>
+      <p>내용 입력2</p>
+    </section>
+    <aside id="rightaside">
+      <h3>오른쪽 사이드바</h3>
+      <p>광고1</p>
+      <p>광고2</p>
+    </aside>
+    <footer>
+      <h3>푸터영역</h3>
+      <p>저작권 정보, 연락처 등</p>
+    </footer>
+  </div>
+</body>
+</html>

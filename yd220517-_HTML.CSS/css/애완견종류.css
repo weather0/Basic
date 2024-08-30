@@ -1,0 +1,110 @@
+body {
+  font-family: "맑은 고딕", "고딕", "굴림"
+}
+
+#container {
+  width: 960px;
+  margin: 0 auto;
+
+}
+
+/* header */
+header {
+  background: #069;
+  height: 100px;
+}
+
+nav {
+  width: 600px;
+  float: right;
+}
+
+nav ul li {
+  display: inline-block;
+  padding: 10px;
+  margin: 12px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* section */
+section {
+  padding: 10px;
+}
+h1 {
+  margin: 10px;
+
+}
+
+/* article {
+  border-style: solid;
+  border-width: thin;
+  border-radius: 3%;
+  padding: 0 30px;
+} */
+
+#anchor{
+  text-align: center;
+
+}
+#anchor li{
+  display: inline-block;
+  padding: 10px;
+}
+#anchor a{
+  text-decoration: none;
+}
+
+section p{
+  text-align: right;
+  margin-right: 10px;
+}
+
+section p a{
+  text-decoration: none;
+}
+
+/* article */
+article{
+  padding: 10px;
+}
+
+#hdog{
+  border: 1px solid pink;
+  border-radius: 20px;
+}
+#odog{
+  border: 2px dotted green;
+  border-radius: 10px;
+}
+#sdog{
+  border: 1px solid pink;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+figure{
+  text-align: center;
+}
+
+/* aside */
+aside{
+  padding: 10px;
+  background: pink;
+  margin-bottom: 5px;
+}
+
+/* footer */
+footer{
+  padding: 10px;
+  background: #069;
+  color:#fff;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+}
