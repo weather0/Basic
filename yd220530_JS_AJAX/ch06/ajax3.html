@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yd220530/ch06/ajax3.html</title>
+  <style>
+    #show>a {
+      /* show 밑에 a만 */
+      display: inline-block;
+      width: 5px;
+      margin: 0 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text" name="" id="searchCenter" value="서울특별시">
+  <button id="searchBtn">센터찾기</button>
+  <select id="시도">
+    <option value="서울특별시">서울특별시</option>
+    <option value="대구광역시">대구광역시</option>
+    <option value="부산광역시">부산광역시</option>
+  </select>
+
+  <div id="show"></div>
+  <script>
+    // 페이지 로딩 시 실행
+    let dataAry; // 전역변수로 설정(센터찾기에서도 쓸 수 있게)
+
+    let url = 'https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=284&returnType=JSON&serviceKey=W%2FkD7w%2BTSJtH1v5JowoYUG%2BxOBmpCDkp4ZFHMLj1AvBvL%2BAOwPj1abblDi87Yl3cuizWe0bqDC1pryLGAq9xWA%3D%3D';
+    let xhtp = new XMLHttpRequest();
+    xhtp.open('GET', url);
+    xhtp.send();
+    xhtp.onreadystatechange = function () { // client <--> server 요청상태 확인 가능
+      // console.log('요청상태 ', xhtp.readyState, '서버상태 ', xhtp.status);
+      if (xhtp.readyState == 4 && xhtp.status == 200) {
+        let result = JSON.parse(xhtp.responseText);
+        console.log(result); // 이걸로 가져올 필드명 확인
+        dataAry = result.data; // 전체(284건)
+        let fAry = dataAry.filter(center => {
+          let searchCenter = document.getElementById('searchCenter').value;
+          return center.sido == searchCenter
+        });
+
+        let table = document.createElement('table'); // table 생성
+        table.setAttribute('border', 1); // <table border = 1>
+        table.setAttribute('id', 'tbl'); // id부여(센터찾기에서도 쓸 수 있게)
+        table.append(makeHeader());
+        table.append(makeBody(fAry, 1));
+        document.getElementById('show').append(table);
+        makePage(fAry);
+        // dropd(dataAry);
+
+      }
+    };
+
+
+    // 센터찾기버튼 눌렀을 때
+    document.getElementById('searchBtn').addEventListener('click', function () {
+      let fAry = dataAry.filter(center => {
+        let searchCenter = document.getElementById('searchCenter').value;
+        return center.sido.includes(searchCenter) // 포함
+      });
+      document.getElementById('tbl').append(makeBody(fAry, 1));
+      makePage(fAry);
+    })
+
+
+
+    // 드롭다운 눌렀을 때
+    document.getElementById('시도').addEventListener('change', function () {
+      let fAry = dataAry.filter(center => {
+        let searchCenter = document.getElementById('시도').value;
+        return center.sido.includes(searchCenter) // 포함
+      });
+      document.getElementById('tbl').append(makeBody(fAry, 1));
+      makePage(fAry);
+    })
+
+
+
+
+
+
+    // ───[ 인용 함수들 ]──────────────────────────────────────────────────
+    let fields = ['id', 'sido', 'centerName', 'address']; // , 'phoneNumber', 'zipCode'];
+ 
+    // 드롭다운메뉴
+
+  //   <select id="시도">
+  //   <option value="서울특별시">서울특별시</option>
+  //   <option value="대구광역시">대구광역시</option>
+  //   <option value="부산광역시">부산광역시</option>
+  //   </select>
+    // function dropd(dataAry){
+
+
+    //   let sidos = dataAry.forEach(elem => {
+    //     elem.sido;
+    //   });
+
+    //   let sidoary = array.filter((v,i) => array.in)
+      // console.log(sidos);
+
+
+
+
+      // let select = document.createElement('select');
+      // let opt = document.createElement('option');
+      // select.append(opt);
+
+      // // opt.setAttribute('value')
+      
+
+
+    // }
+ 
+ 
+ 
+ 
+    // header
+    function makeHeader() {
+      let thead = document.createElement('thead');
+      let tr = document.createElement('tr');
+      thead.append(tr); // <thead><tr></tr></thead>
+      fields.forEach(field => {
+        let th = document.createElement('th'); // <th>??</th>
+        th.innerText = field.toUpperCase();
+        tr.append(th);
+      });
+      return thead;
+    }
+
+
+
+    // body
+    function makeBody(ary, page) {
+      // page => 1page:1~10, 2page:11~20, 3page: 21~30;
+      // index기준 =>  0~9,        10~19,        20~29;
+      // starCnt, endCnt; page=1 => (page-1)*10, (page)*10-1;
+      let startCnt = (page - 1) * 10;
+      let endCnt = (page) * 10 - 1;
+
+      // 검색시 append만 하면 누적되니깐 지워주기
+      if (document.querySelector('#tbl>tbody') != null) {
+        document.querySelector('#tbl>tbody').remove();
+      }
+      //
+
+      let tbody = document.createElement('tbody');
+      ary.forEach((element, idx) => {
+        if (idx >= startCnt && idx <= endCnt)
+          tbody.append(makeTr(element));
+      });
+      return tbody;
+    }
+
+
+
+    // tr
+    function makeTr(obj) {
+      let tr = document.createElement('tr');
+      fields.forEach(field => {
+        let td = document.createElement('td');
+        if (field != 'address') {
+          td.innerText = obj[field];
+        } else if (field == 'address') {
+          let a = document.createElement('a');
+          a.setAttribute('href', `daumapp.html?centerName=${obj.centerName}&xpos=${obj.lat}&ypos=${obj.lng}`);
+          a.setAttribute('target', '_black');
+          a.innerText = obj[field];
+          td.append(a);
+        }
+        tr.append(td); // <td>서울
+      })
+      return tr;
+    }
+
+
+    // page
+    function makePage(ary) {
+
+      // 검색시 append만 하면 누적되니깐 지워주기
+      document.querySelectorAll('#show>a').forEach(elem => elem.remove());
+      //
+
+
+      let show = document.getElementById('show');
+      // ary => 24건이라면? 1,2,3 page
+      let totalPage = Math.ceil(ary.length / 10); // ceil: 올림
+
+
+
+      for (let i = 1; i <= totalPage; i++) {
+        let a = document.createElement('a');
+        a.addEventListener('click', function (e) {
+          e.preventDefault(); // 기본기능 차단
+          let page = e.target.innerText;
+          document.getElementById('tbl').append(makeBody(ary, page));
+        })
+        a.innerText = i;
+        a.setAttribute('href', '#');
+        show.append(a);
+      }
+    }
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

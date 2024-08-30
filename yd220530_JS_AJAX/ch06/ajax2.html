@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yd220530/ch06/ajax2.html</title>
+</head>
+<script>
+  document.addEventListener('DOMContentLoaded', function () { // body안에 div밑에 스크립트 쓸거면 이 줄 불필요
+    let url = 'https://jsonplaceholder.typicode.com/photos';
+    let xhtp = new XMLHttpRequest();
+    xhtp.open('GET', url); // 서버페이지 요청
+    xhtp.send();
+    xhtp.onload = function () {
+      let result = JSON.parse(xhtp.responseText); // 배열
+      let filterAry = result.filter(elem => elem.albumId == 1 && elem.id <= 10);
+      let ul = document.createElement('ul');
+      filterAry.forEach(elem => {
+        let li = document.createElement('li');
+        li.innerHTML = elem.id + ', ' + elem.title + '<span><img width="40px" src = "' + elem.thumbnailUrl + '"></span>';
+        ul.append(li);
+      });
+      document.getElementById('show').append(ul);
+    }
+
+  })
+
+
+</script>
+
+<body>
+  <div id="show"></div>
+
+</body>
+
+</html>
