@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.app.board.mapper.BoardMapper">
+
+  <select id="getBoard" resultType="BoardVO">
+    select * from board
+    where
+    bno=#{bno}
+  </select>
+
+  <sql id="criteria">
+    <if test="keyword != null and keyword != ''">
+      and ${type} like '%' || #{keyword} || '%' 
+      <!-- ${} 달러는 따옴표 안써도 됨 -->
+    </if>
+  </sql>
+  <select id="getBoardList" resultType="BoardVO">
+    select * from (
+      select /*+ INDEX_DESC(board pk_board) */ rownum rn, a.*
+      from board a
+  <![CDATA[
+      where rownum <= #{pageNum} * #{amount}
+  ]]>
+      <include refid="criteria"></include>
+      order by bno desc
+    )
+    where rn > (#{pageNum}-1) * #{amount}
+  </select>
+  
+  <select id="getTotal" resultType="int">
+    select count(*) from board
+    <where>
+      <include refid="criteria"></include>
+    </where>
+  </select>
+
+  <insert id="insertBoard">
+    <selectKey keyProperty="bno" order="BEFORE" resultType="string">
+      select nvl(max(bno),0)+1 from board
+    </selectKey>
+    insert into board(bno,title,content,writer)
+    values(#{bno},#{title},#{content},#{writer})
+  </insert>
+
+  <update id="updateBoard">
+    update board set
+    title = #{title},
+    content = #{content},
+    writer = #{writer},
+    updateDate = sysdate
+    where bno = #{bno}
+  </update>
+
+  <delete id="deleteBoard">
+    delete from board
+    where bno = #{bno}
+  </delete>
+
+
+
+
+
+</mapper>

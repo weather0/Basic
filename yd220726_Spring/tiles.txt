@@ -1,0 +1,25 @@
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-core</artifactId>
+			<version>${org.apache.tiles-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-extras</artifactId>
+			<version>${org.apache.tiles-version}</version>
+		</dependency>
+
+
+
+	<beans:bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+		<beans:property name="order" value="1" />
+	</beans:bean>
+	<beans:bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<beans:property name="definitions">
+			<beans:list>
+				<beans:value>/WEB-INF/tiles.xml</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
