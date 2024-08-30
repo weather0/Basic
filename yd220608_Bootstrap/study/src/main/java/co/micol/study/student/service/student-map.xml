@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.micol.study.student.service.StudentMapper"> <!-- 인터페이스명으로 수정(.StudentMapper) -->
+	<select id="studentSelectList"
+		resultType="co.micol.study.student.vo.StudentVO">
+		SELECT * FROM STUDENT
+	</select>
+
+	<select id="studentSelect" resultType="co.micol.study.student.vo.StudentVO">
+		select * from student
+		where studentid = #{studentId}
+		<if test="password != null">
+			and password = #{password}
+		</if>
+	</select>
+
+	<insert id="studentInsert">
+	</insert>
+
+	<update id="studentUpdate">
+	</update>
+
+	<delete id="studentDelete">
+	</delete>
+
+
+
+</mapper>
