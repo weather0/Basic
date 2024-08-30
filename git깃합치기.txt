@@ -9,7 +9,7 @@
   # 하위폴더 .gitignore 모두 제거 (루트폴더 .gitignore 제외)
 
 4. 최초 1회 커밋 해줘야 오류 안 남
-git commit -m 'init'
+git commit -m "init"
 
 5. 
 git subtree add --prefix=yd220411_Java https://github.com/weather0/yd220411_Java master
@@ -69,5 +69,5 @@ git rm -r --cached **/.classpath
 git rm -r --cached **/.settin*  // 그대로 쓰면 폴더명으로 인식을 못해서 와일드카드로 하니 인식 함
 
 7. git add .
-8. git commit -m 'all in one'
+8. git commit -m "all in one"
 9. git push origin main
