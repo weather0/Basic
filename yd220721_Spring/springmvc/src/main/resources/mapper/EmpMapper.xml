@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.mvc.emp.EmpMapper">
+
+	<select id="getEmp" resultType="EmpVO">
+		select * from employees
+		where
+		employee_id=#{employeeId}
+	</select>
+
+	<select id="getEmpList" parameterType="EmpReqVO" resultType="EmpVO">
+		select * from employees
+		<where>
+			<if test="employeeId != null and employeeId != ''">
+				and employee_id = #{employeeId}
+			</if>
+			<if test="jobId != null and jobId != ''">
+				and job_id = #{jobId}
+			</if>
+			
+			<if test="depts != null">
+				and department_id in(
+				<foreach item="item" collection="depts" separator=","> #{item}</foreach>
+				)
+			</if>
+			
+			<if test="sdt != null">
+				and hire_date >= #{sdt}
+			</if>
+			<if test="edt != null">
+				<![CDATA[and hire_date <= #{edt}]]>
+			</if>
+			
+		</where>
+		order by 1
+	</select>
+
+	<insert id="insertEmp">
+		<!-- 사번넘버링: selectKey대신 시퀀스 만들어서 사용해도 됨 -->
+		<selectKey keyProperty="employeeId" order="BEFORE"
+			resultType="string">
+			select nvl(max(employee_id),0)+1 from employees
+		</selectKey>
+		insert into employees(employee_id, first_name, last_name, email, hire_date, job_id)
+		values(#{employeeId}, #{firstName}, #{lastName}, #{email}, #{hireDate}, #{jobId})
+	</insert>
+	
+	<update id="updateEmp">
+		update employees set 
+			first_name = #{firstName},
+			last_name = #{lastName},
+			email = #{email},
+			hire_date = #{hireDate},
+			job_id = #{jobId}
+		where employee_id = #{employeeId}
+	</update>
+
+	<delete id="deleteEmp">
+		delete from employees
+		where employee_id = #{employeeId}
+	</delete>
+</mapper>

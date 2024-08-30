@@ -1,0 +1,86 @@
+스프링pom.xml Failed to create the part's controls 오류시
+Help-Install New Software
+주소에 http://download.eclipse.org/tm4e/snapshots/ 적고 엔터
+밑에 4개 다 체크 설치 -> 완료되면 restart now 클릭(스샷 참고)
+
+에러코드
+200~300: 정상
+
+400~500: 찐에러
+  403: 권한 없음
+  404: not found
+  406: method관련
+  400: bad request(파라미터 -> 커맨드객체:타입)
+
+
+
+0722 과제
+게시판 CRUD(7개 파일)
+1. 테이블생성, 샘플데이터 등록
+2. BoardVO(p.183)
+3. BoardMapper 인터페이스, BoardMapper.xml
+4. BoardController
+5. view (boardList.jsp, boardInser.jsp, boardUpdate.jsp)
+
+
+
+─────────────
+0728 스프링부트
+
+maven으로 생성시:
+application.properties 우클릭 open with .. properties file editor
+server.port=80 적고 저장
+
+gradle로 생성시:
+application.properties 파일명 변경 application.yml
+server:
+  port: 80 (들여쓰기, 띄어쓰기 주의!!)
+적고 저장
+
+
+DemoApplication.java 열어서 테스트
+(스프링부트는 항상 이 xxxAplication.java를 우클릭해서 실행시켜야 한다! main 메서드):
+
+@RestController
+@SpringBootApplication
+public class DemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
+	@RequestMapping("/home")
+	public Map home() {
+		return Collections.singletonMap("name", "hong");
+	}
+}
+
+localhost/home 실행해보자
+
+--------------
+배포하기
+1.일단 이클립스에서 한번 run as 실행하면
+2.메뉴Run - Run configuration - 팝업좌메뉴 Java Application에 실행기록이 생성되어있음을 확인
+3.DemoApplication.java 우클릭 Export... Runnable JAR file
+  Copy required libraries into ~ 선택하고 finish
+4.cmd에서 java -Dserver.port=80 -jar demo-1.jar
+  브라우저로 결과 확인: localhost/home
+
+
+
+
+─────────────
+0729 스프링부트JPA
+서버실행하고
+localhost/h2-console/
+접속해보면 무슨 유틸폼 나옴
+
+이클립스 콘솔창에 
+Database available at 'jdbc:h2:mem:80bcacee-b7fb-4345-89d3-11acac7e61cc'
+부분 찾아서
+
+브라우저 유틸화면에 JDBC URL: 에
+jdbc:h2:mem:80bcacee-b7fb-4345-89d3-11acac7e61cc
+주소 입력하고 하단 '연결' 클릭 - H2콘솔(DB관리창) 나옴
+
+select * from customer 쿼리한번 실행하면
+하단에 행추가할 수 있게 폼 나옴(개꿀!)

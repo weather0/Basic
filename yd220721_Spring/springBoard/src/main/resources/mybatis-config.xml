@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!-- https://mybatis.org/mybatis-3/ko/configuration.html -->
+<settings>
+  <setting name="cacheEnabled" value="true"/>
+  <setting name="lazyLoadingEnabled" value="true"/>
+  <setting name="multipleResultSetsEnabled" value="true"/>
+  <setting name="useColumnLabel" value="true"/>
+  <setting name="useGeneratedKeys" value="false"/>
+  <setting name="autoMappingBehavior" value="PARTIAL"/>
+  <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
+  <setting name="defaultExecutorType" value="SIMPLE"/>
+  <setting name="defaultStatementTimeout" value="25"/>
+  <setting name="defaultFetchSize" value="100"/>
+  <setting name="safeRowBoundsEnabled" value="false"/>
+  <setting name="mapUnderscoreToCamelCase" value="true"/>
+  <setting name="localCacheScope" value="SESSION"/>
+  
+  <!-- 기본value="OTHER"인데 비추(오타등으로 NULL값 관련 오류 시 "부적합한 열유형:1111"이라면서 원인파악이 힘들게 찍힘) -->
+  <setting name="jdbcTypeForNull" value="NULL"/> 
+  
+  <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+</settings>
+
+
+<!-- resultTpye 축약하기 -->
+<typeAliases>
+	<!-- 방법1 -->
+<!--   <typeAlias alias="emp" type="com.company.mvc.emp.EmpVO"/> -->
+	<!-- 방법2 -->
+	<package name="ac.yedam.mvc"/> <!-- EmpVO, empVO 다 됨!! 대소문자 다 알아서 스캔해줌! -->
+</typeAliases>
+
+
+</configuration>
