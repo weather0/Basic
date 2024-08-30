@@ -1,0 +1,55 @@
+C:\Users\admin>sqlplus hr/hr
+
+SQL*Plus: Release 11.2.0.2.0 Production on 월 7월 11 17:11:47 2022
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> variable g_monthly_sal NUMBER;
+SQL> variable g_monthly_sal NUMBER
+SQL> accept p_annual_sal PROMPT
+SP2-0311: string expected but not found
+SP2-0003: Ill-formed ACCEPT command starting as
+SQL> accept p_annual_sal PROMPT 'Please enter the annual salary:'
+Please enter the annual salary:5000
+SQL> declare
+  2  v_sal number(9,2) := &p_annual_sal;
+  3  begin
+  4  :g_monthly_sal := v_sal/12;
+  5  end;
+  6  /
+old   2: v_sal number(9,2) := &p_annual_sal;
+new   2: v_sal number(9,2) := 5000;
+
+PL/SQL procedure successfully completed.
+
+SQL> print g_monthly_sal
+
+G_MONTHLY_SAL
+-------------
+   416.666667
+
+SQL> set serveroutput on
+SQL> declare
+  2  v_sal number(9,2) := &p_annual_sal;
+  3  begin
+  4  v_sal := v_sal/12;
+  5  DBMS_OUTPUT.PUT_LINE('The monthly salary is ' || TO_CHAR(v_sal));
+  6  end;
+  7  /
+old   2: v_sal number(9,2) := &p_annual_sal;
+new   2: v_sal number(9,2) := 5000;
+The monthly salary is 416.67
+
+PL/SQL procedure successfully completed.
+
+SQL>
+
+
+
+
+// set serveroutput on: 필수!! 무지성 맨 처음!
+// DBMS_OUTPUT.PUT_LINE(): 자바의 syso, JS의 console.log 같은 거
